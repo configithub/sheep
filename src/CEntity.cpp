@@ -196,6 +196,7 @@ void CEntity::OnLoopApplyControls()
           //std::cout << "stop" << std::endl;
          MoveLeft = false;
          MoveRight = false;
+         GotoCommand = false;
 
       }
     }
