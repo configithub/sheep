@@ -1,6 +1,6 @@
 #include "CApp.h"
 #include <iostream>
-#include <SDL_rotozoom.h>
+//#include <SDL_rotozoom.h>
 
 void print_num(SDL_Surface *dst, SDL_Surface *font, int x, int y, float value)
 {

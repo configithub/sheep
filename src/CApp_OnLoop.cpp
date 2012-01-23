@@ -49,7 +49,7 @@ void CApp::OnLoop() {
     // apply gravity and controls on all entities
     for(std::vector<CEntity*>::iterator itEntity = CEntity::EntityList.begin(); itEntity != CEntity::EntityList.end(); ++itEntity) {
         if((*itEntity) == NULL) continue;
-        (*itEntity)->OnLoopApplyGravity();
+        //(*itEntity)->OnLoopApplyGravity();
         (*itEntity)->OnLoopApplyControls();
         (*itEntity)->OnLoopDeriveAndCapSpeed(dt);
     }
@@ -71,7 +71,7 @@ void CApp::OnLoop() {
         (*itEntity)->OnSpeculateMove((*itEntity)->SpeedX, (*itEntity)->SpeedY, dt);
     }
 
-    Solve(1, dt);
+    Solve(5, dt);
 
 
     // fill collision container by checking every speculative collisions
@@ -152,8 +152,10 @@ void CApp::Solve(int numIterations, float& dt) {
               //EntityA.NextY += (sign(EntityA.NextY - EntityB.NextY) * contact.Height)/2;
               //EntityB.NextY -= (sign(EntityA.NextY - EntityB.NextY) * contact.Height)/2;
 
-              EntityA.OnSpeculateMove(0, (sign(EntityA.NextY - EntityB.NextY) * contact.Height)/2, dt);
-              EntityB.OnSpeculateMove(0, -(sign(EntityA.NextY - EntityB.NextY) * contact.Height)/2, dt);
+              //EntityA.OnSpeculateMove( EntityA.SpeedX, EntityA.SpeedY + (sign(EntityA.NextY - EntityB.NextY) * contact.Height)/2, dt);
+              EntityA.OnSpeculateMove(0, (sign(EntityA.NextY - EntityB.NextY) * contact.Height)/2, dt, true);
+              //EntityB.OnSpeculateMove( EntityB.SpeedX, EntityB.SpeedY -(sign(EntityA.NextY - EntityB.NextY) * contact.Height)/2, dt);
+              EntityB.OnSpeculateMove(0, -(sign(EntityA.NextY - EntityB.NextY) * contact.Height)/2, dt, true);
 
             } else { // latteral collision
 

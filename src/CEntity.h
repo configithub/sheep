@@ -153,6 +153,9 @@ class CEntity {
         bool        MoveLeft;
         bool        MoveRight;
 
+        bool        MoveUp;
+        bool        MoveDown;
+
         int        Type;
 
         bool        Dead;

@@ -36,6 +36,11 @@ void CApp::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode) {
   switch(sym) {
 
 
+     case SDLK_SPACE: {
+        AddNewSheepInPool(activeSheep);
+        break;
+      }
+
     case SDLK_LEFT: {
         PushArrowLeftRight(false, true);
         break;
@@ -70,6 +75,8 @@ void CApp::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode) {
         SwitchActiveSheep(4);
         break;
       }
+
+
 
 
 
@@ -220,8 +227,8 @@ bool CApp::AddNewSheepInPool(int sheepId) {
   if(newSheep.OnLoad(fileName, 32, 32, 4) == false) {
     return false;
   }
-  newSheep.X = 350;
-  newSheep.Y = 100;
+  newSheep.X = 300;
+  newSheep.Y = 300;
   newSheep.id = sheepId;
 
   CEntity::EntityList.push_back(&newSheep);

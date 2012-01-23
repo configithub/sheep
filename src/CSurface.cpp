@@ -1,6 +1,6 @@
 #include "CSurface.h"
 #include <iostream>
-#include <SDL_rotozoom.h>
+//#include <SDL_rotozoom.h>
 
 
 CSurface::CSurface() {
@@ -169,13 +169,13 @@ bool CSurface::OnDraw(SDL_Surface* Surf_Dest, SDL_Surface* Surf_Src, int X, int 
     SrcR.h = H;
 
      //rotozoom test
-    SDL_Surface *temp = rotozoomSurface (Surf_Src, angle, zoom, 0/*smooth*/);
+    //SDL_Surface *temp = rotozoomSurface (Surf_Src, angle, zoom, 0/*smooth*/);
 
-    if(temp == NULL) return false;
+    //if(temp == NULL) return false;
 
-    SDL_BlitSurface(temp, &SrcR, Surf_Dest, &DestR);
+    SDL_BlitSurface(Surf_Src, &SrcR, Surf_Dest, &DestR);
 
-    SDL_FreeSurface(temp);
+    //SDL_FreeSurface(temp);
 
     return true;
 }
