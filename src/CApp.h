@@ -66,7 +66,15 @@ class CApp : public CEvent {
 
         void OnLButtonUp(int mX, int mY);
 
-	void OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,bool Middle);
+	    void OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,bool Middle);
+
+	    void OnJoyAxis(Uint8 which,Uint8 axis,Sint16 value);
+
+	    void OnJoyButtonDown(Uint8 which,Uint8 button);
+
+
+        void OnJoyButtonUp(Uint8 which,Uint8 button);
+
 
         void GoTo(int x, int y);
 

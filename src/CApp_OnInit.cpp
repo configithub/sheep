@@ -5,10 +5,20 @@
 bool CApp::OnInit() {
 
     // initialize SDL
-    if ( SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER|SDL_INIT_AUDIO) == -1 ) {
+    if ( SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER|SDL_INIT_AUDIO|SDL_INIT_JOYSTICK) == -1 ) {
     // if(SDL_Init(SDL_INIT_EVERYTHING) < 0) {
         return false;
     }
+
+    for(int i=0; i < SDL_NumJoysticks(); i++ )
+    {
+       std::cout<<  SDL_JoystickName(i) << std::endl;
+    }
+    SDL_Joystick *joystick;
+
+    SDL_JoystickEventState(SDL_ENABLE);
+    joystick = SDL_JoystickOpen(0);
+
 
     // create main surface
     // resolution, bit resolution, HW = hardware memory, double buffering prevent flickering
