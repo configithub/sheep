@@ -831,7 +831,7 @@ bool CEntity::PosValidOnEntities(int NewX, int NewY)
 
       if(this != EntityList[i] && abs(EntityList[i]->X-X)+abs(EntityList[i]->Y-Y) < distance) {
         distance = abs(EntityList[i]->X-X)+abs(EntityList[i]->Y-Y);
-        std::cout << distance << std::endl;
+        //std::cout << distance << std::endl;
         NearestEntity = EntityList[i];
       }
 
