@@ -34,6 +34,8 @@ class CEntity {
     public:
         static std::vector<CEntity*>    EntityList;
         static int CurrentEntityId;
+        static float           gotoX;
+        static float           gotoY;
 
         CEntity();
 
@@ -141,8 +143,7 @@ class CEntity {
         float           Y;
 
         bool GotoCommand;
-        float           gotoX;
-        float           gotoY;
+
         int             Width;
         int             Height;
 
@@ -163,6 +164,8 @@ class CEntity {
 
         float        MaxSpeedX;
         float        MaxSpeedY;
+
+        CEntity* NearestEntity;
 
 
 };

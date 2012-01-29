@@ -33,7 +33,7 @@ void CFollower::OnCleanup() {
 
 
 void CFollower::OnAnimate() {
-    if(MoveRight || MoveLeft) {
+    if(MoveRight || MoveLeft || MoveUp || MoveDown) {
         Anim_Control.MaxFrames = 4;
     } else {
         Anim_Control.MaxFrames = 0;

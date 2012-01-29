@@ -88,11 +88,11 @@ SDL_Surface* CSurface::OnLoadBMP(char* File) {
 SDL_Surface* CSurface::OnLoad(char* File) {
     //SDL_Surface* Surf_Temp = NULL;
     SDL_Surface* Surf_Return = NULL;
-
+    std::cout << "surface load " << File << std::endl;
     // try to load a temporary surface with a bmp image
     //if((Surf_Return = IMG_Load(File)) == NULL) {
     if((Surf_Return = load_zoomed(File, 0)) == NULL) {
-        std::cout << "surface load from image file failed" << std::endl;
+        std::cout << "surface load from image file failed " << File << std::endl;
         return NULL;
     }
 

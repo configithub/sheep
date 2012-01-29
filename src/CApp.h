@@ -70,6 +70,10 @@ class CApp : public CEvent {
 
         void GoTo(int x, int y);
 
+        void GoToIsometric(int x, int y);
+
+        void GoToHybrid(int x, int y);
+
         void StopGoTo(int x, int y);
 
         void OnExit();

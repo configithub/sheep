@@ -141,7 +141,13 @@ void CApp::Solve(int numIterations, float& dt) {
 
 
 
+            if(!EntityA.GotoCommand || !EntityB.GotoCommand) {
+              EntityA.GotoCommand = false;
+              EntityA.StopMove();
+              EntityB.GotoCommand = false;
+              EntityB.StopMove();
 
+            }
 
 
             if(contact.Width >= contact.Height) { // vertical collision

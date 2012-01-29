@@ -20,7 +20,7 @@ void CApp::OnExit() {
 }
 
 void CApp::OnLButtonDown(int mX, int mY) {
-  GoTo(mX, mY);
+  GoTo(mX,mY);
 }
 
 void CApp::OnLButtonUp(int mX, int mY) {
@@ -29,7 +29,11 @@ void CApp::OnLButtonUp(int mX, int mY) {
 
 void CApp::OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,bool Middle) {
    // std::cout << "mouseXY: " << mX << "," << mY << std::endl;
-  GoTo(mX,mY);
+  if(Left) {
+    GoTo(mX,mY);
+  }else{
+    StopGoTo(mX,mY);
+  }
 }
 
 void CApp::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode) {
@@ -85,13 +89,69 @@ void CApp::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode) {
   }
 }
 
-void CApp::GoTo(int x, int y) {
+void CApp::GoToIsometric(int x, int y) {
+
+  double delta = 999999999;
+
+  CEntity* NearestEntityFromMouse = NULL;
+  for(std::vector<CFollower*>::iterator itSheep = Sheeps.begin();
+      itSheep != Sheeps.end(); ++itSheep) {
+    if((*itSheep)->id == activeSheep) {
+      if(abs(x-(*itSheep)->X)+abs(y-(*itSheep)->Y) < delta) {
+        delta =  abs(x-(*itSheep)->X)+abs(y-(*itSheep)->Y);
+        NearestEntityFromMouse = *itSheep;
+      }
+    }
+  }
+
+
   for(std::vector<CFollower*>::iterator itSheep = Sheeps.begin();
       itSheep != Sheeps.end(); ++itSheep) {
     if((*itSheep)->id == activeSheep) {
         (*itSheep)->GotoCommand = true;
-        (*itSheep)->gotoX = x;
-        (*itSheep)->gotoY = y;
+        (*itSheep)->gotoX = x + (*itSheep)->X - NearestEntityFromMouse->X;
+        (*itSheep)->gotoY = y + (*itSheep)->Y - NearestEntityFromMouse->Y;
+    }
+  }
+}
+
+void CApp::GoToHybrid(int x, int y) {
+
+  double delta = 999999999;
+
+  CEntity* NearestEntityFromMouse = NULL;
+  for(std::vector<CFollower*>::iterator itSheep = Sheeps.begin();
+      itSheep != Sheeps.end(); ++itSheep) {
+    if((*itSheep)->id == activeSheep) {
+      if(abs(x-(*itSheep)->X)+abs(y-(*itSheep)->Y) < delta) {
+        delta =  abs(x-(*itSheep)->X)+abs(y-(*itSheep)->Y);
+        NearestEntityFromMouse = *itSheep;
+      }
+    }
+  }
+
+  if(delta < 50) {
+    StopGoTo(x,y);
+  }else{
+    for(std::vector<CFollower*>::iterator itSheep = Sheeps.begin();
+      itSheep != Sheeps.end(); ++itSheep) {
+      if((*itSheep)->id == activeSheep) {
+        (*itSheep)->GotoCommand = true;
+        (*itSheep)->gotoX = x ;
+        (*itSheep)->gotoY = y ;
+      }
+    }
+  }
+}
+
+void CApp::GoTo(int x, int y) {
+
+   for(std::vector<CFollower*>::iterator itSheep = Sheeps.begin();
+      itSheep != Sheeps.end(); ++itSheep) {
+    if((*itSheep)->id == activeSheep) {
+        (*itSheep)->GotoCommand = true;
+        (*itSheep)->gotoX = x ;
+        (*itSheep)->gotoY = y ;
     }
   }
 }
@@ -99,11 +159,15 @@ void CApp::GoTo(int x, int y) {
 void CApp::StopGoTo(int x, int y) {
   for(std::vector<CFollower*>::iterator itSheep = Sheeps.begin();
       itSheep != Sheeps.end(); ++itSheep) {
-    if((*itSheep)->id == activeSheep) {
+    //if((*itSheep)->id == activeSheep) {
+        (*itSheep)->MoveLeft = false;
+        (*itSheep)->MoveDown = false;
+        (*itSheep)->MoveUp = false;
+        (*itSheep)->MoveRight = false;
+        //(*itSheep)->StopMove();
+        //(*itSheep)->GotoCommand = false;
 
-        (*itSheep)->GotoCommand = false;
-
-    }
+    //}
   }
 }
 
@@ -218,13 +282,13 @@ bool CApp::AddNewSheepInPool(int sheepId) {
 
   std::stringstream aStream;
 
-  aStream << "./gfx/sheep"/* << sheepId <<*/ ".png";
+  aStream << "./gfx/sheep"/* << sheepId <<*/ << ".png";
 
   char *fileName = (char*)aStream.str().c_str();
 
   std::cout << "add new sheep with id " << sheepId << " " << fileName <<  std::endl;
 
-  if(newSheep.OnLoad(fileName, 32, 32, 4) == false) {
+  if(newSheep.OnLoad("./gfx/sheep.png", 32, 32, 4) == false) {
     return false;
   }
   newSheep.X = 300;
