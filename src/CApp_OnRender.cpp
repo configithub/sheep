@@ -80,6 +80,19 @@ void CApp::OnRender() {
 
     //std::cout << "framerate " << CFPS::FPSControl.NumFrames << std::endl;
     print_num(Surf_Display, Surf_NumFont, Surf_Display->w-117, 12, CFPS::FPSControl.NumFrames);
+
+    print_num(Surf_Display, Surf_NumFont, 160, 2, Mouse.getX());
+    print_num(Surf_Display, Surf_NumFont, 200, 2, Mouse.getY());
+
+    for(Uint8 i =0; i < _multitouch.getNumberOfTouches(); ++i) {
+      print_num(Surf_Display, Surf_NumFont, 160, 20+18*i, _multitouch.getTouch(i).getX() );
+      print_num(Surf_Display, Surf_NumFont, 200, 20+18*i, _multitouch.getTouch(i).getY() );
+    }
+
+
+    //print_num(Surf_Display, Surf_NumFont, 240, 11, JoyAxis.getY());
+
+
     //print_num(Surf_Display, Surf_NumFont, Surf_Display->w-117, 12, 1);
     //print_num(Surf_Display, Surf_NumFont, 100, 100, 1);
 

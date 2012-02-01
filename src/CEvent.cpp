@@ -34,6 +34,12 @@ void CEvent::OnEvent(SDL_Event* Event) {
             break;
         }
 
+        case SDL_JOYAXISMOTION: {
+            OnJoyAxis(Event->jaxis.which,Event->jaxis.axis,Event->jaxis.value);
+            break;
+        }
+
+
         case SDL_KEYDOWN: {
             OnKeyDown(Event->key.keysym.sym,Event->key.keysym.mod,Event->key.keysym.unicode);
             break;
@@ -67,7 +73,7 @@ void CEvent::OnEvent(SDL_Event* Event) {
             break;
         }
 
-        case SDL_MOUSEBUTTONUP:    {
+        case SDL_MOUSEBUTTONUP: {
             switch(Event->button.button) {
                 case SDL_BUTTON_LEFT: {
                     OnLButtonUp(Event->button.x,Event->button.y);
@@ -85,10 +91,6 @@ void CEvent::OnEvent(SDL_Event* Event) {
             break;
         }
 
-        case SDL_JOYAXISMOTION: {
-            OnJoyAxis(Event->jaxis.which,Event->jaxis.axis,Event->jaxis.value);
-            break;
-        }
 
         case SDL_JOYBALLMOTION: {
             OnJoyBall(Event->jball.which,Event->jball.ball,Event->jball.xrel,Event->jball.yrel);

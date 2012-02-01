@@ -14,11 +14,24 @@ bool CApp::OnInit() {
     {
        std::cout<<  SDL_JoystickName(i) << std::endl;
     }
-    SDL_Joystick *joystick;
+    //SDL_Joystick *joystick;
 
     SDL_JoystickEventState(SDL_ENABLE);
-    joystick = SDL_JoystickOpen(0);
+    //_multitouch = Multitouch(1);
 
+    for(int i = 0; i <= 16; ++i) {
+      SDL_Joystick* newjoystick = SDL_JoystickOpen(i);
+      _sdlJoysticks.push_back(newjoystick);
+    }
+
+    //SDL_Joystick* joystick = SDL_JoystickOpen(1);
+
+
+
+    //JoyAxis.setX( SDL_JoystickNumAxes(joystick) );
+    //JoyAxis.setY( SDL_JoystickNumBalls(joystick) );
+
+    //joystickRef.
 
     // create main surface
     // resolution, bit resolution, HW = hardware memory, double buffering prevent flickering

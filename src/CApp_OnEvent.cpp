@@ -34,17 +34,38 @@ void CApp::OnLButtonUp(int mX, int mY)
 void CApp::OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,bool Middle)
 {
     // std::cout << "mouseXY: " << mX << "," << mY << std::endl;
-    if(Left)
-    {
+    //if(Left)
+    //{
         GoTo(mX,mY);
-    }
-    else
-    {
-        StopGoTo(mX,mY);
-    }
+    //}
+    //else
+    //{
+    //    StopGoTo(mX,mY);
+    //}
+
+    Mouse.setX(mX);
+    Mouse.setY(mY);
 }
 
 void CApp::OnJoyAxis(Uint8 which,Uint8 axis,Sint16 value)
+{
+    std::cout << "which: " << which << std::endl;
+    //std::cout << "axis: " << axis << std::endl;
+    std::cout << "value: " << value << std::endl;
+
+    _multitouch.touchEvent(which,axis,value);
+
+    if(axis==0)
+      JoyAxis.setX(value);
+    if(axis==1)
+      JoyAxis.setY(value);
+
+
+
+    //AddNewSheepInPool(activeSheep);
+}
+
+/*void CApp::OnJoyHat(Uint8 which,Uint8 axis,Sint16 value)
 {
     std::cout << "which: " << which << std::endl;
     //std::cout << "axis: " << axis << std::endl;
@@ -59,9 +80,17 @@ void CApp::OnJoyAxis(Uint8 which,Uint8 axis,Sint16 value)
     {
         std::cout << "axis: " << 1 << std::endl;
     }
+    //JoyAxis.setX((int)value);
+    //JoyAxis.setY((int)axis);
 
-    AddNewSheepInPool(activeSheep);
-}
+
+}*/
+
+/*void CApp::OnJoyBall(Uint8 which, Uint8 ball, Sint16 xrel, Sint16 yrel) {
+    //JoyAxis.setX((int)xrel);
+    //JoyAxis.setY((int)yrel);
+    //AddNewSheepInPool(activeSheep);
+}*/
 
 void CApp::OnJoyButtonDown(Uint8 which,Uint8 button)
 {
@@ -81,7 +110,7 @@ void CApp::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode)
 
     case SDLK_SPACE:
     {
-        AddNewSheepInPool(activeSheep);
+        //AddNewSheepInPool(activeSheep);
         break;
     }
 
@@ -360,7 +389,7 @@ void CApp::OthersStop()
 
 }
 
-bool CApp::AddNewSheepInPool(int sheepId)
+bool CApp::AddNewSheepInPool(int sheepId, double X, double Y)
 {
     sheepId = (sheepId%5);
 
@@ -383,8 +412,8 @@ bool CApp::AddNewSheepInPool(int sheepId)
     {
         return false;
     }
-    newSheep.X = 300;
-    newSheep.Y = 300;
+    newSheep.X = X;
+    newSheep.Y = Y;
     newSheep.id = sheepId;
 
     CEntity::EntityList.push_back(&newSheep);
@@ -413,7 +442,7 @@ void CApp::OnKeyUp(SDLKey sym, SDLMod mod, Uint16 unicode)
 
     case SDLK_SPACE:
     {
-        AddNewSheepInPool(activeSheep);
+        //AddNewSheepInPool(activeSheep);
         break;
     }
 

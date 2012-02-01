@@ -6,14 +6,11 @@
 #include "CEvent.h"
 #include "CAnimation.h"
 #include "CEntity.h"
-
 #include "Define.h"
-
 #include "CArea.h"
 #include "CCamera.h"
-
-
 #include "CFollower.h"
+#include "Vectorial.h"
 
 class CApp : public CEvent {
     private:
@@ -24,6 +21,10 @@ class CApp : public CEvent {
         SDL_Surface*    Surf_Test;
 
         SDL_Surface*    Surf_NumFont;
+
+        Multitouch     _multitouch;
+
+        std::vector<SDL_Joystick*> _sdlJoysticks;
 
         int activeSheep;
 
@@ -37,6 +38,9 @@ class CApp : public CEvent {
         std::vector<CFollower> SheepPool;
         std::vector<CFollower*> Sheeps;
 
+        Point Mouse;
+        Point JoyAxis;
+
     public:
         CApp();
 
@@ -46,7 +50,7 @@ class CApp : public CEvent {
 
         bool OnInit();
 
-        bool AddNewSheepInPool(int sheepId);
+        bool AddNewSheepInPool(int sheepIdbool, double X=300, double Y=300);
 
         void OnEvent(SDL_Event* Event);
 
@@ -69,6 +73,10 @@ class CApp : public CEvent {
 	    void OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,bool Middle);
 
 	    void OnJoyAxis(Uint8 which,Uint8 axis,Sint16 value);
+
+	    //void OnJoyHat(Uint8 which,Uint8 axis,Sint16 value);
+
+	    //void OnJoyBall(Uint8 which, Uint8 ball, Sint16 xrel, Sint16 yrel);
 
 	    void OnJoyButtonDown(Uint8 which,Uint8 button);
 
