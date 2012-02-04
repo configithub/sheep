@@ -3,6 +3,7 @@
 #include <math.h>
 #include <algorithm>
 
+
 /*bool CApp::CheckEveryEntityCollision() {
   bool anyCollision = false;
 
@@ -41,6 +42,7 @@ void CApp::OnLoop() {
 
     // switch time on and monitor framerate
     CFPS::FPSControl.OnLoop();
+    MultitouchEvent::Controller.OnLoop(CFPS::FPSControl.getFrameDuration());
 
     // time between two loops
     float dt = CFPS::FPSControl.GetSpeedFactor();
@@ -71,7 +73,7 @@ void CApp::OnLoop() {
         (*itEntity)->OnSpeculateMove((*itEntity)->SpeedX, (*itEntity)->SpeedY, dt);
     }
 
-    Solve(5, dt);
+    Solve(10, dt);
 
 
     // fill collision container by checking every speculative collisions

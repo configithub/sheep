@@ -34,7 +34,8 @@ void CFPS::OnLoop() {
     // in order to have consistent speed across various system perfs
     // based on the duration of one frame (getTickets - lastTime)
     // and an input desired movement rate (32 here)
-    SpeedFactor = ((SDL_GetTicks() - LastTime) / 1000.0f) * 32.0f;
+    _frameDuration = SDL_GetTicks() - LastTime;
+    SpeedFactor = (_frameDuration / 1000.0f) * 32.0f;
     // speedfactor is invertly proportional to framerate
     // low for fast systems: we move a little number of pixels / frame
     // high for fast systems: we move a big number of pixels / frame
@@ -44,6 +45,10 @@ void CFPS::OnLoop() {
     LastTime = SDL_GetTicks();
 
     Frames++;
+}
+
+int CFPS::getFrameDuration() {
+  return _frameDuration;
 }
 
 int CFPS::GetFPS() {

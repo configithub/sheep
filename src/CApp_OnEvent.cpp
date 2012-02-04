@@ -2,6 +2,7 @@
 #include <iostream>
 #include <sstream>
 
+
 void CApp::OnEvent(SDL_Event* Event)
 {
     // handles the event to quit the application
@@ -11,6 +12,8 @@ void CApp::OnEvent(SDL_Event* Event)
 
     // handle all events through inheritance of the CEvent class
     CEvent::OnEvent(Event);
+
+    OnMultitouchEvent();
 }
 
 // handles app exit
@@ -47,13 +50,21 @@ void CApp::OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,
     Mouse.setY(mY);
 }
 
+void CApp::OnMultitouchEvent() {
+  if(MultitouchEvent::Controller.getNumberOfActivePoints() == 3) {
+    AddNewSheepInPool(activeSheep);
+  }
+}
+
 void CApp::OnJoyAxis(Uint8 which,Uint8 axis,Sint16 value)
 {
     std::cout << "which: " << which << std::endl;
     //std::cout << "axis: " << axis << std::endl;
     std::cout << "value: " << value << std::endl;
 
-    _multitouch.touchEvent(which,axis,value);
+    //_multitouch.touchEvent(which,axis,value);
+    MultitouchEvent::Controller.touch(which,axis,value);
+
 
     if(axis==0)
       JoyAxis.setX(value);
@@ -95,6 +106,7 @@ void CApp::OnJoyAxis(Uint8 which,Uint8 axis,Sint16 value)
 void CApp::OnJoyButtonDown(Uint8 which,Uint8 button)
 {
     std::cout << "joybutton down" << std::endl;
+    MultitouchEvent::Controller.activePoint(which);
 }
 
 void CApp::OnJoyButtonUp(Uint8 which,Uint8 button)

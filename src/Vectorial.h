@@ -27,37 +27,7 @@ class Point {
 
 };
 
-class Multitouch {
-  private:
-  int _numberOfTouches;
-  std::vector<Point> _points;
 
-
-
-  public:
-
-  Multitouch(int numberOfTouches=16) {
-      std::cout << "init multitouch " << numberOfTouches << std::endl;
-    _numberOfTouches = numberOfTouches;
-    for(int i = 0; i <= _numberOfTouches; ++i) {
-      _points.push_back(Point());
-    }
-  }
-
-  void touchEvent(Uint8& which, Uint8& axis, Sint16& value) {
-    if(axis==0)
-      _points[which].setX(value);
-    if(axis==1)
-      _points[which].setY(value);
-  }
-
-  Point& getTouch(Uint8& which) {
-    return _points[which];
-  }
-
-  int getNumberOfTouches() { return _numberOfTouches; }
-
-};
 
 class Rectangle {
 

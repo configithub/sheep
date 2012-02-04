@@ -11,6 +11,8 @@
 #include "CCamera.h"
 #include "CFollower.h"
 #include "Vectorial.h"
+#include "MultitouchEvent.h"
+#include "CFPS.h"
 
 class CApp : public CEvent {
     private:
@@ -22,7 +24,7 @@ class CApp : public CEvent {
 
         SDL_Surface*    Surf_NumFont;
 
-        Multitouch     _multitouch;
+        //Multitouch     _multitouch;
 
         std::vector<SDL_Joystick*> _sdlJoysticks;
 
@@ -73,6 +75,8 @@ class CApp : public CEvent {
 	    void OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,bool Middle);
 
 	    void OnJoyAxis(Uint8 which,Uint8 axis,Sint16 value);
+
+	    void OnMultitouchEvent();
 
 	    //void OnJoyHat(Uint8 which,Uint8 axis,Sint16 value);
 

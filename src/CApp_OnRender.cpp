@@ -2,6 +2,7 @@
 #include <iostream>
 //#include <SDL_rotozoom.h>
 
+
 void print_num(SDL_Surface *dst, SDL_Surface *font, int x, int y, float value)
 {
 	char buf[16];
@@ -84,9 +85,16 @@ void CApp::OnRender() {
     print_num(Surf_Display, Surf_NumFont, 160, 2, Mouse.getX());
     print_num(Surf_Display, Surf_NumFont, 200, 2, Mouse.getY());
 
-    for(Uint8 i =0; i < _multitouch.getNumberOfTouches(); ++i) {
-      print_num(Surf_Display, Surf_NumFont, 160, 20+18*i, _multitouch.getTouch(i).getX() );
-      print_num(Surf_Display, Surf_NumFont, 200, 20+18*i, _multitouch.getTouch(i).getY() );
+    for(Uint8 i =0; i < MultitouchEvent::Controller.getNumberOfTouches(); ++i) {
+
+      if(MultitouchEvent::Controller.isActivePoint(i)) {
+        print_num(Surf_Display, Surf_NumFont, 160, 20+18*i, MultitouchEvent::Controller.getTouch(i).getX() );
+        print_num(Surf_Display, Surf_NumFont, 200, 20+18*i, MultitouchEvent::Controller.getTouch(i).getY() );
+      }else{
+        print_num(Surf_Display, Surf_NumFont, 160, 20+18*i, 0 );
+        print_num(Surf_Display, Surf_NumFont, 200, 20+18*i, 0 );
+      }
+
     }
 
 

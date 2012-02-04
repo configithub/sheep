@@ -8,7 +8,7 @@
 #include "CArea.h"
 #include "CAnimation.h"
 #include "CCamera.h"
-#include "CFPS.h"
+
 #include "CSurface.h"
 
 enum {
