@@ -34,8 +34,8 @@ class CEntity {
     public:
         static std::vector<CEntity*>    EntityList;
         static int CurrentEntityId;
-        static float           gotoX;
-        static float           gotoY;
+        float           gotoX;
+        float           gotoY;
 
         CEntity();
 

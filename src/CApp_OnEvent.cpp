@@ -26,12 +26,14 @@ void CApp::OnExit()
 
 void CApp::OnLButtonDown(int mX, int mY)
 {
-    GoTo(mX,mY);
+    //GoTo(mX,mY);
+    //GoTo(mX,mY,2,1);
 }
 
 void CApp::OnLButtonUp(int mX, int mY)
 {
-    StopGoTo(mX, mY);
+    //StopGoTo(mX, mY);
+    //GoTo(mX,mY,2,0);
 }
 
 void CApp::OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,bool Middle)
@@ -39,7 +41,12 @@ void CApp::OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,
     // std::cout << "mouseXY: " << mX << "," << mY << std::endl;
     //if(Left)
     //{
+    if(MultitouchEvent::Controller.getNumberOfActivePoints() < 2) {
         GoTo(mX,mY);
+    }
+
+
+
     //}
     //else
     //{
@@ -51,9 +58,17 @@ void CApp::OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,
 }
 
 void CApp::OnMultitouchEvent() {
-  if(MultitouchEvent::Controller.getNumberOfActivePoints() == 3) {
-    AddNewSheepInPool(activeSheep);
-  }
+
+   if(MultitouchEvent::Controller.getNumberOfActivePoints() == 2) {
+
+
+      GoTo(MultitouchEvent::Controller.getTouch(1).getX(), MultitouchEvent::Controller.getTouch(1).getY(), 2, 0);
+      GoTo(MultitouchEvent::Controller.getTouch(2).getX(), MultitouchEvent::Controller.getTouch(2).getY(), 2, 1);
+    }
+
+  //if(MultitouchEvent::Controller.getNumberOfActivePoints() == 3) {
+  //  AddNewSheepInPool(activeSheep);
+  //}
 }
 
 void CApp::OnJoyAxis(Uint8 which,Uint8 axis,Sint16 value)
@@ -256,6 +271,22 @@ void CApp::GoTo(int x, int y)
     {
         if((*itSheep)->id == activeSheep)
         {
+            //std::cout << (*itSheep)->entityId % 2 << std::endl;
+            (*itSheep)->GotoCommand = true;
+            (*itSheep)->gotoX = x ;
+            (*itSheep)->gotoY = y ;
+        }
+    }
+}
+
+void CApp::GoTo(int x, int y, int subgroupNb, int subGroup)
+{
+
+    for(std::vector<CFollower*>::iterator itSheep = Sheeps.begin();
+            itSheep != Sheeps.end(); ++itSheep)
+    {
+        if( (*itSheep)->id == activeSheep && (*itSheep)->entityId % subgroupNb == subGroup)
+        {
             (*itSheep)->GotoCommand = true;
             (*itSheep)->gotoX = x ;
             (*itSheep)->gotoY = y ;
@@ -454,7 +485,7 @@ void CApp::OnKeyUp(SDLKey sym, SDLMod mod, Uint16 unicode)
 
     case SDLK_SPACE:
     {
-        //AddNewSheepInPool(activeSheep);
+        AddNewSheepInPool(activeSheep);
         break;
     }
 

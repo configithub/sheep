@@ -6,8 +6,7 @@
 
 std::vector<CEntity*>     CEntity::EntityList;
 int CEntity::CurrentEntityId = 0;
-float CEntity::gotoX;
-float CEntity::gotoY;
+
 
 
 CEntity::CEntity()
@@ -379,8 +378,11 @@ void CEntity::OnLoopDeriveAndCapSpeed(float& dt)
   // set speed according to acceleration
   // FPS control is included to be consistent across various system perfs
   // => acceleration is constant in terms of pixel * second^-2 for diff. perfs
-  SpeedX += (AccelX - 0.1*SpeedX) * dt;
-  SpeedY += (AccelY - 0.1*SpeedY) * dt;
+  SpeedX += AccelX  * dt;
+  SpeedY += AccelY  * dt;
+
+  //SpeedX += (AccelX - 0.1*SpeedX) * dt;
+  //SpeedY += (AccelY - 0.1*SpeedY) * dt;
 
   // cap the speed
   if(SpeedX > MaxSpeedX)  SpeedX =  MaxSpeedX;

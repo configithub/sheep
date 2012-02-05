@@ -35,6 +35,10 @@ class Multitouch {
     return _points[which];
   }
 
+  Point& getTouch(int which) {
+    return _points[which];
+  }
+
   int getNumberOfTouches() { return _numberOfTouches; }
 
 };
