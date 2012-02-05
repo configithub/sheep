@@ -26,6 +26,7 @@ void CApp::OnExit()
 
 void CApp::OnLButtonDown(int mX, int mY)
 {
+
     //GoTo(mX,mY);
     //GoTo(mX,mY,2,1);
 }
@@ -36,12 +37,55 @@ void CApp::OnLButtonUp(int mX, int mY)
     //GoTo(mX,mY,2,0);
 }
 
+void CApp::SelectHerdAtCoord(int x, int y) {
+
+  //DeselectAllSheeps();
+
+  CFollower* NearestEntityFromMouse = NULL;
+
+  int distance = 0;
+
+  GetNearestEntityFromMouse(x, y, NearestEntityFromMouse, distance);
+
+  if (distance < 100 && NearestEntityFromMouse != NULL) {
+    activeSheep = NearestEntityFromMouse->id;
+  }
+
+}
+
+void CApp::DeselectAllSheeps() {
+  for(std::vector<CFollower*>::iterator itSheep = Sheeps.begin();
+            itSheep != Sheeps.end(); ++itSheep) {
+      (*itSheep)->id = 0;
+  }
+}
+
+
+void CApp::GetNearestEntityFromMouse(int x, int y, CFollower*& NearestEntityFromMouse, int& delta) {
+  delta = 999999999;
+  NearestEntityFromMouse = NULL;
+  for(std::vector<CFollower*>::iterator itSheep = Sheeps.begin();
+            itSheep != Sheeps.end(); ++itSheep) {
+
+    if(abs(x-(*itSheep)->X)+abs(y-(*itSheep)->Y) < delta) {
+      delta =  abs(x-(*itSheep)->X)+abs(y-(*itSheep)->Y);
+      NearestEntityFromMouse = *itSheep;
+    }
+
+  }
+
+}
+
 void CApp::OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,bool Middle)
 {
     // std::cout << "mouseXY: " << mX << "," << mY << std::endl;
     //if(Left)
     //{
+
+
+
     if(MultitouchEvent::Controller.getNumberOfActivePoints() < 2) {
+       SelectHerdAtCoord(mX, mY);
         GoTo(mX,mY);
     }
 
@@ -60,10 +104,16 @@ void CApp::OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,
 void CApp::OnMultitouchEvent() {
 
    if(MultitouchEvent::Controller.getNumberOfActivePoints() == 2) {
-
-
       GoTo(MultitouchEvent::Controller.getTouch(1).getX(), MultitouchEvent::Controller.getTouch(1).getY(), 2, 0);
       GoTo(MultitouchEvent::Controller.getTouch(2).getX(), MultitouchEvent::Controller.getTouch(2).getY(), 2, 1);
+    }
+    /*if(MultitouchEvent::Controller.getNumberOfActivePoints() == 3) {
+      GoTo(MultitouchEvent::Controller.getTouch(1).getX(), MultitouchEvent::Controller.getTouch(1).getY(), 3, 0);
+      GoTo(MultitouchEvent::Controller.getTouch(2).getX(), MultitouchEvent::Controller.getTouch(2).getY(), 3, 1);
+      GoTo(MultitouchEvent::Controller.getTouch(3).getX(), MultitouchEvent::Controller.getTouch(3).getY(), 3, 2);
+    }*/
+    if(MultitouchEvent::Controller.getNumberOfActivePoints() == 4) {
+      //AddNewSheepInPool(activeSheep);
     }
 
   //if(MultitouchEvent::Controller.getNumberOfActivePoints() == 3) {
@@ -183,6 +233,12 @@ void CApp::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode)
         break;
     }
 
+    case SDLK_e:
+    {
+        AddNewSheepInPool(activeSheep);
+        break;
+    }
+
 
 
 
@@ -193,75 +249,7 @@ void CApp::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode)
     }
 }
 
-void CApp::GoToIsometric(int x, int y)
-{
 
-    double delta = 999999999;
-
-    CEntity* NearestEntityFromMouse = NULL;
-    for(std::vector<CFollower*>::iterator itSheep = Sheeps.begin();
-            itSheep != Sheeps.end(); ++itSheep)
-    {
-        if((*itSheep)->id == activeSheep)
-        {
-            if(abs(x-(*itSheep)->X)+abs(y-(*itSheep)->Y) < delta)
-            {
-                delta =  abs(x-(*itSheep)->X)+abs(y-(*itSheep)->Y);
-                NearestEntityFromMouse = *itSheep;
-            }
-        }
-    }
-
-
-    for(std::vector<CFollower*>::iterator itSheep = Sheeps.begin();
-            itSheep != Sheeps.end(); ++itSheep)
-    {
-        if((*itSheep)->id == activeSheep)
-        {
-            (*itSheep)->GotoCommand = true;
-            (*itSheep)->gotoX = x + (*itSheep)->X - NearestEntityFromMouse->X;
-            (*itSheep)->gotoY = y + (*itSheep)->Y - NearestEntityFromMouse->Y;
-        }
-    }
-}
-
-void CApp::GoToHybrid(int x, int y)
-{
-
-    double delta = 999999999;
-
-    CEntity* NearestEntityFromMouse = NULL;
-    for(std::vector<CFollower*>::iterator itSheep = Sheeps.begin();
-            itSheep != Sheeps.end(); ++itSheep)
-    {
-        if((*itSheep)->id == activeSheep)
-        {
-            if(abs(x-(*itSheep)->X)+abs(y-(*itSheep)->Y) < delta)
-            {
-                delta =  abs(x-(*itSheep)->X)+abs(y-(*itSheep)->Y);
-                NearestEntityFromMouse = *itSheep;
-            }
-        }
-    }
-
-    if(delta < 50)
-    {
-        StopGoTo(x,y);
-    }
-    else
-    {
-        for(std::vector<CFollower*>::iterator itSheep = Sheeps.begin();
-                itSheep != Sheeps.end(); ++itSheep)
-        {
-            if((*itSheep)->id == activeSheep)
-            {
-                (*itSheep)->GotoCommand = true;
-                (*itSheep)->gotoX = x ;
-                (*itSheep)->gotoY = y ;
-            }
-        }
-    }
-}
 
 void CApp::GoTo(int x, int y)
 {
@@ -285,8 +273,15 @@ void CApp::GoTo(int x, int y, int subgroupNb, int subGroup)
     for(std::vector<CFollower*>::iterator itSheep = Sheeps.begin();
             itSheep != Sheeps.end(); ++itSheep)
     {
-        if( (*itSheep)->id == activeSheep && (*itSheep)->entityId % subgroupNb == subGroup)
+        if((*itSheep)->id == activeSheep && (*itSheep)->entityId % subgroupNb == subGroup)
         {
+            if(subGroup == 0) {
+              (*itSheep)->entityId = (*itSheep)->entityId/2;
+            }
+            if(subGroup == 1) {
+              (*itSheep)->id += subGroup;
+              (*itSheep)->entityId = (*itSheep)->entityId/2;
+            }
             (*itSheep)->GotoCommand = true;
             (*itSheep)->gotoX = x ;
             (*itSheep)->gotoY = y ;
@@ -334,6 +329,84 @@ void CApp::PushArrowUp()
             //std::cout << "jump with id " << activeSheep <<  std::endl;
             (*itSheep)->Jump();
         }
+    }
+}
+
+
+
+bool CApp::AddNewSheepInPool(int sheepId, double X, double Y)
+{
+    sheepId = (sheepId%5);
+
+
+
+    CFollower newFollower;
+    SheepPool.push_back(newFollower);
+    CFollower& newSheep = SheepPool.back();
+    Sheeps.push_back(&newSheep);
+
+    std::stringstream aStream;
+
+    aStream << "./gfx/sheep"/* << sheepId <<*/ << ".png";
+
+    char *fileName = (char*)aStream.str().c_str();
+
+    std::cout << "add new sheep with id " << sheepId << " " << fileName <<  std::endl;
+
+    if(newSheep.OnLoad("./gfx/sheep.png", 32, 32, 4) == false)
+    {
+        return false;
+    }
+    newSheep.X = X;
+    newSheep.Y = Y;
+    newSheep.id = sheepId;
+
+    CEntity::EntityList.push_back(&newSheep);
+
+    return true;
+
+}
+
+
+
+void CApp::OnKeyUp(SDLKey sym, SDLMod mod, Uint16 unicode)
+{
+    switch(sym)
+    {
+    case SDLK_LEFT:
+    {
+        PushArrowLeftRight(false, false);
+        break;
+    }
+
+    case SDLK_RIGHT:
+    {
+        PushArrowLeftRight(true, false);
+        break;
+    }
+
+    case SDLK_e:
+    {
+
+        break;
+    }
+
+    /*case SDLK_SPACE: {
+        if(others_follow) {
+          others_follow = false;
+          OthersStopFollow();
+        } else {
+          others_follow = true;
+          OthersFollow(activeSheep);
+
+        }
+        break;
+      }*/
+
+
+    default:
+    {
+    }
     }
 }
 
@@ -432,79 +505,73 @@ void CApp::OthersStop()
 
 }
 
-bool CApp::AddNewSheepInPool(int sheepId, double X, double Y)
+void CApp::GoToIsometric(int x, int y)
 {
-    sheepId = (sheepId%5);
 
+    double delta = 999999999;
 
-
-    CFollower newFollower;
-    SheepPool.push_back(newFollower);
-    CFollower& newSheep = SheepPool.back();
-    Sheeps.push_back(&newSheep);
-
-    std::stringstream aStream;
-
-    aStream << "./gfx/sheep"/* << sheepId <<*/ << ".png";
-
-    char *fileName = (char*)aStream.str().c_str();
-
-    std::cout << "add new sheep with id " << sheepId << " " << fileName <<  std::endl;
-
-    if(newSheep.OnLoad("./gfx/sheep.png", 32, 32, 4) == false)
+    CEntity* NearestEntityFromMouse = NULL;
+    for(std::vector<CFollower*>::iterator itSheep = Sheeps.begin();
+            itSheep != Sheeps.end(); ++itSheep)
     {
-        return false;
+        if((*itSheep)->id == activeSheep)
+        {
+            if(abs(x-(*itSheep)->X)+abs(y-(*itSheep)->Y) < delta)
+            {
+                delta =  abs(x-(*itSheep)->X)+abs(y-(*itSheep)->Y);
+                NearestEntityFromMouse = *itSheep;
+            }
+        }
     }
-    newSheep.X = X;
-    newSheep.Y = Y;
-    newSheep.id = sheepId;
 
-    CEntity::EntityList.push_back(&newSheep);
 
-    return true;
-
+    for(std::vector<CFollower*>::iterator itSheep = Sheeps.begin();
+            itSheep != Sheeps.end(); ++itSheep)
+    {
+        if((*itSheep)->id == activeSheep)
+        {
+            (*itSheep)->GotoCommand = true;
+            (*itSheep)->gotoX = x + (*itSheep)->X - NearestEntityFromMouse->X;
+            (*itSheep)->gotoY = y + (*itSheep)->Y - NearestEntityFromMouse->Y;
+        }
+    }
 }
 
-
-
-void CApp::OnKeyUp(SDLKey sym, SDLMod mod, Uint16 unicode)
+void CApp::GoToHybrid(int x, int y)
 {
-    switch(sym)
-    {
-    case SDLK_LEFT:
-    {
-        PushArrowLeftRight(false, false);
-        break;
-    }
 
-    case SDLK_RIGHT:
+    double delta = 999999999;
+
+    CEntity* NearestEntityFromMouse = NULL;
+    for(std::vector<CFollower*>::iterator itSheep = Sheeps.begin();
+            itSheep != Sheeps.end(); ++itSheep)
     {
-        PushArrowLeftRight(true, false);
-        break;
-    }
-
-    case SDLK_SPACE:
-    {
-        AddNewSheepInPool(activeSheep);
-        break;
-    }
-
-    /*case SDLK_SPACE: {
-        if(others_follow) {
-          others_follow = false;
-          OthersStopFollow();
-        } else {
-          others_follow = true;
-          OthersFollow(activeSheep);
-
+        if((*itSheep)->id == activeSheep)
+        {
+            if(abs(x-(*itSheep)->X)+abs(y-(*itSheep)->Y) < delta)
+            {
+                delta =  abs(x-(*itSheep)->X)+abs(y-(*itSheep)->Y);
+                NearestEntityFromMouse = *itSheep;
+            }
         }
-        break;
-      }*/
-
-
-    default:
-    {
     }
+
+    if(delta < 50)
+    {
+        StopGoTo(x,y);
+    }
+    else
+    {
+        for(std::vector<CFollower*>::iterator itSheep = Sheeps.begin();
+                itSheep != Sheeps.end(); ++itSheep)
+        {
+            if((*itSheep)->id == activeSheep)
+            {
+                (*itSheep)->GotoCommand = true;
+                (*itSheep)->gotoX = x ;
+                (*itSheep)->gotoY = y ;
+            }
+        }
     }
 }
 

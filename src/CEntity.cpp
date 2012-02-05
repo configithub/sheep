@@ -281,47 +281,47 @@ void CEntity::OnLoopApplyControls()
  if(GotoCommand)
   {
 
-    if (gotoX < ( X -50) )  {
+    if (gotoX < ( X -20) )  {
       //std::cout << "goto left" << std::endl;
       MoveLeft = true;
       MoveRight = false;
 
     }
-    if(gotoX > X + 50) {
+    if(gotoX > X + 20) {
       // std::cout << "goto right" << std::endl;
       MoveRight = true;
       MoveLeft = false;
 
     }
 
-    if ( X < gotoX+50 && X > gotoX-50 ) {
+    if ( X < gotoX+20 && X > gotoX-20 ) {
       //std::cout << "stop" << std::endl;
       MoveLeft = false;
       MoveRight = false;
 
     }
 
-     if (gotoY < ( Y -50) )  {
+     if (gotoY < ( Y -20) )  {
       //std::cout << "goto left" << std::endl;
       MoveUp = true;
       MoveDown = false;
 
     }
-    if(gotoY > Y + 50) {
+    if(gotoY > Y + 20) {
       // std::cout << "goto right" << std::endl;
       MoveDown = true;
       MoveUp = false;
 
     }
 
-    if ( Y < gotoY+50 && Y > gotoY-50 ) {
+    if ( Y < gotoY+20 && Y > gotoY-20 ) {
       //std::cout << "stop" << std::endl;
       MoveDown = false;
       MoveUp = false;
 
     }
 
-    if ( X < gotoX+50 && X > gotoX-50 && Y < gotoY+50 && Y > gotoY-50 ) {
+    if ( X < gotoX+20 && X > gotoX-20 && Y < gotoY+20 && Y > gotoY-20 ) {
       //StopMove();
       GotoCommand = false;
       gotoX = X;
@@ -378,11 +378,11 @@ void CEntity::OnLoopDeriveAndCapSpeed(float& dt)
   // set speed according to acceleration
   // FPS control is included to be consistent across various system perfs
   // => acceleration is constant in terms of pixel * second^-2 for diff. perfs
-  SpeedX += AccelX  * dt;
-  SpeedY += AccelY  * dt;
+  //SpeedX += AccelX  * dt;
+  //SpeedY += AccelY  * dt;
 
-  //SpeedX += (AccelX - 0.1*SpeedX) * dt;
-  //SpeedY += (AccelY - 0.1*SpeedY) * dt;
+  SpeedX += (AccelX - 0.1*SpeedX) * dt;
+  SpeedY += (AccelY - 0.1*SpeedY) * dt;
 
   // cap the speed
   if(SpeedX > MaxSpeedX)  SpeedX =  MaxSpeedX;

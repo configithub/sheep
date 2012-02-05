@@ -58,6 +58,8 @@ class CApp : public CEvent {
 
         void SwitchActiveSheep(int newActiveSheep);
 
+        void DeselectAllSheeps();
+
         void PushArrowUp();
 
         void PushArrowLeftRight(bool right, bool down);
@@ -87,6 +89,9 @@ class CApp : public CEvent {
 
         void OnJoyButtonUp(Uint8 which,Uint8 button);
 
+        void SelectHerdAtCoord(int x, int y);
+
+        void GetNearestEntityFromMouse(int x, int y, CFollower*& NearestEntityFromMouse, int& delta);
 
         void GoTo(int x, int y);
 

@@ -73,7 +73,7 @@ void CApp::OnLoop() {
         (*itEntity)->OnSpeculateMove((*itEntity)->SpeedX, (*itEntity)->SpeedY, dt);
     }
 
-    Solve(10, dt);
+    Solve(3, dt);
 
 
     // fill collision container by checking every speculative collisions
