@@ -62,15 +62,17 @@ void CApp::OnLoop() {
         (*itEntity)->OnLoopMotionBounds(dt);
     }
 
-    // fill collision container by checking every speculative collisions
-    for(std::vector<CEntity*>::iterator itEntity = CEntity::EntityList.begin(); itEntity != CEntity::EntityList.end(); ++itEntity) {
-        if((*itEntity) == NULL) continue;
-        (*itEntity)->PosValidOnEntities((int)((*itEntity)->NextX), (int)((*itEntity)->NextY));
-    }
+
 
     for(std::vector<CEntity*>::iterator itEntity = CEntity::EntityList.begin(); itEntity != CEntity::EntityList.end(); ++itEntity) {
         if((*itEntity) == NULL) continue;
         (*itEntity)->OnSpeculateMove((*itEntity)->SpeedX, (*itEntity)->SpeedY, dt);
+    }
+
+    // fill collision container by checking every speculative collisions
+    for(std::vector<CEntity*>::iterator itEntity = CEntity::EntityList.begin(); itEntity != CEntity::EntityList.end(); ++itEntity) {
+        if((*itEntity) == NULL) continue;
+        (*itEntity)->PosValidOnEntities((int)((*itEntity)->NextX), (int)((*itEntity)->NextY));
     }
 
     Solve(3, dt);

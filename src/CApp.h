@@ -86,6 +86,7 @@ class CApp : public CEvent {
 
 	    void OnJoyButtonDown(Uint8 which,Uint8 button);
 
+        void getActiveGroup(std::vector<CFollower*>& ioGroup);
 
         void OnJoyButtonUp(Uint8 which,Uint8 button);
 
@@ -95,11 +96,7 @@ class CApp : public CEvent {
 
         void GoTo(int x, int y);
 
-        void GoTo(int x, int y, int subgroupNb, int subGroup);
-
-        void GoToIsometric(int x, int y);
-
-        void GoToHybrid(int x, int y);
+        void GoTo(std::vector<Point>& controls);
 
         void StopGoTo(int x, int y);
 

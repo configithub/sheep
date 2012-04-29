@@ -137,8 +137,6 @@ class CEntity {
 
         int entityId;
 
-        virtual bool     Follow(CEntity* Entity);
-
         float           X;
         float           Y;
 

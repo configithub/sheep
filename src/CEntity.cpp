@@ -65,9 +65,6 @@ CEntity::CEntity()
   Col_Height = 2;
 
 
-  // entity able to jump?
-  CanJump = false;
-
   CanFollow = false;
 
   NearestEntity = this;
@@ -119,47 +116,6 @@ bool CEntity::Jump()
 void CEntity::OnLoop()
 {
 
-  /*
-
-  //We're not Moving
-  if(MoveLeft == false && MoveRight == false) {
-    StopMove(); // set acceleration to the opposite value
-    // to gradually stop motion
-  }
-
-  if(MoveLeft ) {
-    AccelX = -0.5; // gradually increse speed to the left
-  } else
-
-    if(MoveRight) {
-      AccelX = 0.5; // gradually increse speed to the right
-    }
-
-  if(Flags & ENTITY_FLAG_GRAVITY) {
-    AccelY = 0.75f; // g factor
-  }
-
-  // set speed according to acceleration
-  // FPS control is included to be consistent across various system perfs
-  // => acceleration is constant in terms of pixel * second^-2 for diff. perfs
-  SpeedX += AccelX * CFPS::FPSControl.GetSpeedFactor();
-  SpeedY += AccelY * CFPS::FPSControl.GetSpeedFactor();
-
-  // cap the speed
-  if(SpeedX > MaxSpeedX)  SpeedX =  MaxSpeedX;
-  if(SpeedX < -MaxSpeedX) SpeedX = -MaxSpeedX;
-  if(SpeedY > MaxSpeedY)  SpeedY =  MaxSpeedY;
-  if(SpeedY < -MaxSpeedY) SpeedY = -MaxSpeedY;
-
-
-
-  OnAnimate(); // update entity animation
-
-  // implement speculative contacts
-
-  */
-
-
 }
 
 // main process for entities, cast inside the main game loop
@@ -174,107 +130,9 @@ void CEntity::OnLoopApplyGravity()
 }
 
 
-// orbital goto
-/*if(GotoCommand)
-  {
-
-    if (gotoX < ( X -50) )  {
-      //std::cout << "goto left" << std::endl;
-      MoveLeft = true;
-      MoveRight = false;
-
-    }
-    if(gotoX > X + 50) {
-      // std::cout << "goto right" << std::endl;
-      MoveRight = true;
-      MoveLeft = false;
-
-    }
-
-    if ( X < gotoX+50 && X > gotoX-50 ) {
-      //std::cout << "stop" << std::endl;
-      MoveLeft = false;
-      MoveRight = false;
-
-    }
-
-     if (gotoY < ( Y -50) )  {
-      //std::cout << "goto left" << std::endl;
-      MoveUp = true;
-      MoveDown = false;
-
-    }
-    if(gotoY > Y + 50) {
-      // std::cout << "goto right" << std::endl;
-      MoveDown = true;
-      MoveUp = false;
-
-    }
-
-    if ( Y < gotoY+50 && Y > gotoY-50 ) {
-      //std::cout << "stop" << std::endl;
-      MoveDown = false;
-      MoveUp = false;
-
-    }
 
 
-  }*/
-
-
-/* if(GotoCommand)
-  {
-    int num = 95;
-    int den = 100;
-    double saveGotoX = gotoX;
-    double saveGotoY = gotoY;
-     gotoX = (den-num)*(NearestEntity->X)/den+num*(gotoX)/den;
-     gotoY = (den-num)*(NearestEntity->Y)/den+num*(gotoY)/den;
-
-    //gotoX = NearestEntity->X;
-    //gotoY = NearestEntity->Y;
-
-    if ( Y < saveGotoY+50 && Y > saveGotoY-50 &&  X < saveGotoX+50 && X > saveGotoX-50) {
-      //std::cout << "stop" << std::endl;
-      StopMove();
-      if ( X < saveGotoX+50 && X > saveGotoX-50 ) {
-        //std::cout << "stop" << std::endl;
-        MoveLeft = false;
-        MoveRight = false;
-
-      }
-
-    }else{
-      double normalizationFactor = 0.5 / (abs(gotoX-X)+abs(gotoY-Y));
-      AccelX = normalizationFactor*(gotoX-X);
-      AccelY = normalizationFactor*(gotoY-Y);
-
-      if (gotoX < ( X -50) )  {
-      //std::cout << "goto left" << std::endl;
-      MoveLeft = true;
-      MoveRight = false;
-
-      }
-      if(gotoX > X + 50) {
-        // std::cout << "goto right" << std::endl;
-        MoveRight = true;
-        MoveLeft = false;
-
-      }
-
-      if ( X < gotoX+50 && X > gotoX-50 ) {
-        //std::cout << "stop" << std::endl;
-        MoveLeft = false;
-        MoveRight = false;
-
-      }
-    }
-
-    gotoX = saveGotoX;
-    gotoY = saveGotoY;*/
-
-
-// main process for entities, cast inside the main game loop
+// 1. factor in controls applied by the player
 void CEntity::OnLoopApplyControls()
 {
 
@@ -330,18 +188,12 @@ void CEntity::OnLoopApplyControls()
 
     }
 
-
-  // else
-  //{
-
-
-
   }
-  //}
 
 }
 
-// main process for entities, cast inside the main game loop
+
+// 2. calculate natural accelerations and speeds
 void CEntity::OnLoopDeriveAndCapSpeed(float& dt)
 {
 
@@ -396,26 +248,43 @@ void CEntity::OnLoopDeriveAndCapSpeed(float& dt)
 
 }
 
+// 3. initiate nextX and nextY
 void CEntity::OnLoopMotionBounds(float& dt)
 {
 
   if(SpeedX == 0 && SpeedY == 0) return;
 
-  //NextX = X+SpeedX*dt;
-  //NextY = Y+SpeedY*dt;
-
   NextX = X;
   NextY = Y;
 
+}
 
+// 4. detect all collisions
+bool CEntity::PosValidOnEntities(int NewX, int NewY)
+{
+  bool result = true;
+  if(Flags & ENTITY_FLAG_MAPONLY)
+  {
+  }
+  else
+  {
 
+    double distance = 99999999999;
+
+    for(int i = 0; i < EntityList.size(); i++)
+    {
+
+      if(PosValidEntity(EntityList[i], NewX, NewY) == false)   // check collision with another entity
+      {
+        result = false;
+      }
+    }
+  }
+  return result;
 }
 
 void CEntity::OnLoopRealizeMotion(float& dt)
 {
-
-
-  //OnSpeculateMove(SpeedX, SpeedY, dt);
 
   X = NextX;
   Y = NextY;
@@ -649,62 +518,12 @@ void CEntity::StopMove(CEntity* Support)
 
 }
 
-// follow another entity
-bool CEntity::Follow(CEntity* Entity)
-{
-  return true;
-}
-
 bool CEntity::Stop()
 {
   MoveLeft = false;
   MoveRight = false;
 }
 
-
-
-// true if the current entity collides with something else
-bool CEntity::Collides(int oX, int oY, int oW, int oH, CEntityCol& ioEntityCol)
-{
-  int left1, left2;
-  int right1, right2;
-  int top1, top2;
-  int bottom1, bottom2;
-
-  int tX = (int)X + Col_X;
-  int tY = (int)Y + Col_Y;
-
-  left1 = tX;
-  left2 = oX;
-
-  right1 = left1 + Width - 1 - Col_Width;
-  right2 = oX + oW - 1;
-
-  top1 = tY;
-  top2 = oY;
-
-  bottom1 = top1 + Height - 1 - Col_Height;
-  bottom2 = oY + oH - 1;
-
-  ioEntityCol.Height = 0; // for now height and width are always >=0
-  ioEntityCol.Width = 0;
-
-  if (bottom1 < top2) return false;
-  if (top1 > bottom2) return false;
-
-  if (right1 < left2) return false;
-  if (left1 > right2) return false;
-
-  ioEntityCol.Width = std::min( abs(right1 - left2), abs(right2 - left1));
-  ioEntityCol.Height = std::min( abs(bottom1 - top2), abs(bottom2 - top1));
-  if(ioEntityCol.Width == 0 || ioEntityCol.Height == 0)
-  {
-    ioEntityCol.Width = 0;
-    ioEntityCol.Height = 0;
-    return false;
-  }
-  return true;
-}
 
 // true if the current entity collides with something else
 bool CEntity::SpeculativeCollides(int oX, int oY, int oW, int oH, CEntityCol& ioEntityCol)
@@ -817,34 +636,7 @@ bool CEntity::PosValidOnMap(int NewX, int NewY)
 }*/
 
 
-bool CEntity::PosValidOnEntities(int NewX, int NewY)
-{
-  bool result = true;
-  if(Flags & ENTITY_FLAG_MAPONLY)
-  {
-  }
-  else
-  {
 
-    double distance = 99999999999;
-
-    for(int i = 0; i < EntityList.size(); i++)
-    {
-
-      if(this != EntityList[i] && abs(EntityList[i]->X-X)+abs(EntityList[i]->Y-Y) < distance) {
-        distance = abs(EntityList[i]->X-X)+abs(EntityList[i]->Y-Y);
-        //std::cout << distance << std::endl;
-        NearestEntity = EntityList[i];
-      }
-
-      if(PosValidEntity(EntityList[i], NewX, NewY) == false)   // check collision with another entity
-      {
-        result = false;
-      }
-    }
-  }
-  return result;
-}
 
 
 // position validity check against the map
