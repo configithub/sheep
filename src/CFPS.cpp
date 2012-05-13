@@ -55,6 +55,6 @@ int CFPS::GetFPS() {
     return NumFrames;
 }
 
-float CFPS::GetSpeedFactor() {
+double CFPS::GetSpeedFactor() {
     return SpeedFactor;
 }

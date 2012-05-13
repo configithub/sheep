@@ -11,7 +11,7 @@ class Multitouch {
 
   private:
   int _numberOfTouches;
-  std::vector<Point> _points;
+  std::vector<PointInt> _points;
 
   public:
 
@@ -20,7 +20,7 @@ class Multitouch {
     _numberOfTouches = numberOfTouches;
     _points.reserve(_numberOfTouches);
     for(int i = 0; i <= _numberOfTouches; ++i) {
-      _points.push_back(Point());
+      _points.push_back(PointInt());
     }
   }
 
@@ -31,11 +31,11 @@ class Multitouch {
       _points[which].setY(value);
   }
 
-  Point& getTouch(Uint8& which) {
+  PointInt& getTouch(Uint8& which) {
     return _points[which];
   }
 
-  Point& getTouch(int which) {
+  PointInt& getTouch(int which) {
     return _points[which];
   }
 

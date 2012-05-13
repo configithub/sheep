@@ -1,5 +1,5 @@
 #ifndef _CAPP_H_
-    #define _CAPP_H_
+#define _CAPP_H_
 
 #include <SDL.h>
 #include "CSurface.h"
@@ -15,104 +15,86 @@
 #include "CFPS.h"
 
 class CApp : public CEvent {
-    private:
-        bool            Running;
+  private:
+    bool            Running;
 
-        SDL_Surface*    Surf_Display;
+    SDL_Surface*    Surf_Display;
 
-        SDL_Surface*    Surf_Test;
+    SDL_Surface*    Surf_Test;
 
-        SDL_Surface*    Surf_NumFont;
+    SDL_Surface*    Surf_NumFont;
 
-        //Multitouch     _multitouch;
+    //Multitouch     _multitouch;
 
-        std::vector<SDL_Joystick*> _sdlJoysticks;
+    std::vector<SDL_Joystick*> _sdlJoysticks;
 
-        int activeSheep;
+    int activeSheep;
 
-        bool others_follow;
+    bool others_follow;
 
-        CFollower Follower;
-        CFollower Follower1;
-        CFollower Follower2;
-        CFollower Follower3;
+    CFollower Follower;
 
-        std::vector<CFollower> SheepPool;
-        std::vector<CFollower*> Sheeps;
+    std::vector<CFollower> SheepPool;
+    std::vector<CFollower*> Sheeps;
 
-        Point Mouse;
-        Point JoyAxis;
+    PointDouble Mouse;
+    PointDouble JoyAxis;
 
-    public:
-        CApp();
+  public:
+    CApp();
 
-        void Solve(int numIterations, float& dt);
+    void SolveCollisions(int numIterations, double& dt);
 
-        int OnExecute();
+    int OnExecute();
 
-        bool OnInit();
+    bool OnInit();
 
-        bool AddNewSheepInPool(int sheepIdbool, double X=300, double Y=300);
+    bool AddNewSheepInPool(int sheepIdbool, double X=300, double Y=300);
 
-        void OnEvent(SDL_Event* Event);
+    void OnEvent(SDL_Event* Event);
 
-        void SwitchActiveSheep(int newActiveSheep);
+    void SwitchActiveSheep(int newActiveSheep);
 
-        void DeselectAllSheeps();
+    void DeselectAllSheeps();
 
-        void PushArrowUp();
+    void OnLoop();
 
-        void PushArrowLeftRight(bool right, bool down);
+    void OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode);
 
-        void OnLoop();
+    void OnKeyUp(SDLKey sym, SDLMod mod, Uint16 unicode);
 
-        void OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode);
+    void OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,bool Middle);
 
-        void OnKeyUp(SDLKey sym, SDLMod mod, Uint16 unicode);
+    void OnJoyAxis(Uint8 which,Uint8 axis,Sint16 value);
 
-        void OnLButtonDown(int mX, int mY);
+    void OnMultitouchEvent();
 
-        void OnLButtonUp(int mX, int mY);
+    void OnJoyButtonDown(Uint8 which,Uint8 button);
 
-	    void OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,bool Middle);
+    void getActiveGroup(std::vector<CFollower*>& ioGroup);
 
-	    void OnJoyAxis(Uint8 which,Uint8 axis,Sint16 value);
+    void SelectHerdAtCoord(PointDouble& point);
 
-	    void OnMultitouchEvent();
+    void GetNearestEntityFromMouse(PointDouble& point, CFollower*& NearestEntityFromMouse, int& delta);
 
-	    //void OnJoyHat(Uint8 which,Uint8 axis,Sint16 value);
+    void GoTo(PointDouble& point);
 
-	    //void OnJoyBall(Uint8 which, Uint8 ball, Sint16 xrel, Sint16 yrel);
+    void GoTo(std::vector<PointDouble>& controls);
 
-	    void OnJoyButtonDown(Uint8 which,Uint8 button);
+    void StopGoTo();
 
-        void getActiveGroup(std::vector<CFollower*>& ioGroup);
+    void OnExit();
 
-        void OnJoyButtonUp(Uint8 which,Uint8 button);
+    void OnRender();
 
-        void SelectHerdAtCoord(int x, int y);
+    void OnCleanup();
 
-        void GetNearestEntityFromMouse(int x, int y, CFollower*& NearestEntityFromMouse, int& delta);
+    void OthersFollow(int followedSheep);
 
-        void GoTo(int x, int y);
+    void OthersStopFollow();
 
-        void GoTo(std::vector<Point>& controls);
+    void OthersStop();
 
-        void StopGoTo(int x, int y);
-
-        void OnExit();
-
-        void OnRender();
-
-        void OnCleanup();
-
-        void OthersFollow(int followedSheep);
-
-        void OthersStopFollow();
-
-        void OthersStop();
-
-        bool CheckEveryEntityCollision();
 };
 
 #endif

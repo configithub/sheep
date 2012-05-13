@@ -14,7 +14,7 @@ class CFPS {
         int     OldTime;
         int     LastTime;
         int     _frameDuration;
-        float     SpeedFactor;
+        double     SpeedFactor;
 
 
         int     Frames;
@@ -29,7 +29,7 @@ class CFPS {
 
         int     getFrameDuration();
 
-        float   GetSpeedFactor();
+        double   GetSpeedFactor();
 };
 
 #endif

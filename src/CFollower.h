@@ -9,21 +9,13 @@ class CFollower : public CEntity {
 
     bool OnLoad(char* File, int Width, int Height, int MaxFrames);
 
-    void OnLoop();
-
-    bool Follow(CEntity* Entity);
-
     void OnRender(SDL_Surface* Surf_Display);
 
     void OnCleanup();
 
     void OnAnimate();
 
-    bool OnCollision(CEntity* Entity, CEntityCol* EntityCol, int nbCollisionCheck, int maxCollisionCheck) ;
-
   public:
-
-    CEntity* FollowedEntity;
 
     int id;
 };

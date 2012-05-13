@@ -47,44 +47,14 @@ bool CApp::OnInit() {
     activeSheep = 1;
 
 
-    /*if(Follower.OnLoad("./gfx/sheep2.png", 32, 32, 4) == false) {
+
+    if(Follower.OnLoad("./gfx/sheep.png", 32, 32, 4) == false) {
       return false;
     }
-    Follower.X = 100;
-    Follower.Y = 100;
-    Follower.id = 2;
-    Sheeps.push_back(&Follower);*/
+    Follower.getPosition().set(500, 100);
+    Follower.id = 1;
 
-
-
-    if(Follower1.OnLoad("./gfx/sheep.png", 32, 32, 4) == false) {
-      return false;
-    }
-    Follower1.X = 500;
-    Follower1.Y = 100;
-    Follower1.id = 1;
-
-    Sheeps.push_back(&Follower1);
-
-
-    /*if(Follower2.OnLoad("./gfx/sheep3.png", 32, 32, 4) == false) {
-      return false;
-    }
-    Follower2.X = 350;
-    Follower2.Y = 100;
-    Follower2.id = 3;
-
-    Sheeps.push_back(&Follower2);
-
-
-    if(Follower3.OnLoad("./gfx/sheep4.png", 32, 32, 4) == false) {
-      return false;
-    }
-    Follower3.X = 450;
-    Follower3.Y = 100;
-    Follower3.id = 4;
-
-    Sheeps.push_back(&Follower3);*/
+    Sheeps.push_back(&Follower);
 
     for(std::vector<CFollower*>::iterator itSheep = Sheeps.begin();
             itSheep != Sheeps.end(); ++itSheep) {
