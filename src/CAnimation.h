@@ -16,6 +16,7 @@ class CAnimation {
 
     public:
         int    MaxFrames;
+        int    MinFrames;
 
         bool    Oscillate;
 

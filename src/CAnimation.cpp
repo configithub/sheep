@@ -3,6 +3,7 @@
 CAnimation::CAnimation() {
     CurrentFrame    = 0;
     MaxFrames       = 0;
+    MinFrames       = 0;
     FrameInc        = 1;
 
     FrameRate       = 100; //Milliseconds
@@ -12,7 +13,7 @@ CAnimation::CAnimation() {
 }
 
 void CAnimation::OnAnimate() {
-    if(OldTime + FrameRate > SDL_GetTicks()) {
+    if(SDL_GetTicks() < OldTime + FrameRate) {
         return;
     }
 
@@ -26,13 +27,13 @@ void CAnimation::OnAnimate() {
                 FrameInc = -FrameInc;
             }
         }else{
-            if(CurrentFrame <= 0) {
+            if(CurrentFrame <= MinFrames) {
                 FrameInc = -FrameInc;
             }
         }
     }else{
-        if(CurrentFrame >= MaxFrames - 1) {
-            CurrentFrame = 0;
+        if(CurrentFrame > MaxFrames ) {
+            CurrentFrame = MinFrames;
         }
     }
 }
@@ -42,7 +43,7 @@ void CAnimation::SetFrameRate(int Rate) {
 }
 
 void CAnimation::SetCurrentFrame(int Frame) {
-    if(Frame < 0 || Frame >= MaxFrames) return;
+    if(Frame < MinFrames || Frame >= MaxFrames) return;
 
     CurrentFrame = Frame;
 }

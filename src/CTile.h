@@ -8,6 +8,7 @@ enum {
 
     TILE_TYPE_NORMAL,
     TILE_TYPE_BLOCK,
+    TILE_TYPE_GRASS,
     TILE_TYPE_HYPERTORIC
 };
 

@@ -48,7 +48,7 @@ bool CApp::OnInit() {
 
 
 
-    if(Follower.OnLoad("./gfx/sheep.png", 32, 32, 4) == false) {
+    if(Follower.OnLoad("./gfx/sheep6.png", 32, 32, 4) == false) {
       return false;
     }
     Follower.getPosition().set(500, 100);

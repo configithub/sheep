@@ -133,6 +133,8 @@ void CEntity::OnLoopMotionBounds() {
 
 void CEntity::OnLoopRealizeMotion() {
   _position.set((_nextPosition.getX()), (_nextPosition.getY()) );
+  _tileId = _nextTileId;
+  _tileType = _nextTileType;
 }
 
 
@@ -154,8 +156,6 @@ void CEntity::OnRender(SDL_Surface* Surf_Display) {
 // handles entity animation
 void CEntity::OnAnimate() {
   // give correct entity orientation
-  if(_moveLeft) { _currentFrameCol = 0; }
-  else if(_moveRight) { _currentFrameCol = 1; }
   _animControl.OnAnimate();
 }
 
@@ -179,14 +179,14 @@ void CEntity::OnMove(Point<double>& vel, double& dt) {
       _nextPosition = testPosition;
     } else {
 
-     Point<double> testPositionX((_nextPosition.getX()+planck.getX()), (_nextPosition.getY()));
-     if( PosValidOnMap(testPositionX) ) {
+      Point<double> testPositionX((_nextPosition.getX()+planck.getX()), (_nextPosition.getY()));
+      if( PosValidOnMap(testPositionX) ) {
         _nextPosition = testPositionX;
 
       } else { _speed.setX(0); }
 
       Point<double> testPositionY((_nextPosition.getX()), (_nextPosition.getY()+planck.getY()));
-     if( PosValidOnMap(testPositionY) ) {
+      if( PosValidOnMap(testPositionY) ) {
         _nextPosition = testPositionY;
 
       } else { _speed.setY(0); }
@@ -246,6 +246,8 @@ bool CEntity::PosValidOnMap(PointDouble& iNewPosition) {
   for(int iY = StartY; iY <= EndY; iY++) {
     for(int iX = StartX; iX <= EndX; iX++) {
       CTile* Tile = CArea::AreaControl.GetTile(iX * TILE_SIZE, iY * TILE_SIZE);
+      _nextTileId = Tile->TileID;
+      _nextTileType = Tile->TypeID;
       // check collision with the map
       if(PosValidTile(Tile) == false)   { return false; }
     }
@@ -272,8 +274,8 @@ void CEntity::updateCollisionMask() {
   //_collisionMask.set( _nextPosition.getX() , _nextPosition.getY() ,
   //       _mask.getWidth() , _mask.getHeight() );
 
-         _collisionMask.set( _nextPosition.getX() + _collisionOffset.getCorner().getX(), _nextPosition.getY() + _collisionOffset.getCorner().getY(),
-         _mask.getWidth() + _collisionOffset.getWidth(), _mask.getHeight() + _collisionOffset.getHeight() );
+  _collisionMask.set( _nextPosition.getX() + _collisionOffset.getCorner().getX(), _nextPosition.getY() + _collisionOffset.getCorner().getY(),
+      _mask.getWidth() + _collisionOffset.getWidth(), _mask.getHeight() + _collisionOffset.getHeight() );
 }
 
 // detect all collisions
@@ -305,8 +307,8 @@ bool CEntity::PosValidEntity(CEntity* iEntity) {
     EntityCol.EntityA = this;
     EntityCol.EntityB = iEntity;
     if(!result) {
-        int idA; int idB;
-        if(_entityId > iEntity->_entityId) { idA = iEntity->_entityId; idB = _entityId; } else{ idB = iEntity->_entityId; idA = _entityId; }
+      int idA; int idB;
+      if(_entityId > iEntity->_entityId) { idA = iEntity->_entityId; idB = _entityId; } else{ idB = iEntity->_entityId; idA = _entityId; }
       CEntityCol::EntityColList.insert(std::make_pair(std::make_pair(idA, idB), EntityCol));
     }
   }

@@ -247,13 +247,13 @@ bool CApp::AddNewSheepInPool(int sheepId, double X, double Y)
 
   std::stringstream aStream;
 
-  aStream << "./gfx/sheep"/* << sheepId <<*/ << ".png";
+  aStream << "./gfx/sheep6"/* << sheepId <<*/ << ".png";
 
   char *fileName = (char*)aStream.str().c_str();
 
   std::cout << "add new sheep with id " << sheepId << " " << fileName <<  std::endl;
 
-  if(newSheep.OnLoad("./gfx/sheep.png", 32, 32, 4) == false)
+  if(newSheep.OnLoad("./gfx/sheep6.png", 32, 32, 4) == false)
   {
     return false;
   }

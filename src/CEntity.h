@@ -163,7 +163,13 @@ class CEntity {
   int _entityId;
   EN_EntityType _type;
   bool _dead;
-  EN_EntityBehavior _behavior;
+  EN_EntityBehavior _behavior; // ghost or dead ...
+
+  // tile on which the entity reside
+  int _tileId;
+  int _tileType;
+  int _nextTileId;
+  int _nextTileType;
 
   // animation
   SDL_Surface* _sdlSurface;

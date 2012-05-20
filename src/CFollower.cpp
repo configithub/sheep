@@ -26,13 +26,36 @@ void CFollower::OnCleanup() {
 
 
 void CFollower::OnAnimate() {
-    if(_moveRight || _moveLeft || _moveUp || _moveDown) {
-        _animControl.MaxFrames = 4;
-    } else {
-        _animControl.MaxFrames = 0;
-    }
 
-    CEntity::OnAnimate();
+
+  // give correct entity orientation
+  if(_moveLeft) {
+    _currentFrameCol = 0;
+    if(_tileType == TILE_TYPE_GRASS) {
+      _currentFrameCol+=2;
+    }
+  }else if(_moveRight) {
+    _currentFrameCol = 1;
+    if(_tileType == TILE_TYPE_GRASS) {
+      _currentFrameCol+=2;
+    }
+  }
+
+  _animControl.MinFrames = 1;
+  if(_moveRight || _moveLeft || _moveUp || _moveDown) {
+    _animControl.MaxFrames = 3;
+  } else {
+    _animControl.MaxFrames = 1;
+  }
+
+  if(_tileType == TILE_TYPE_GRASS) {
+    if(!_moveRight && !_moveLeft && !_moveUp && !_moveDown) {
+      _animControl.MinFrames = 0;
+      _animControl.MaxFrames = 1;
+    }
+  }
+
+  CEntity::OnAnimate();
 }
 
 
