@@ -40,8 +40,8 @@ bool CApp::OnInit() {
         return false;
     }
 
-    float* centerX = new float(400);
-    float* centerY = new float(240);
+    float* centerX = new float(WWIDTH/2+16);
+    float* centerY = new float(WHEIGHT/2+16);
 
     SheepPool.reserve(1000);
     activeSheep = 1;
@@ -51,7 +51,7 @@ bool CApp::OnInit() {
     if(Follower.OnLoad("./gfx/sheep6.png", 32, 32, 4) == false) {
       return false;
     }
-    Follower.getPosition().set(500, 100);
+    Follower.getPosition().set(100, 100);
     Follower.id = 1;
 
     Sheeps.push_back(&Follower);

@@ -14,12 +14,12 @@ CEntity::CEntity()
   _sdlSurface = NULL;
 
   // entity coordinates and size
-  _position.set(400, 400);
+  _position.set(100,100);
 
 
   _isTargettingPosition = false;
 
-  _nextPosition.set(400, 400);
+  _nextPosition.set(100, 100);
 
   _mask.set(_position.getX(), _position.getY(), 0, 0);
 

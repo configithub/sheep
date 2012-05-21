@@ -33,17 +33,17 @@ SDL_Surface * CSurface::load_zoomed(char *name, int alpha)
 		return NULL;
 	}
 
-	if(alpha)
+	/*if(alpha)
 	{
 		SDL_SetAlpha(temp, 0, SDL_ALPHA_OPAQUE);
 		sprites = SDL_DisplayFormatAlpha(temp);
 	}
 	else
-	{
+	{*/
 		SDL_SetColorKey(temp, SDL_SRCCOLORKEY,
 				SDL_MapRGB(temp->format, 255, 0, 255));
 		sprites = SDL_DisplayFormat(temp);
-	}
+	//}
 	SDL_FreeSurface(temp);
 
 	return sprites;

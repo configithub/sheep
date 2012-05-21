@@ -91,7 +91,7 @@ void CApp::OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,
   Mouse.setX(mX);
   Mouse.setY(mY);
 
-
+    std::cout << mX << ", " << mY << std::endl;
   if(MultitouchEvent::Controller.getNumberOfActivePoints() < 2) {
 
     SelectHerdAtCoord(Mouse);
