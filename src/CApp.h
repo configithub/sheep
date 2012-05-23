@@ -13,6 +13,8 @@
 #include "Vectorial.h"
 #include "MultitouchEvent.h"
 #include "CFPS.h"
+#include "Level.h" 
+
 
 class CApp : public CEvent {
   private:

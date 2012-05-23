@@ -76,5 +76,9 @@ bool CApp::OnInit() {
 
     SDL_EnableKeyRepeat(1, SDL_DEFAULT_REPEAT_INTERVAL / 3);
 
+    std::string levelName = "level";
+
+    Level::LevelInstance.next(levelName, 3, 10000, 2);
+
     return true;
 }

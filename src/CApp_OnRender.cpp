@@ -71,6 +71,9 @@ void CApp::OnRender() {
     // AKA double buffering (enabled at SDL init time)
 
     //CArea::AreaControl.OnRender(Surf_Display, CCamera::CameraControl.GetX(), CCamera::CameraControl.GetY());
+
+    Level::LevelInstance.OnRender();
+
     CArea::AreaControl.OnRender(Surf_Display, -CCamera::CameraControl.GetX(), -CCamera::CameraControl.GetY());
 
     for(int i = 0;i < CEntity::EntityList.size();i++) {

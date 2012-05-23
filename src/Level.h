@@ -3,6 +3,7 @@
 
 #include <SDL.h>
 #include "GrassPatch.h"
+#include "CFollower.h"
 
 class Level {
 
@@ -10,18 +11,24 @@ class Level {
 
     static Level LevelInstance;
 
-    Level() : _isRunning(false){}
+    Level() : _isRunning(false), _levelSuccess(false){}
 
-    Level(std::string& iLevelName, int& iNbGrassPatches, int& iLevelDuration, int& iNewSheepsIfSuccess) {
+    Level(std::string& iLevelName, int& iNbGrassPatches, int& iLevelDuration, int& iNewSheepsIfSuccess) : _isRunning(false), _levelSuccess(false) {
       this->next(iLevelName, iNbGrassPatches, iLevelDuration, iNewSheepsIfSuccess);
     }
 
-    void next(std::string& iLevelName, int& iNbGrassPatches, int& iLevelDuration, int& iNewSheepsIfSuccess); 
+    void next(std::string& iLevelName, int iNbGrassPatches, int iLevelDuration, int iNewSheepsIfSuccess);
 
     void OnLoop(std::vector<CFollower*>& iSheeps);
 
     void setStartTime(int iStartTime) { _startTime = iStartTime; }
     bool& isRunning() { return _isRunning; }
+    bool& isLevelSuccess() { return _levelSuccess; }
+
+    void OnRender();
+    void resetTiles();
+    void resetGrassPatches();
+
 
   private:
 

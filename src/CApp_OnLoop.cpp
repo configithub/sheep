@@ -2,6 +2,7 @@
 #include <iostream>
 #include <math.h>
 #include <algorithm>
+#include "Level.h"
 
 
 // move all entity, report all collision, then resolve the list of collision even (for loop)
@@ -40,6 +41,19 @@ void CApp::OnLoop() {
     if((*itEntity) == NULL) continue;
     (*itEntity)->OnLoopRealizeMotion();
   }
+
+  // update level information
+  Level::LevelInstance.OnLoop(Sheeps);
+  if( !Level::LevelInstance.isRunning() ) {
+    if( Level::LevelInstance.isLevelSuccess() ) {
+      if(Sheeps.size() <= 30 ) {
+        AddNewSheepInPool(activeSheep);
+      }
+    }
+    std::string levelName = "level2";
+    Level::LevelInstance.next(levelName, 3, 10000, 2);
+  }
+
 
   int nbCollisionCheck = CEntityCol::EntityColList.size();;
   bool allCollisionResolved = false;
