@@ -103,8 +103,10 @@ void Level::OnRender() {
     for(int iY = StartY; iY <= EndY; iY++) {
       for(int iX = StartX; iX <= EndX; iX++) {
         CTile* Tile = CArea::AreaControl.GetTile(iX * TILE_SIZE, iY * TILE_SIZE);
+      if(Tile->TileID == 16 || Tile->TileID == 15) {
         Tile->TileID = 16; // grass
         Tile->TypeID = TILE_TYPE_GRASS; // grass
+      }
       }
     }
 
