@@ -43,7 +43,7 @@ bool CApp::OnInit() {
     float* centerX = new float(WWIDTH/2+16);
     float* centerY = new float(WHEIGHT/2+16);
 
-    SheepPool.reserve(1000);
+    //EntityPool.reserve(1000);
     activeSheep = 1;
 
 

@@ -22,6 +22,13 @@ void Level::next(std::string& iLevelName, int iNbGrassPatches, int iPreLevelDura
     _grassPatches.back().isValidated() = false;
   }
 
+  _bombs.clear();
+
+  Bomb aBomb;
+  _bombs.insert(std::make_pair(CEntity::CurrentEntityId, aBomb));
+
+  _bombs[CEntity::CurrentEntityId].generateRandom(aScreenRect);
+  ++CEntity::CurrentEntityId;
   _isRunning = false;
   _isOver = false;
   _levelSuccess = false;
@@ -48,6 +55,14 @@ void Level::OnLoop(std::vector<CFollower*>& iSheeps) {
 
     if( currentTime - _startTime < _duration ){
       // level is not over, check for validity condition
+
+
+      for(std::map<int,Bomb>::iterator itBomb = _bombs.begin();
+        itBomb != _bombs.end(); ++itBomb) {
+        itBomb->second.explode(iSheeps);
+      }
+
+
       _isRunning = true;
       for(std::vector<CFollower*>::iterator itSheep = iSheeps.begin();
           itSheep != iSheeps.end(); ++itSheep) {
@@ -93,6 +108,22 @@ void Level::OnLoop(std::vector<CFollower*>& iSheeps) {
 
   }
 
+  std::vector<int> bombIdsToRemove;
+  
+
+  for(std::map<int,Bomb>::iterator itBomb = _bombs.begin();
+    itBomb != _bombs.end(); ++itBomb) {
+    if(itBomb->second.hasExploded()) {
+      bombIdsToRemove.push_back(itBomb->second.getEntityId());
+    }
+  }
+
+  for(std::vector<int>::iterator itId = bombIdsToRemove.begin(); 
+    itId != bombIdsToRemove.end(); ++itId) { 
+    _bombs.erase(*itId);
+  }  
+  
+
 }
 
 
@@ -101,6 +132,10 @@ void Level::OnRender() {
   resetTiles();
 
   if(_isRunning) {
+
+
+
+
     for(std::vector<GrassPatch>::iterator itGrassPatch = _grassPatches.begin();
         itGrassPatch != _grassPatches.end(); ++itGrassPatch) {
       // factor in collision offsets

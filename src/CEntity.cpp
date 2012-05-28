@@ -320,11 +320,11 @@ void CEntity::OnCleanup() {
   _sdlSurface = NULL;
 }
 
-void distance(CEntity& entityA, CEntity& entityB, PointDouble& oResult) {
+void CEntity::dist(CEntity& entityA, CEntity& entityB, PointDouble& oResult) {
   distance(entityA.getPosition(), entityB.getPosition(), oResult);
 }
 
-void distance(CEntity& entity, PointInt& point, PointDouble& oResult) {
+void CEntity::dist(CEntity& entity, PointInt& point, PointDouble& oResult) {
   distance(entity.getCenter(), point, oResult);
 }
 

@@ -37,6 +37,10 @@ class CEntity {
   // Public members
   public:
 
+  static void dist(CEntity& entityA, CEntity& entityB, PointDouble& oResult);
+
+  static void dist(CEntity& entity, PointInt& point, PointDouble& oResult);
+
   // keeps track of all entities addresses
   static std::vector<CEntity*> EntityList;
 
@@ -123,9 +127,13 @@ class CEntity {
   // the collision mask of this entity
   Rectangle& getCollisionMask() { return _collisionMask; }
   void updateCollisionMask();
+    static int CurrentEntityId;
+
+  void setEntityId(int iId) { _entityId = iId;}
+  int& getEntityId() { return _entityId; }
 
   protected:
-  static int CurrentEntityId;
+
 
   virtual bool PosValidOnMap(PointDouble& NewPosition);
   bool PosValidTile(CTile* Tile);
@@ -198,8 +206,6 @@ class CEntityCol {
     CEntityCol();
 };
 
-void distance(CEntity& entityA, CEntity& entityB, PointInt& oResult);
 
-void distance(CEntity& entity, PointInt& point, PointInt& oResult);
 
 #endif

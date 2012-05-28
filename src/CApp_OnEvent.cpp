@@ -32,6 +32,7 @@ void CApp::SelectHerdAtCoord(PointDouble& point) {
 
   GetNearestEntityFromMouse(point, NearestEntityFromMouse, distance);
 
+  if(NearestEntityFromMouse == NULL) { return; }
   std::vector<CFollower*> herd;
   herd.push_back(NearestEntityFromMouse);
   getActiveGroup(herd);
@@ -237,11 +238,13 @@ bool CApp::AddNewSheepInPool(int sheepId, double X, double Y)
 {
   sheepId = (sheepId%5);
 
-
-
   CFollower newFollower;
-  SheepPool.push_back(newFollower);
-  CFollower& newSheep = SheepPool.back();
+  newFollower.setEntityId(CEntity::CurrentEntityId);
+  EntityPool.insert(std::make_pair(CEntity::CurrentEntityId,  newFollower));
+  std::cout << "before cast " << std::endl;
+  CFollower& newSheep = (EntityPool[CEntity::CurrentEntityId]);
+  std::cout << "after cast " << std::endl;
+  ++CEntity::CurrentEntityId;
   Sheeps.push_back(&newSheep);
 
   std::stringstream aStream;
@@ -258,8 +261,6 @@ bool CApp::AddNewSheepInPool(int sheepId, double X, double Y)
   }
   newSheep.getPosition().set(X, Y);
   newSheep.id = sheepId;
-
-  CEntity::EntityList.push_back(&newSheep);
 
   return true;
 

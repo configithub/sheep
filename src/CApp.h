@@ -13,7 +13,7 @@
 #include "Vectorial.h"
 #include "MultitouchEvent.h"
 #include "CFPS.h"
-#include "Level.h" 
+#include "Level.h"
 
 
 class CApp : public CEvent {
@@ -36,13 +36,15 @@ class CApp : public CEvent {
 
     CFollower Follower;
 
-    std::vector<CFollower> SheepPool;
+
     std::vector<CFollower*> Sheeps;
 
     PointDouble Mouse;
     PointDouble JoyAxis;
 
   public:
+   static std::map<int, CFollower> EntityPool;
+
     CApp();
 
     void SolveCollisions(int numIterations, double& dt);

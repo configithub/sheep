@@ -4,6 +4,7 @@
 #include <SDL.h>
 #include "GrassPatch.h"
 #include "CFollower.h"
+#include "Bomb.h"
 
 class Level {
 
@@ -30,11 +31,14 @@ class Level {
     void resetTiles();
     void resetGrassPatches();
 
+    std::map<int, Bomb>& getBombs() { return _bombs; } 
+    
 
   private:
 
     std::string _name;
     std::vector<GrassPatch> _grassPatches;
+    std::map<int, Bomb> _bombs;
     int _preLevelDuration;
     int _duration;
     bool _levelSuccess;

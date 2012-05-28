@@ -1,5 +1,7 @@
 #include "CApp.h"
 
+ std::map<int, CFollower> CApp::EntityPool;
+
 CApp::CApp() {
     Surf_Display = NULL;
     Surf_Test = NULL;
