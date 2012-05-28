@@ -44,14 +44,14 @@ void CApp::OnLoop() {
 
   // update level information
   Level::LevelInstance.OnLoop(Sheeps);
-  if( !Level::LevelInstance.isRunning() ) {
+  if( Level::LevelInstance.isOver() ) {
     if( Level::LevelInstance.isLevelSuccess() ) {
       if(Sheeps.size() <= 30 ) {
         AddNewSheepInPool(activeSheep);
       }
     }
     std::string levelName = "level2";
-    Level::LevelInstance.next(levelName, 3, 10000, 2);
+    Level::LevelInstance.next(levelName, 3, 2000, 10000, 2);
   }
 
 

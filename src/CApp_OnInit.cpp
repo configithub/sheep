@@ -78,7 +78,7 @@ bool CApp::OnInit() {
 
     std::string levelName = "level";
 
-    Level::LevelInstance.next(levelName, 3, 10000, 2);
+    Level::LevelInstance.next(levelName, 3, 2000, 10000, 2);
 
     return true;
 }
