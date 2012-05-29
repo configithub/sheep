@@ -22,7 +22,9 @@ void CApp::OnLoop() {
   }
   for(std::map<int,Bomb>::iterator itBomb = Level::LevelInstance.getBombs().begin(); 
     itBomb != Level::LevelInstance.getBombs().end(); ++itBomb) { 
-    CEntity::EntityList.push_back(&(itBomb->second));
+    if(!itBomb->second.hasExploded()) {
+      CEntity::EntityList.push_back(&(itBomb->second));
+    }
   } 
   
 
