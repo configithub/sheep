@@ -25,9 +25,9 @@ void Level::next(std::string& iLevelName, int iNbGrassPatches, int iPreLevelDura
   _bombs.clear();
 
   Bomb aBomb;
-  _bombs.insert(std::make_pair(CEntity::CurrentEntityId, aBomb));
+  _bombs.insert(std::make_pair(aBomb.getEntityId(), aBomb));
 
-  _bombs[CEntity::CurrentEntityId].generateRandom(aScreenRect);
+  _bombs[aBomb.getEntityId()].generateRandom(aScreenRect);
   ++CEntity::CurrentEntityId;
   _isRunning = false;
   _isOver = false;
@@ -115,11 +115,13 @@ void Level::OnLoop(std::vector<CFollower*>& iSheeps) {
     itBomb != _bombs.end(); ++itBomb) {
     if(itBomb->second.hasExploded()) {
       bombIdsToRemove.push_back(itBomb->second.getEntityId());
+      std::cout << itBomb->first << " " << itBomb->second.getEntityId() << std::endl;
     }
   }
 
   for(std::vector<int>::iterator itId = bombIdsToRemove.begin(); 
     itId != bombIdsToRemove.end(); ++itId) { 
+    std::cout << "erase bomb " << *itId << std::endl;
     _bombs.erase(*itId);
   }  
   

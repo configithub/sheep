@@ -153,7 +153,6 @@ class Rectangle {
     result.setWidth( std::min( abs(right1 - left2), abs(right2 - left1)) );
     result.setHeight( std::min( abs(bottom1 - top2), abs(bottom2 - top1)) );
 
-    std::cout << result.getWidth() << ", " << result.getHeight() << std::endl;
 
     if(result.isVoid()) {
       result.setWidth(0);

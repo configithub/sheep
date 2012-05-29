@@ -66,7 +66,7 @@ class CEntity {
   void OnLoopRealizeMotion();
 
   // speculative collision : calculate next position regarding the map
-  virtual void OnMove(PointDouble& iVelocity, double& dt);
+  void OnMove(PointDouble& iVelocity, double& dt);
 
   // render the entity on the display surface
   virtual void OnRender(SDL_Surface* ioSdlDisplaySurface);
@@ -135,7 +135,7 @@ class CEntity {
   protected:
 
 
-  virtual bool PosValidOnMap(PointDouble& NewPosition);
+  bool PosValidOnMap(PointDouble& NewPosition);
   bool PosValidTile(CTile* Tile);
   bool PosValidEntity(CEntity* Entity);
 

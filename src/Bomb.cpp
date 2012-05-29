@@ -33,8 +33,8 @@ void Bomb::OnAnimate() {
     _currentFrameCol = 1;
   }
 
-  _animControl.MinFrames = 1;
-  _animControl.MinFrames = 1;
+  _animControl.MinFrames = 0;
+  _animControl.MaxFrames = 2;
   //_animControl.Oscillate = true;
 
   CEntity::OnAnimate();
