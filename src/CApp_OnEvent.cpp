@@ -234,13 +234,16 @@ void CApp::StopGoTo() {
 }
 
 
-bool CApp::AddNewSheepInPool(int sheepId, double X, double Y)
-{
+bool CApp::AddNewSheepInPool(int sheepId, double X, double Y) {
   sheepId = (sheepId%5);
 
-  CFollower newFollower;
-  EntityPool.insert(std::make_pair(newFollower.getEntityId(),  newFollower));
-  CFollower& newSheep = (EntityPool[newFollower.getEntityId()]);
+  int key = CEntity::CurrentEntityId;
+  CFollower& newSheep = EntityPool[key];
+  std::cout << "new sheep id: " << newSheep.getEntityId() << std::endl;
+  for(std::map<int,CFollower>::iterator itSheep = EntityPool.begin(); 
+    itSheep != EntityPool.end(); ++itSheep) { 
+    std::cout << "map key: " << itSheep->first << " entityId: " << itSheep->second.getEntityId() << std::endl;
+  } 
   Sheeps.push_back(&newSheep);
 
   std::stringstream aStream;
@@ -249,7 +252,7 @@ bool CApp::AddNewSheepInPool(int sheepId, double X, double Y)
 
   char *fileName = (char*)aStream.str().c_str();
 
-  std::cout << "add new sheep with id " << sheepId << " " << fileName <<  std::endl;
+  //std::cout << "add new sheep with id " << sheepId << " " << fileName <<  std::endl;
 
   if(newSheep.OnLoad("./gfx/sheep6.png", 32, 32, 4) == false)
   {

@@ -20,16 +20,16 @@ void CApp::OnLoop() {
   CEntity::EntityList.reserve(100);
   for(std::map<int,CFollower>::iterator itSheep = EntityPool.begin();
     itSheep != EntityPool.end(); ++itSheep) {
-    CEntity::EntityList.push_back(&(itSheep->second));
+    if(!itSheep->second.removeAtNextLoop()) {
+      CEntity::EntityList.push_back(&(itSheep->second));
+    }
   }
   for(std::map<int,Effect>::iterator itEffect = CApp::EffectPool.begin(); 
     itEffect != CApp::EffectPool.end(); ++itEffect) { 
-    std::cout << "prout" << std::endl;
     if(!itEffect->second.removeAtNextLoop()) {
       CEntity::EntityList.push_back(&(itEffect->second));
     }else{
     }
-    std::cout << "prt" << std::endl;
   } 
   for(std::map<int,Bomb>::iterator itBomb = Level::LevelInstance.getBombs().begin(); 
     itBomb != Level::LevelInstance.getBombs().end(); ++itBomb) { 
@@ -75,7 +75,7 @@ void CApp::OnLoop() {
       }
     }
     std::string levelName = "level2";
-    Level::LevelInstance.next(levelName, 3, 2000, 10000, 2);
+    Level::LevelInstance.next(levelName, 0, 2000, 10000, 2);
   }
 
 

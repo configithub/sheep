@@ -24,9 +24,10 @@ void Level::next(std::string& iLevelName, int iNbGrassPatches, int iPreLevelDura
 
   _bombs.clear();
 
-  Bomb aBomb;
-  _bombs.insert(std::make_pair(aBomb.getEntityId(), aBomb));
-  _bombs[aBomb.getEntityId()].generateRandom(aScreenRect);
+  //Bomb aBomb;
+  //_bombs.insert(std::make_pair(aBomb.getEntityId(), aBomb));
+  int key = CEntity::CurrentEntityId;
+  _bombs[key].generateRandom(aScreenRect);
   _isRunning = false;
   _isOver = false;
   _levelSuccess = false;
@@ -84,9 +85,11 @@ void Level::OnLoop(std::vector<CFollower*>& iSheeps) {
         }
       }
       _levelSuccess = true;
-      for(std::vector<GrassPatch>::iterator itGrassPatch = _grassPatches.begin();
-          itGrassPatch != _grassPatches.end(); ++itGrassPatch) {
-        if(itGrassPatch->isValidated() == false) { _levelSuccess = false; break; }
+      if(_grassPatches.empty()) { _levelSuccess = false; } else{
+        for(std::vector<GrassPatch>::iterator itGrassPatch = _grassPatches.begin();
+            itGrassPatch != _grassPatches.end(); ++itGrassPatch) {
+          if(itGrassPatch->isValidated() == false) { _levelSuccess = false; break; }
+        }
       }
       // level is over, and player succeeded
       if(_levelSuccess) {
@@ -106,24 +109,24 @@ void Level::OnLoop(std::vector<CFollower*>& iSheeps) {
 
   }
 
-  /*
+
   std::vector<int> bombIdsToRemove;
-  
+
 
   for(std::map<int,Bomb>::iterator itBomb = _bombs.begin();
-    itBomb != _bombs.end(); ++itBomb) {
+      itBomb != _bombs.end(); ++itBomb) {
     if(itBomb->second.hasExploded()) {
       bombIdsToRemove.push_back(itBomb->second.getEntityId());
-      std::cout << itBomb->first << " " << itBomb->second.getEntityId() << std::endl;
+      //std::cout << "bomb id matching: " <<  itBomb->first << " " << itBomb->second.getEntityId() << std::endl;
     }
   }
 
   for(std::vector<int>::iterator itId = bombIdsToRemove.begin(); 
-    itId != bombIdsToRemove.end(); ++itId) { 
-    std::cout << "erase bomb " << *itId << std::endl;
+      itId != bombIdsToRemove.end(); ++itId) { 
+    //std::cout << "erase bomb " << *itId << std::endl;
     _bombs.erase(*itId);
-  }*/  
-  
+  }  
+
 
 }
 

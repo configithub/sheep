@@ -35,7 +35,7 @@ class CApp : public CEvent {
 
     bool others_follow;
 
-    CFollower Follower;
+    //CFollower Follower;
 
 
     std::vector<CFollower*> Sheeps;

@@ -55,6 +55,8 @@ CEntity::CEntity()
   _collisionMask.set( 0,0, 0, 0);
   _collisionOffset.set( 0, -5, 0, -2);
 
+  _removeAtNextLoop = false;
+
   // to identify the entity for debugging
   _entityId=CEntity::CurrentEntityId;
   std::cout << "creating entity " << _entityId << std::endl;

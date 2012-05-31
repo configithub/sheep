@@ -138,8 +138,10 @@ class CEntity {
   void setEntityId(int iId) { _entityId = iId;}
   int& getEntityId() { return _entityId; }
 
-  protected:
+  bool& removeAtNextLoop() { return _removeAtNextLoop; }
 
+  protected:
+  bool _removeAtNextLoop;
 
   bool PosValidOnMap(PointDouble& NewPosition);
   bool PosValidTile(CTile* Tile);

@@ -4,6 +4,8 @@
 #include "Effect.h"
 
 bool Bomb::OnLoad(char* File, int Width, int Height, int MaxFrames) {
+  std::cout << "creating bomb " << _entityId << std::endl;
+  
   Rectangle mask(0,0,Width,Height);
   if(CEntity::OnLoad(File, mask, MaxFrames) == false) {
     return false;
@@ -76,10 +78,8 @@ void Bomb::explode(std::vector<CFollower*>& iSheeps) {
     if(dist.modulus() < _radius ) {
       // sheep died in explosion
       int sheepEntityId = (*itSheep)->getEntityId();
-      (*itSheep)->OnCleanup();
-      //delete *itSheep;
+      (*itSheep)->removeAtNextLoop() = true;
       itSheep = iSheeps.erase(itSheep);
-      CApp::EntityPool.erase(sheepEntityId);
     }else{
       ++itSheep;
     }
@@ -89,13 +89,10 @@ void Bomb::explode(std::vector<CFollower*>& iSheeps) {
   _hasExploded = true;
 
   // explosion effect
-  Effect anExplosion;
-std::cout << "aie" << std::endl;
 
-
-  CApp::EffectPool[anExplosion.getEntityId()] = anExplosion;
-  Effect& explosion = CApp::EffectPool[anExplosion.getEntityId()];
-  explosion.OnLoad("./gfx/sheep.png", 32, 32, 3); 
+  int key = CEntity::CurrentEntityId;
+  Effect& explosion = CApp::EffectPool[key];
+  explosion.OnLoad("./gfx/explosion.png", 50, 32, 4); 
   explosion.setPosition(this->getPosition(), true);
   
 }

@@ -4,6 +4,8 @@
 
 
 bool Effect::OnLoad(char* File, int Width, int Height, int MaxFrames) {
+  
+  
   Rectangle mask(0,0,Width,Height);
   if(CEntity::OnLoad(File, mask, MaxFrames) == false) {
     return false;
@@ -27,9 +29,9 @@ void Effect::OnCleanup() {
 
 
 void Effect::OnAnimate() {
-  _currentFrameCol = 1;
-  _animControl.MinFrames = 1;
-  _animControl.MaxFrames = 1;
+  _currentFrameCol = rand()%3;
+  _animControl.MinFrames = 0;
+  _animControl.MaxFrames = 3;
   _animControl.SetFrameRate(10);
 
 

@@ -48,7 +48,7 @@ bool CApp::OnInit() {
 
 
 
-    if(Follower.OnLoad("./gfx/sheep6.png", 32, 32, 4) == false) {
+    /*if(Follower.OnLoad("./gfx/sheep6.png", 32, 32, 4) == false) {
       return false;
     }
     Follower.getPosition().set(100, 100);
@@ -59,7 +59,7 @@ bool CApp::OnInit() {
     for(std::vector<CFollower*>::iterator itSheep = Sheeps.begin();
             itSheep != Sheeps.end(); ++itSheep) {
       CEntity::EntityList.push_back(*itSheep);
-    }
+    }*/
 
     // to display number information, for now only framerate
     Surf_NumFont = CSurface::OnLoad("./gfx/font.png");
@@ -78,7 +78,7 @@ bool CApp::OnInit() {
 
     std::string levelName = "level";
 
-    Level::LevelInstance.next(levelName, 3, 2000, 10000, 2);
+    Level::LevelInstance.next(levelName, 0, 2000, 10000, 2);
 
     return true;
 }

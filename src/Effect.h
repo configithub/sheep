@@ -7,8 +7,9 @@ class Effect : public CEntity {
 
   public:
 
-    Effect() : _removeAtNextLoop(false), _id(0), _iterationNb(0), _maxIterationNb(1) {
+    Effect() : _id(0), _iterationNb(0), _maxIterationNb(1) {
       _behavior = ENTITY_FLAG_GHOST;
+      std::cout << "creating effect " << _entityId << std::endl;
     }
 
     bool OnLoad(char* File, int Width, int Height, int MaxFrames);
@@ -28,14 +29,11 @@ class Effect : public CEntity {
     const int& getMaxIterationNb() const { return _maxIterationNb; }
     void setMaxIterationNb(const int& maxIterationNb) { _maxIterationNb = maxIterationNb; }
 
-    bool removeAtNextLoop() { return _removeAtNextLoop; }
-
   private:
 
     int _id;
     int _iterationNb;
     int _maxIterationNb;
-    bool _removeAtNextLoop;
 
 };
 
