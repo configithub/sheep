@@ -1,6 +1,7 @@
 #include "CApp.h"
 
  std::map<int, CFollower> CApp::EntityPool;
+ std::map<int, Effect> CApp::EffectPool;
 
 CApp::CApp() {
     Surf_Display = NULL;

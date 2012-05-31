@@ -26,9 +26,7 @@ void Level::next(std::string& iLevelName, int iNbGrassPatches, int iPreLevelDura
 
   Bomb aBomb;
   _bombs.insert(std::make_pair(aBomb.getEntityId(), aBomb));
-
   _bombs[aBomb.getEntityId()].generateRandom(aScreenRect);
-  ++CEntity::CurrentEntityId;
   _isRunning = false;
   _isOver = false;
   _levelSuccess = false;

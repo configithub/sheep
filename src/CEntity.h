@@ -33,6 +33,8 @@ class CEntity {
 
   // Friend classes
   friend class CFollower;
+  friend class Effect;
+  friend class Bomb;
 
   // Public members
   public:
@@ -92,10 +94,14 @@ class CEntity {
   // get the entity's top left corner's position
   PointDouble& getPosition() { return _position; }
 
-  void setPosition(PointDouble& iNewPosition) {
+  void setPosition(PointDouble& iNewPosition, bool next=false) {
     _position = iNewPosition;
     _mask.getCorner().set(_position.getX(), _position.getY());
     _center = _mask.getCenter();
+    
+
+    if(next) {
+      _nextPosition = iNewPosition; }
   }
 
   // get the entity's rectangle center
@@ -127,7 +133,7 @@ class CEntity {
   // the collision mask of this entity
   Rectangle& getCollisionMask() { return _collisionMask; }
   void updateCollisionMask();
-    static int CurrentEntityId;
+  static int CurrentEntityId;
 
   void setEntityId(int iId) { _entityId = iId;}
   int& getEntityId() { return _entityId; }

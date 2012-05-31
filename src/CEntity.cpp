@@ -57,6 +57,8 @@ CEntity::CEntity()
 
   // to identify the entity for debugging
   _entityId=CEntity::CurrentEntityId;
+  std::cout << "creating entity " << _entityId << std::endl;
+  
   ++CEntity::CurrentEntityId;
 
 }
@@ -281,7 +283,7 @@ void CEntity::updateCollisionMask() {
 // detect all collisions
 bool CEntity::PosValidOnEntities() {
   bool result = true;
-  if(_behavior & ENTITY_FLAG_MAPONLY) {
+  if(_behavior & ENTITY_FLAG_MAPONLY || _behavior & ENTITY_FLAG_GHOST) {
   } else {
     updateCollisionMask();
     for(int i = 0; i < EntityList.size(); i++) {

@@ -78,7 +78,9 @@ void CApp::OnRender() {
 
     for(int i = 0;i < CEntity::EntityList.size();i++) {
       if(!CEntity::EntityList[i]) continue;
-
+      std::cout << CEntity::EntityList[i]->getEntityId() << std::endl;
+      
+      
       CEntity::EntityList[i]->OnRender(Surf_Display);
     }
 

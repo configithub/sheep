@@ -1,6 +1,7 @@
 
 #include "Bomb.h"
 #include "CApp.h"
+#include "Effect.h"
 
 bool Bomb::OnLoad(char* File, int Width, int Height, int MaxFrames) {
   Rectangle mask(0,0,Width,Height);
@@ -74,8 +75,8 @@ void Bomb::explode(std::vector<CFollower*>& iSheeps) {
     CEntity::dist( *this, **itSheep, dist);
     if(dist.modulus() < _radius ) {
       // sheep died in explosion
-      (*itSheep)->OnCleanup();
       int sheepEntityId = (*itSheep)->getEntityId();
+      (*itSheep)->OnCleanup();
       //delete *itSheep;
       itSheep = iSheeps.erase(itSheep);
       CApp::EntityPool.erase(sheepEntityId);
@@ -86,7 +87,15 @@ void Bomb::explode(std::vector<CFollower*>& iSheeps) {
   }
 
   _hasExploded = true;
-  
-  //delete this;
 
+  // explosion effect
+  Effect anExplosion;
+std::cout << "aie" << std::endl;
+
+
+  CApp::EffectPool[anExplosion.getEntityId()] = anExplosion;
+  Effect& explosion = CApp::EffectPool[anExplosion.getEntityId()];
+  explosion.OnLoad("./gfx/sheep.png", 32, 32, 3); 
+  explosion.setPosition(this->getPosition(), true);
+  
 }

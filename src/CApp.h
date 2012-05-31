@@ -14,6 +14,7 @@
 #include "MultitouchEvent.h"
 #include "CFPS.h"
 #include "Level.h"
+#include "Effect.h"
 
 
 class CApp : public CEvent {
@@ -44,6 +45,7 @@ class CApp : public CEvent {
 
   public:
    static std::map<int, CFollower> EntityPool;
+   static std::map<int, Effect> EffectPool;
 
     CApp();
 

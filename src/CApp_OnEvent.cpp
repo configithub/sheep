@@ -239,12 +239,8 @@ bool CApp::AddNewSheepInPool(int sheepId, double X, double Y)
   sheepId = (sheepId%5);
 
   CFollower newFollower;
-  newFollower.setEntityId(CEntity::CurrentEntityId);
-  EntityPool.insert(std::make_pair(CEntity::CurrentEntityId,  newFollower));
-  std::cout << "before cast " << std::endl;
-  CFollower& newSheep = (EntityPool[CEntity::CurrentEntityId]);
-  std::cout << "after cast " << std::endl;
-  ++CEntity::CurrentEntityId;
+  EntityPool.insert(std::make_pair(newFollower.getEntityId(),  newFollower));
+  CFollower& newSheep = (EntityPool[newFollower.getEntityId()]);
   Sheeps.push_back(&newSheep);
 
   std::stringstream aStream;

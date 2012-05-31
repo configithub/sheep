@@ -15,18 +15,29 @@ void CApp::OnLoop() {
   // time between two loops
   double dt = CFPS::FPSControl.GetSpeedFactor();
 
+  // todo, class for this
   CEntity::EntityList.clear();
+  CEntity::EntityList.reserve(100);
   for(std::map<int,CFollower>::iterator itSheep = EntityPool.begin();
     itSheep != EntityPool.end(); ++itSheep) {
     CEntity::EntityList.push_back(&(itSheep->second));
   }
+  for(std::map<int,Effect>::iterator itEffect = CApp::EffectPool.begin(); 
+    itEffect != CApp::EffectPool.end(); ++itEffect) { 
+    std::cout << "prout" << std::endl;
+    if(!itEffect->second.removeAtNextLoop()) {
+      CEntity::EntityList.push_back(&(itEffect->second));
+    }else{
+    }
+    std::cout << "prt" << std::endl;
+  } 
   for(std::map<int,Bomb>::iterator itBomb = Level::LevelInstance.getBombs().begin(); 
     itBomb != Level::LevelInstance.getBombs().end(); ++itBomb) { 
     if(!itBomb->second.hasExploded()) {
       CEntity::EntityList.push_back(&(itBomb->second));
     }
   } 
-  
+    
 
   // apply gravity and controls on all entities
   for(std::vector<CEntity*>::iterator itEntity = CEntity::EntityList.begin(); itEntity != CEntity::EntityList.end(); ++itEntity) {
