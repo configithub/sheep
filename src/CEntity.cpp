@@ -72,8 +72,11 @@ CEntity::~CEntity()
 }
 
 bool CEntity::OnLoad(char* iFile, Rectangle& iRectangle, int iMaxFrames) {
-  if((_sdlSurface = CSurface::OnLoad(iFile)) == NULL) {
-    return false;
+  if(_sdlSurface == NULL) {
+    std::cout << "loading image file: " << iFile << std::endl;
+    if((_sdlSurface = CSurface::OnLoad(iFile)) == NULL) {
+      return false;
+    }
   }
 
   this->_mask = iRectangle;

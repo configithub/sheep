@@ -5,6 +5,7 @@
 
 bool Effect::OnLoad(char* File, int Width, int Height, int MaxFrames) {
   
+  _sdlSurface = CSurface::Sprites[2];
   
   Rectangle mask(0,0,Width,Height);
   if(CEntity::OnLoad(File, mask, MaxFrames) == false) {

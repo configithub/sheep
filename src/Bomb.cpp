@@ -5,6 +5,8 @@
 
 bool Bomb::OnLoad(char* File, int Width, int Height, int MaxFrames) {
   std::cout << "creating bomb " << _entityId << std::endl;
+
+  _sdlSurface = CSurface::Sprites[1];
   
   Rectangle mask(0,0,Width,Height);
   if(CEntity::OnLoad(File, mask, MaxFrames) == false) {

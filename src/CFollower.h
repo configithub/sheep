@@ -15,9 +15,8 @@ class CFollower : public CEntity {
 
     void OnAnimate();
 
-  public:
-
     int id;
+
 };
 
 #endif
