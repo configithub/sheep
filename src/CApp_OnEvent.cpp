@@ -93,7 +93,6 @@ void CApp::OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,
   Mouse.setY(mY);
 
   if(MultitouchEvent::Controller.getNumberOfActivePoints() < 2) {
-
     SelectHerdAtCoord(Mouse);
     GoTo(Mouse);
   }
@@ -107,32 +106,34 @@ void CApp::OnMultitouchEvent() {
 
   /*if(MultitouchEvent::Controller.getNumberOfActivePoints() == 1) {
     PointDouble control1 = PointDouble(MultitouchEvent::Controller.getTouch(1).getX(), MultitouchEvent::Controller.getTouch(1).getY());
-    controls.push_back(control1);
-    }*/
+    Mouse.setX(control1.getX());
+    Mouse.setY(control1.getY());
+    SelectHerdAtCoord(Mouse);
+    GoTo(Mouse);
+  }*/
   if(MultitouchEvent::Controller.getNumberOfActivePoints() == 2) {
-    PointDouble control1 = PointDouble(MultitouchEvent::Controller.getTouch(1).getX(), MultitouchEvent::Controller.getTouch(1).getY());
-    PointDouble control2 = PointDouble(MultitouchEvent::Controller.getTouch(2).getX(), MultitouchEvent::Controller.getTouch(2).getY());
+    PointDouble control1 = PointDouble(MultitouchEvent::Controller.getTouch(0).getX(), MultitouchEvent::Controller.getTouch(0).getY());
+    PointDouble control2 = PointDouble(MultitouchEvent::Controller.getTouch(1).getX(), MultitouchEvent::Controller.getTouch(1).getY());
     controls.push_back(control1);
     controls.push_back(control2);
   }
   if(MultitouchEvent::Controller.getNumberOfActivePoints() == 3) {
-    PointDouble control1 = PointDouble(MultitouchEvent::Controller.getTouch(1).getX(), MultitouchEvent::Controller.getTouch(1).getY());
-    PointDouble control2 = PointDouble(MultitouchEvent::Controller.getTouch(2).getX(), MultitouchEvent::Controller.getTouch(2).getY());
-    PointDouble control3 = PointDouble(MultitouchEvent::Controller.getTouch(3).getX(), MultitouchEvent::Controller.getTouch(3).getY());
+    PointDouble control1 = PointDouble(MultitouchEvent::Controller.getTouch(0).getX(), MultitouchEvent::Controller.getTouch(0).getY());
+    PointDouble control2 = PointDouble(MultitouchEvent::Controller.getTouch(1).getX(), MultitouchEvent::Controller.getTouch(1).getY());
+    PointDouble control3 = PointDouble(MultitouchEvent::Controller.getTouch(2).getX(), MultitouchEvent::Controller.getTouch(2).getY());
     controls.push_back(control1);
     controls.push_back(control2);
     controls.push_back(control3);
   }
   if(MultitouchEvent::Controller.getNumberOfActivePoints() == 4) {
-    PointDouble control1 = PointDouble(MultitouchEvent::Controller.getTouch(1).getX(), MultitouchEvent::Controller.getTouch(1).getY());
-    PointDouble control2 = PointDouble(MultitouchEvent::Controller.getTouch(2).getX(), MultitouchEvent::Controller.getTouch(2).getY());
-    PointDouble control3 = PointDouble(MultitouchEvent::Controller.getTouch(3).getX(), MultitouchEvent::Controller.getTouch(3).getY());
-    PointDouble control4 = PointDouble(MultitouchEvent::Controller.getTouch(4).getX(), MultitouchEvent::Controller.getTouch(4).getY());
+    PointDouble control1 = PointDouble(MultitouchEvent::Controller.getTouch(0).getX(), MultitouchEvent::Controller.getTouch(0).getY());
+    PointDouble control2 = PointDouble(MultitouchEvent::Controller.getTouch(1).getX(), MultitouchEvent::Controller.getTouch(1).getY());
+    PointDouble control3 = PointDouble(MultitouchEvent::Controller.getTouch(2).getX(), MultitouchEvent::Controller.getTouch(2).getY());
+    PointDouble control4 = PointDouble(MultitouchEvent::Controller.getTouch(3).getX(), MultitouchEvent::Controller.getTouch(3).getY());
     controls.push_back(control1);
     controls.push_back(control2);
     controls.push_back(control3);
     controls.push_back(control4);
-
   }
   if(MultitouchEvent::Controller.getNumberOfActivePoints() > 1) {
     GoTo(controls);
@@ -145,19 +146,20 @@ void CApp::OnJoyAxis(Uint8 which,Uint8 axis,Sint16 value)
   std::cout << "which: " << which << std::endl;
   std::cout << "value: " << value << std::endl;
 
-  MultitouchEvent::Controller.touch(which,axis,value);
-
-  if(axis==0)
-    JoyAxis.setX(value);
-  if(axis==1)
-    JoyAxis.setY(value);
+  //MultitouchEvent::Controller.touch(which,axis,value);
 
 }
 
-void CApp::OnJoyButtonDown(Uint8 which,Uint8 button)
-{
+void CApp::OnJoyBall(Uint8 which, Uint8 ball, Sint16 xrel, Sint16 yrel) {
+  Uint8 xAxis = 0;
+  Uint8 yAxis = 1;
+  MultitouchEvent::Controller.touch(ball,xAxis,xrel);
+  MultitouchEvent::Controller.touch(ball,yAxis,yrel);
+}
+
+void CApp::OnJoyButtonDown(Uint8 which,Uint8 button) {
   std::cout << "joybutton down" << std::endl;
-  MultitouchEvent::Controller.activePoint(which);
+  MultitouchEvent::Controller.activePoint(button);
 }
 
 void CApp::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode)

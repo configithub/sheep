@@ -37,7 +37,9 @@ template <class T> class Point {
     set( _x+b.getX(), _y+b.getY() );
   }
 
-
+  bool operator ==(Point<T> b) {
+    return _x == b.getX() && _y == b.getY() ;
+  }
 
   Point<T> operator -(Point<T> b) {
     return Point<T>( _x-b.getX(), _y-b.getY() );

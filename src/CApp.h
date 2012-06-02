@@ -41,11 +41,10 @@ class CApp : public CEvent {
     std::vector<CFollower*> Sheeps;
 
     PointDouble Mouse;
-    PointDouble JoyAxis;
 
   public:
-   static std::map<int, CFollower> EntityPool;
-   static std::map<int, Effect> EffectPool;
+    static std::map<int, CFollower> EntityPool;
+    static std::map<int, Effect> EffectPool;
 
     CApp();
 
@@ -72,6 +71,8 @@ class CApp : public CEvent {
     void OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,bool Middle);
 
     void OnJoyAxis(Uint8 which,Uint8 axis,Sint16 value);
+
+    void OnJoyBall(Uint8 which, Uint8 ball, Sint16 xrel, Sint16 yrel);
 
     void OnMultitouchEvent();
 

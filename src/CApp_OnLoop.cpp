@@ -18,25 +18,47 @@ void CApp::OnLoop() {
   // todo, class for this
   CEntity::EntityList.clear();
   CEntity::EntityList.reserve(100);
+  std::vector<int> entitiesToRemove; 
+  
   for(std::map<int,CFollower>::iterator itSheep = EntityPool.begin();
     itSheep != EntityPool.end(); ++itSheep) {
     if(!itSheep->second.removeAtNextLoop()) {
       CEntity::EntityList.push_back(&(itSheep->second));
+    }else{
+      entitiesToRemove.push_back(itSheep->second.getEntityId());
     }
   }
+  for(std::vector<int>::iterator itId = entitiesToRemove.begin(); 
+    itId != entitiesToRemove.end(); ++itId) { 
+    EntityPool.erase(*itId);
+  }  
+  entitiesToRemove.clear(); 
   for(std::map<int,Effect>::iterator itEffect = CApp::EffectPool.begin(); 
     itEffect != CApp::EffectPool.end(); ++itEffect) { 
     if(!itEffect->second.removeAtNextLoop()) {
       CEntity::EntityList.push_back(&(itEffect->second));
     }else{
+      entitiesToRemove.push_back(itEffect->second.getEntityId());
     }
   } 
+  for(std::vector<int>::iterator itId = entitiesToRemove.begin(); 
+    itId != entitiesToRemove.end(); ++itId) { 
+    EffectPool.erase(*itId);
+  }  
+  entitiesToRemove.clear();
   for(std::map<int,Bomb>::iterator itBomb = Level::LevelInstance.getBombs().begin(); 
     itBomb != Level::LevelInstance.getBombs().end(); ++itBomb) { 
     if(!itBomb->second.hasExploded()) {
       CEntity::EntityList.push_back(&(itBomb->second));
+    }else{
+      entitiesToRemove.push_back(itBomb->second.getEntityId());
     }
   } 
+  for(std::vector<int>::iterator itId = entitiesToRemove.begin(); 
+    itId != entitiesToRemove.end(); ++itId) { 
+    Level::LevelInstance.getBombs().erase(*itId);
+  }  
+  entitiesToRemove.clear();
     
 
   // apply gravity and controls on all entities
