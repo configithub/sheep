@@ -108,7 +108,7 @@ void CApp::OnMultitouchEvent() {
   /*if(MultitouchEvent::Controller.getNumberOfActivePoints() == 1) {
     PointDouble control1 = PointDouble(MultitouchEvent::Controller.getTouch(1).getX(), MultitouchEvent::Controller.getTouch(1).getY());
     controls.push_back(control1);
-  }*/
+    }*/
   if(MultitouchEvent::Controller.getNumberOfActivePoints() == 2) {
     PointDouble control1 = PointDouble(MultitouchEvent::Controller.getTouch(1).getX(), MultitouchEvent::Controller.getTouch(1).getY());
     PointDouble control2 = PointDouble(MultitouchEvent::Controller.getTouch(2).getX(), MultitouchEvent::Controller.getTouch(2).getY());
@@ -172,10 +172,15 @@ void CApp::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode)
         break;
       }
 
-    case SDLK_e:
+    case SDLK_e: // Menu key
       {
         AddNewSheepInPool(activeSheep);
         break;
+      }
+
+    case SDLK_f: // back key
+      {
+        exit(1);
       }
 
     default:
@@ -220,7 +225,7 @@ void CApp::GoTo(std::vector<PointDouble>& controls) {
         }
 
       }
-        (*itSheep)->getTargetPosition().set(NearestControl.getX(), NearestControl.getY());
+      (*itSheep)->getTargetPosition().set(NearestControl.getX(), NearestControl.getY());
 
     }
   }
@@ -241,7 +246,7 @@ bool CApp::AddNewSheepInPool(int sheepId, double X, double Y) {
   CFollower& newSheep = EntityPool[key];
   std::cout << "new sheep id: " << newSheep.getEntityId() << std::endl;
   for(std::map<int,CFollower>::iterator itSheep = EntityPool.begin(); 
-    itSheep != EntityPool.end(); ++itSheep) { 
+      itSheep != EntityPool.end(); ++itSheep) { 
     std::cout << "map key: " << itSheep->first << " entityId: " << itSheep->second.getEntityId() << std::endl;
   } 
   Sheeps.push_back(&newSheep);
