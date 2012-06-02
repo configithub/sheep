@@ -1,7 +1,11 @@
 #include "CApp.h"
+#include "Level.h"
 
  std::map<int, CFollower> CApp::EntityPool;
  std::map<int, Effect> CApp::EffectPool;
+
+ std::vector<CFollower*> CApp::Sheeps;
+ 
 
 CApp::CApp() {
     Surf_Display = NULL;

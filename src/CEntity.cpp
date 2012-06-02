@@ -65,6 +65,24 @@ CEntity::CEntity()
 
 }
 
+void CEntity::generateRandom(Rectangle& boundaries) {
+  int x,y;
+  x = abs (std::min( (int)(rand() % (boundaries.getWidth() ) + 1), WWIDTH) );
+  y = abs (std::min( (int)(rand() % (boundaries.getHeight() ) + 1), WHEIGHT) );
+
+  _position.set(x,y);
+  _nextPosition.set(x,y);
+
+  _sdlSurface = CSurface::Sprites[0];
+
+  Rectangle mask(0,0,32,32);
+  CEntity::OnLoad("./gfx/sheep6.png", mask, 4);
+  
+
+
+  CEntity::EntityList.push_back(this);
+}
+
 
 
 CEntity::~CEntity()
@@ -87,7 +105,7 @@ bool CEntity::OnLoad(char* iFile, Rectangle& iRectangle, int iMaxFrames) {
 
 // 1. factor in controls applied by the player
 void CEntity::OnLoopApplyControls() {
- if(_isTargettingPosition) {
+  if(_isTargettingPosition) {
 
     PointDouble distanceToTarget = _targetPosition - _position;
 
@@ -152,12 +170,12 @@ void CEntity::OnRender(SDL_Surface* Surf_Display) {
   if(_sdlSurface == NULL || Surf_Display == NULL) return;
 
   CSurface::OnDraw(Surf_Display, _sdlSurface, // draw the entity's surface on the target surface Surf_Display
-                   // camera coordinates are taken into account, so if the camera moves, the entities will be displayed accordingly
-                   _position.getX() - CCamera::CameraControl.GetX(),
-                   _position.getY() - CCamera::CameraControl.GetY(),
-                   _currentFrameCol * _mask.getWidth(), // X coordinate on the entity's animation tile
-                   (_currentFrameRow + _animControl.GetCurrentFrame()) * _mask.getHeight(), // Y coordinate on the entity's animation tile
-                   _mask.getWidth(), _mask.getHeight()); // to set the rectangle size on the animation tile to be displayed
+      // camera coordinates are taken into account, so if the camera moves, the entities will be displayed accordingly
+      _position.getX() - CCamera::CameraControl.GetX(),
+      _position.getY() - CCamera::CameraControl.GetY(),
+      _currentFrameCol * _mask.getWidth(), // X coordinate on the entity's animation tile
+      (_currentFrameRow + _animControl.GetCurrentFrame()) * _mask.getHeight(), // Y coordinate on the entity's animation tile
+      _mask.getWidth(), _mask.getHeight()); // to set the rectangle size on the animation tile to be displayed
 }
 
 // handles entity animation

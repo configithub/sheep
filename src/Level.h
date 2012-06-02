@@ -14,11 +14,11 @@ class Level {
 
     Level() : _isRunning(false), _levelSuccess(false){}
 
-    Level(std::string& iLevelName, int& iNbGrassPatches, int& iPreLevelDuration, int& iLevelDuration, int& iNewSheepsIfSuccess) : _isRunning(false), _levelSuccess(false) {
-      this->next(iLevelName, iNbGrassPatches, iPreLevelDuration, iLevelDuration, iNewSheepsIfSuccess);
+    Level(std::vector<CFollower*>& iSheeps, std::string& iLevelName, int& iNbGrassPatches, int& iPreLevelDuration, int& iLevelDuration, int& iNewSheepsIfSuccess) : _isRunning(false), _levelSuccess(false) {
+      this->next(iSheeps, iLevelName, iNbGrassPatches, iPreLevelDuration, iLevelDuration, iNewSheepsIfSuccess);
     }
 
-    void next(std::string& iLevelName, int iNbGrassPatches, int iPreLevelDuration, int iLevelDuration, int iNewSheepsIfSuccess);
+    void next(std::vector<CFollower*>& iSheeps, std::string& iLevelName, int iNbGrassPatches, int iPreLevelDuration, int iLevelDuration, int iNewSheepsIfSuccess);
 
     void OnLoop(std::vector<CFollower*>& iSheeps);
 
@@ -46,7 +46,7 @@ class Level {
     int _startTime;
     bool _isRunning;
     bool _isOver;
-
+    int _levelNb;
 };
 
 

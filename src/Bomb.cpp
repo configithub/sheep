@@ -2,7 +2,7 @@
 #include "Bomb.h"
 #include "CApp.h"
 #include "Effect.h"
-
+#include "Level.h" 
 
 bool Bomb::OnLoad(char* File, int Width, int Height, int MaxFrames) {
   //std::cout << "creating bomb " << _entityId << std::endl;

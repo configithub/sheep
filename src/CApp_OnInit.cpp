@@ -1,6 +1,6 @@
 #include "CApp.h"
 #include <iostream>
-
+#include "Level.h"
 
 SDL_Surface* CApp::Surf_NumFont = NULL;
 SDL_Surface* CApp::Surf_NumFontBomb = NULL;
@@ -83,7 +83,12 @@ bool CApp::OnInit() {
 
   std::string levelName = "level";
 
-  Level::LevelInstance.next(levelName, 0, 2000, 1000, 2);
+  Rectangle aScreenRect(33, 33, WWIDTH, WHEIGHT);
+  int key = CEntity::CurrentEntityId;
+  EntityPool[key].generateRandom(aScreenRect);
+  Sheeps.push_back(&CApp::EntityPool[key]);
+
+  Level::LevelInstance.next(Sheeps, levelName, 0, 2000, 1000, 2);
 
   return true;
   }

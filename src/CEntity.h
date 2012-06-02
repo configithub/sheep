@@ -39,6 +39,8 @@ class CEntity {
   // Public members
   public:
 
+  void generateRandom(Rectangle& boundaries);
+
   static void dist(CEntity& entityA, CEntity& entityB, PointDouble& oResult);
 
   static void dist(CEntity& entity, PointInt& point, PointDouble& oResult);

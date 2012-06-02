@@ -13,7 +13,6 @@
 #include "Vectorial.h"
 #include "MultitouchEvent.h"
 #include "CFPS.h"
-#include "Level.h"
 #include "Effect.h"
 
 
@@ -37,11 +36,11 @@ class CApp : public CEvent {
     //CFollower Follower;
 
 
-    std::vector<CFollower*> Sheeps;
 
     PointDouble Mouse;
 
   public:
+    static std::vector<CFollower*> Sheeps;
     static void print_num(SDL_Surface *dst, SDL_Surface *font, int x, int y, float value);
     static std::map<int, CFollower> EntityPool;
     static std::map<int, Effect> EffectPool;

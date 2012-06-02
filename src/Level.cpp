@@ -1,15 +1,15 @@
 #include "Level.h"
-
+#include "CApp.h"
 
 Level Level::LevelInstance;
 
-void Level::next(std::string& iLevelName, int iNbGrassPatches, int iPreLevelDuration, int iLevelDuration, int iNewSheepsIfSuccess) {
+void Level::next(std::vector<CFollower*>& iSheeps, std::string& iLevelName, int iNbGrassPatches, int iPreLevelDuration, int iLevelDuration, int iNewSheepsIfSuccess) {
   _name = iLevelName;
   _duration = iLevelDuration;
   _preLevelDuration = iPreLevelDuration;
   _newSheepsIfSuccess = iNewSheepsIfSuccess;
-
-  Rectangle aScreenRect(10, 10, WWIDTH, WHEIGHT);
+  ++_levelNb;
+  Rectangle aScreenRect(33, 33, WWIDTH, WHEIGHT);
 
   _grassPatches.clear();
   _grassPatches.reserve(iNbGrassPatches);
@@ -28,6 +28,12 @@ void Level::next(std::string& iLevelName, int iNbGrassPatches, int iPreLevelDura
   //_bombs.insert(std::make_pair(aBomb.getEntityId(), aBomb));
 
   int nbNewBombs = rand() %3 +1;
+
+  if(_levelNb % 10 == 0) {
+    int key = CEntity::CurrentEntityId;
+    CApp::EntityPool[key].generateRandom(aScreenRect);
+    iSheeps.push_back(&CApp::EntityPool[key]);  
+  }
 
   for (int i = 0; i < nbNewBombs; i++) {
     int key = CEntity::CurrentEntityId;
