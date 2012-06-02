@@ -4,7 +4,7 @@
 
 
 CFollower::CFollower() {
-  std::cout << "creating sheep " << _entityId << std::endl;
+  //std::cout << "creating sheep " << _entityId << std::endl;
     id = 0;
 }
 

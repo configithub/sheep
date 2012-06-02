@@ -25,7 +25,6 @@ class CApp : public CEvent {
 
     SDL_Surface*    Surf_Test;
 
-    SDL_Surface*    Surf_NumFont;
 
     //Multitouch     _multitouch;
 
@@ -43,9 +42,12 @@ class CApp : public CEvent {
     PointDouble Mouse;
 
   public:
+    static void print_num(SDL_Surface *dst, SDL_Surface *font, int x, int y, float value);
     static std::map<int, CFollower> EntityPool;
     static std::map<int, Effect> EffectPool;
 
+    static SDL_Surface*    Surf_NumFont;
+    static SDL_Surface*    Surf_NumFontBomb;
     CApp();
 
     void SolveCollisions(int numIterations, double& dt);

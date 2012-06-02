@@ -59,7 +59,7 @@ CEntity::CEntity()
 
   // to identify the entity for debugging
   _entityId=CEntity::CurrentEntityId;
-  std::cout << "creating entity " << _entityId << std::endl;
+  //std::cout << "creating entity " << _entityId << std::endl;
   
   ++CEntity::CurrentEntityId;
 

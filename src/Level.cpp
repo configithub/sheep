@@ -22,21 +22,27 @@ void Level::next(std::string& iLevelName, int iNbGrassPatches, int iPreLevelDura
     _grassPatches.back().isValidated() = false;
   }
 
-  _bombs.clear();
+  //_bombs.clear();
 
   //Bomb aBomb;
   //_bombs.insert(std::make_pair(aBomb.getEntityId(), aBomb));
-  int key = CEntity::CurrentEntityId;
-  _bombs[key].generateRandom(aScreenRect);
+
+  int nbNewBombs = rand() %3 +1;
+
+  for (int i = 0; i < nbNewBombs; i++) {
+    int key = CEntity::CurrentEntityId;
+    _bombs[key].generateRandom(aScreenRect);
+  }
   _isRunning = false;
   _isOver = false;
   _levelSuccess = false;
   _startTime = SDL_GetTicks();
+
 }
 
 void Level::resetGrassPatches() {
   for(std::vector<GrassPatch>::iterator itGrassPatch = _grassPatches.begin();
-    itGrassPatch != _grassPatches.end(); ++itGrassPatch) {
+      itGrassPatch != _grassPatches.end(); ++itGrassPatch) {
     itGrassPatch->reset();
   }
 }
@@ -57,7 +63,7 @@ void Level::OnLoop(std::vector<CFollower*>& iSheeps) {
 
 
       for(std::map<int,Bomb>::iterator itBomb = _bombs.begin();
-        itBomb != _bombs.end(); ++itBomb) {
+          itBomb != _bombs.end(); ++itBomb) {
         itBomb->second.explode(iSheeps);
       }
 

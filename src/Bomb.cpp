@@ -3,8 +3,9 @@
 #include "CApp.h"
 #include "Effect.h"
 
+
 bool Bomb::OnLoad(char* File, int Width, int Height, int MaxFrames) {
-  std::cout << "creating bomb " << _entityId << std::endl;
+  //std::cout << "creating bomb " << _entityId << std::endl;
 
   _sdlSurface = CSurface::Sprites[1];
   
@@ -16,17 +17,11 @@ bool Bomb::OnLoad(char* File, int Width, int Height, int MaxFrames) {
   return true;
 }
 
-
 void Bomb::OnRender(SDL_Surface* Surf_Display) {
-  //if(!_hasExploded) {
-    CEntity::OnRender(Surf_Display);
-  //}
+  int remaining = (_delay - (SDL_GetTicks() - _startTime)) /1000;
+  CEntity::OnRender(Surf_Display);
+  CApp::print_num(Surf_Display, CApp::Surf_NumFontBomb, _position.getX(), _position.getY(), remaining ); 
 }
-
-void Bomb::OnCleanup() {
-  CEntity::OnCleanup();
-}
-
 
 void Bomb::OnAnimate() {
 
@@ -48,13 +43,14 @@ void Bomb::OnAnimate() {
 
 void Bomb::generateRandom(Rectangle& boundaries) {
   int x,y;
-  x = rand() % (boundaries.getWidth() ) + 1;
-  y = rand() % (boundaries.getHeight() ) + 1;
+  x = abs (std::min( (int)(rand() % (boundaries.getWidth() ) + 1), WWIDTH) );
+  y = abs (std::min( (int)(rand() % (boundaries.getHeight() ) + 1), WHEIGHT) );
 
   _position.set(x,y);
   _nextPosition.set(x,y);
 
   OnLoad("./gfx/bomb.png", 32, 32, 4);
+  //std::cout << "bomb delay: " << _delay << std::endl;
 
   CEntity::EntityList.push_back(this);
 }
@@ -74,7 +70,6 @@ void Bomb::explode(std::vector<CFollower*>& iSheeps) {
   if(_hasExploded) { return; }
   for(std::vector<CFollower*>::iterator itSheep = iSheeps.begin();
       itSheep != iSheeps.end(); ) {
-
     PointDouble dist;
     CEntity::dist( *this, **itSheep, dist);
     if(dist.modulus() < _radius ) {
@@ -85,16 +80,32 @@ void Bomb::explode(std::vector<CFollower*>& iSheeps) {
     }else{
       ++itSheep;
     }
-
   }
+  for(std::map<int,Bomb>::iterator itBomb = Level::LevelInstance.getBombs().begin(); 
+    itBomb != Level::LevelInstance.getBombs().end(); ++itBomb) { 
+    if(itBomb->second.getEntityId() != _entityId) {
+      PointDouble dist;
+      CEntity::dist( *this, itBomb->second, dist);
+      if(dist.modulus() < _radius ) {
+        // chain explosion
+        itBomb->second._delay = 5000;
+      }
+    }
+  } 
+
 
   _hasExploded = true;
 
   // explosion effect
 
-  int key = CEntity::CurrentEntityId;
-  Effect& explosion = CApp::EffectPool[key];
-  explosion.OnLoad("./gfx/explosion.png", 50, 32, 4); 
-  explosion.setPosition(this->getPosition(), true);
-  
+  int nbExplosionEffect = rand() % 5+3;
+
+  for (int i = 0; i < nbExplosionEffect; i++) {
+    int key = CEntity::CurrentEntityId;
+    Effect& explosion = CApp::EffectPool[key];
+    explosion.OnLoad("./gfx/explosion.png", 50, 32, 4); 
+    PointDouble position( abs( std::min( (int) (this->getPosition().getX() -10 + rand() % 20) , WWIDTH)) ,abs( std::min( (int) (this->getPosition().getY() -10 + rand() % 20), WHEIGHT)) );
+    explosion.setPosition(position, true);
+  }
+
 }

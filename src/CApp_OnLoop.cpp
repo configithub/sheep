@@ -97,7 +97,7 @@ void CApp::OnLoop() {
       }
     }
     std::string levelName = "level2";
-    Level::LevelInstance.next(levelName, 0, 2000, 10000, 2);
+    Level::LevelInstance.next(levelName, 0, 100, 1000, 2);
   }
 
 

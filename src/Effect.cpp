@@ -28,11 +28,6 @@ void Effect::OnRender(SDL_Surface* Surf_Display) {
   }
 }
 
-void Effect::OnCleanup() {
-  CEntity::OnCleanup();
-}
-
-
 void Effect::OnAnimate() {
   //_currentFrameCol = rand()%3;
   _currentFrameCol = _entityId%3;

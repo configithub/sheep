@@ -7,6 +7,7 @@ CApp::CApp() {
     Surf_Display = NULL;
     Surf_Test = NULL;
     Surf_NumFont = NULL;
+    Surf_NumFontBomb = NULL;
     Running = true;
     activeSheep = 0;
     others_follow = false;

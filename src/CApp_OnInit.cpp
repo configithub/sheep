@@ -2,6 +2,9 @@
 #include <iostream>
 
 
+SDL_Surface* CApp::Surf_NumFont = NULL;
+SDL_Surface* CApp::Surf_NumFontBomb = NULL;
+
 bool CApp::OnInit() {
 
   // initialize SDL
@@ -59,7 +62,12 @@ bool CApp::OnInit() {
     }*/
 
   // to display number information, for now only framerate
-  Surf_NumFont = CSurface::OnLoad("./gfx/font.png");
+  if(Surf_NumFont == NULL) {
+    Surf_NumFont = CSurface::OnLoad("./gfx/font.png");
+  }
+  if(Surf_NumFontBomb == NULL) {
+    Surf_NumFontBomb = CSurface::OnLoad("./gfx/font1.png");
+  }
   //Surf_NumFont = CSurface::load_zoomed("./gfx/sheep.png", 0);
 
   CCamera::CameraControl.TargetMode = TARGET_MODE_CENTER;
@@ -75,7 +83,7 @@ bool CApp::OnInit() {
 
   std::string levelName = "level";
 
-  Level::LevelInstance.next(levelName, 0, 2000, 10000, 2);
+  Level::LevelInstance.next(levelName, 0, 2000, 1000, 2);
 
   return true;
   }
