@@ -16,10 +16,14 @@ bool Effect::OnLoad(char* File, int Width, int Height, int MaxFrames) {
 
 
 void Effect::OnRender(SDL_Surface* Surf_Display) {
-  CEntity::OnRender(Surf_Display);
-  ++_iterationNb;
-  if(_iterationNb >= _maxIterationNb*_animControl.MaxFrames*CFPS::FPSControl.GetFPS()*_animControl.GetFrameRate() ) {
+  if(_animControl.signal) {
+    ++_iterationNb;
+    _animControl.signal = false;
+  }
+  if(_iterationNb >= _maxIterationNb) { 
     _removeAtNextLoop = true;
+  }else{
+    CEntity::OnRender(Surf_Display);
   }
 }
 
@@ -29,11 +33,13 @@ void Effect::OnCleanup() {
 
 
 void Effect::OnAnimate() {
-  _currentFrameCol = rand()%3;
+  //_currentFrameCol = rand()%3;
+  _currentFrameCol = _entityId%3;
   _animControl.MinFrames = 0;
   _animControl.MaxFrames = 3;
-  _animControl.SetFrameRate(10);
+  _animControl.SetFrameRate(70); //nb of ms for each frame
 
+  CEntity::OnAnimate();
 
 }
 

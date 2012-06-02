@@ -20,6 +20,7 @@ class CAnimation {
 
         bool    Oscillate;
 
+        bool  signal;
     public:
         CAnimation();
 
