@@ -18,7 +18,7 @@ bool Bomb::OnLoad(char* File, int Width, int Height, int MaxFrames) {
 }
 
 void Bomb::OnRender(SDL_Surface* Surf_Display) {
-  int remaining = (_delay - (SDL_GetTicks() - _startTime)) /1000;
+  int remaining = std::max(0, (int) (_delay - (SDL_GetTicks() - _startTime)) /1000);
   CEntity::OnRender(Surf_Display);
   CApp::print_num(Surf_Display, CApp::Surf_NumFontBomb, _position.getX(), _position.getY(), remaining ); 
 }
