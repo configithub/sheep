@@ -100,8 +100,6 @@ void CApp::OnLoop() {
     Level::LevelInstance.next(Sheeps,levelName, 0, 100, 1000, 2);
   }
 
-  int nbCollisionCheck = CEntityCol::EntityColList.size();;
-  bool allCollisionResolved = false;
   CEntityCol::EntityColList.clear();
 }
 
@@ -134,7 +132,9 @@ void CApp::SolveCollisions(int numIterations, double& dt) {
       CEntity& EntityA = *(contact.EntityA);
       CEntity& EntityB = *(contact.EntityB);
 
+      //int flip = rand()%2;
       if(contact._rectangle.getWidth() >= contact._rectangle.getHeight()) { // vertical collision
+      //if(flip) { // vertical collision
         PointDouble repulsA = PointDouble(0, (sign(EntityA.getNextPosition().getY() - EntityB.getNextPosition().getY()) * contact._rectangle.getHeight())/2);
         PointDouble repulsB = PointDouble(0, -(sign(EntityA.getNextPosition().getY() - EntityB.getNextPosition().getY()) * contact._rectangle.getHeight())/2);
         EntityA.OnMove(repulsA, dt);
@@ -145,6 +145,10 @@ void CApp::SolveCollisions(int numIterations, double& dt) {
         EntityA.OnMove( repulsA, dt);
         EntityB.OnMove( repulsB, dt);
       }
+        //PointDouble repulsA = PointDouble( (sign(EntityA.getNextPosition().getX() - EntityB.getNextPosition().getX()) * contact._rectangle.getWidth())/2, (sign(EntityA.getNextPosition().getY() - EntityB.getNextPosition().getY()) * contact._rectangle.getHeight())/2);
+        //PointDouble repulsB = PointDouble( -(sign(EntityA.getNextPosition().getX() - EntityB.getNextPosition().getX()) * contact._rectangle.getWidth())/2, -(sign(EntityA.getNextPosition().getY() - EntityB.getNextPosition().getY()) * contact._rectangle.getHeight())/2);
+        //EntityA.OnMove(repulsA, dt);
+        //EntityB.OnMove(repulsB, dt);
       contact.updateContactSize();
     }
 

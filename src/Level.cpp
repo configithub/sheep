@@ -34,7 +34,7 @@ void Level::next(std::vector<CFollower*>& iSheeps, std::string& iLevelName, int 
     _bombs[key].generateRandom(aScreenRect);
   }
 
-  aScreenRect.set(40, 40, WWIDTH-40, WHEIGHT-40);
+  aScreenRect.set(60, 60, WWIDTH-60, WHEIGHT-60);
   if(_levelNb % 10 == 0 && !iSheeps.empty()) {
     int key = CEntity::CurrentEntityId;
     CApp::EntityPool[key].generateRandom(aScreenRect);
