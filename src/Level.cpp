@@ -29,16 +29,18 @@ void Level::next(std::vector<CFollower*>& iSheeps, std::string& iLevelName, int 
 
   int nbNewBombs = rand() %3 +1;
 
+  for (int i = 0; i < nbNewBombs; i++) {
+    int key = CEntity::CurrentEntityId;
+    _bombs[key].generateRandom(aScreenRect);
+  }
+
+  aScreenRect.set(40, 40, WWIDTH-40, WHEIGHT-40);
   if(_levelNb % 10 == 0) {
     int key = CEntity::CurrentEntityId;
     CApp::EntityPool[key].generateRandom(aScreenRect);
     iSheeps.push_back(&CApp::EntityPool[key]);  
   }
 
-  for (int i = 0; i < nbNewBombs; i++) {
-    int key = CEntity::CurrentEntityId;
-    _bombs[key].generateRandom(aScreenRect);
-  }
   _isRunning = false;
   _isOver = false;
   _levelSuccess = false;
