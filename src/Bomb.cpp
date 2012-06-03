@@ -88,7 +88,7 @@ void Bomb::explode(std::vector<CFollower*>& iSheeps) {
       CEntity::dist( *this, itBomb->second, dist);
       if(dist.modulus() < _radius ) {
         // chain explosion
-        itBomb->second._delay = 5000;
+        itBomb->second._delay = 500;
       }
     }
   } 
