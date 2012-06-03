@@ -100,7 +100,6 @@ void CApp::OnLoop() {
     Level::LevelInstance.next(Sheeps,levelName, 0, 100, 1000, 2);
   }
 
-
   int nbCollisionCheck = CEntityCol::EntityColList.size();;
   bool allCollisionResolved = false;
   CEntityCol::EntityColList.clear();

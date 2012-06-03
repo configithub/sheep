@@ -12,7 +12,7 @@ class Level {
 
     static Level LevelInstance;
 
-    Level() : _isRunning(false), _levelSuccess(false){}
+    Level() : _isRunning(false), _levelSuccess(false), _gameOver(false){}
 
     Level(std::vector<CFollower*>& iSheeps, std::string& iLevelName, int& iNbGrassPatches, int& iPreLevelDuration, int& iLevelDuration, int& iNewSheepsIfSuccess) : _isRunning(false), _levelSuccess(false) {
       this->next(iSheeps, iLevelName, iNbGrassPatches, iPreLevelDuration, iLevelDuration, iNewSheepsIfSuccess);
@@ -33,6 +33,7 @@ class Level {
 
     std::map<int, Bomb>& getBombs() { return _bombs; } 
     
+    bool isGameOver() { return _gameOver; }
 
   private:
 
@@ -47,6 +48,7 @@ class Level {
     bool _isRunning;
     bool _isOver;
     int _levelNb;
+    bool _gameOver;
 };
 
 

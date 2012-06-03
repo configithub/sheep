@@ -47,6 +47,7 @@ class CApp : public CEvent {
 
     static SDL_Surface*    Surf_NumFont;
     static SDL_Surface*    Surf_NumFontBomb;
+    static SDL_Surface*    Surf_GameOver;
     CApp();
 
     void SolveCollisions(int numIterations, double& dt);
@@ -103,6 +104,7 @@ class CApp : public CEvent {
 
     void OthersStop();
 
+    void OnGameOver();
 };
 
 #endif

@@ -145,6 +145,9 @@ bool CSurface::OnDraw(SDL_Surface* Surf_Dest, SDL_Surface* Surf_Src, int X, int 
 // draws a rectangular part of the source surface to the destination surface
 bool CSurface::OnDraw(SDL_Surface* Surf_Dest, SDL_Surface* Surf_Src, int X, int Y, int X2, int Y2, int W, int H) {
   if(Surf_Dest == NULL || Surf_Src == NULL) {
+    std::cout << "trying to blit from/to null surface" << std::endl;
+    std::cout << "Surf_Dest: " << Surf_Dest << std::endl;
+    std::cout << "Surf_Src: " << Surf_Src << std::endl;
     return false;
   }
 

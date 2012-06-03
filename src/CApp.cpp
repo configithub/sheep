@@ -12,9 +12,15 @@ CApp::CApp() {
     Surf_Test = NULL;
     Surf_NumFont = NULL;
     Surf_NumFontBomb = NULL;
+    Surf_GameOver = NULL;
     Running = true;
     activeSheep = 0;
     others_follow = false;
+}
+
+void CApp::OnGameOver() {
+  //std::cout << "CApp: OnGameOver" << std::endl;
+  CSurface::OnDraw(Surf_Display, Surf_GameOver, 1, 85,1 ,1 ,319,69);
 }
 
 int CApp::OnExecute() {

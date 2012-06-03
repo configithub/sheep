@@ -100,6 +100,9 @@ void CApp::OnRender() {
 
   }
 
+  if(Level::LevelInstance.isGameOver()) {
+    OnGameOver();
+  }
 
   //print_num(Surf_Display, Surf_NumFont, 240, 11, JoyAxis.getY());
 
