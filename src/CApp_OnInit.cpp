@@ -5,6 +5,7 @@
 SDL_Surface* CApp::Surf_NumFont = NULL;
 SDL_Surface* CApp::Surf_NumFontBomb = NULL;
 SDL_Surface* CApp::Surf_GameOver = NULL;
+SDL_Surface* CApp::Surf_Score = NULL;
 
 bool CApp::OnInit() {
 
@@ -71,6 +72,9 @@ bool CApp::OnInit() {
   }
   if(Surf_GameOver == NULL) {
     Surf_GameOver = CSurface::OnLoad("./gfx/gameover.png");
+  }
+  if(Surf_Score == NULL) {
+    Surf_Score = CSurface::OnLoad("./gfx/scorefont.png");
   }
   //Surf_NumFont = CSurface::load_zoomed("./gfx/sheep.png", 0);
 

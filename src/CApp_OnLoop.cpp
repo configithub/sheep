@@ -97,8 +97,18 @@ void CApp::OnLoop() {
       }
     }
     std::string levelName = "level2";
-    Level::LevelInstance.next(Sheeps,levelName, 0, 100, 1000, 2);
+    if(Level::LevelInstance.getLevelNb() <= 30) {
+      Level::LevelInstance.next(Sheeps,levelName, 0, 100, 2500, 2);
+    }else if(Level::LevelInstance.getLevelNb() <= 150) {
+      Level::LevelInstance.next(Sheeps,levelName, 0, 100, 2000, 2);
+    }else if(Level::LevelInstance.getLevelNb() <= 450) {
+      Level::LevelInstance.next(Sheeps,levelName, 0, 100, 1500, 2);
+    }else{
+      Level::LevelInstance.next(Sheeps,levelName, 0, 100, 1000, 2);
+    }
   }
+
+  CApp::updateScore();
 
   CEntityCol::EntityColList.clear();
 }
@@ -108,6 +118,14 @@ double sign(double value) {
   else return -1;
 }
 
+
+void CApp::updateScore() {
+  int currentTime = SDL_GetTicks();
+  if(currentTime - scoreTimer > 1000) {
+    scoreTimer = currentTime;
+    score += Sheeps.size()*5;
+  }
+}
 
 void CApp::SolveCollisions(int numIterations, double& dt) {
 

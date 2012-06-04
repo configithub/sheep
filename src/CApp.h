@@ -40,6 +40,11 @@ class CApp : public CEvent {
     PointDouble Mouse;
 
   public:
+
+    static int score;
+    static int scoreTimer;
+    static void updateScore();
+  
     static std::vector<CFollower*> Sheeps;
     static void print_num(SDL_Surface *dst, SDL_Surface *font, int x, int y, float value);
     static std::map<int, CFollower> EntityPool;
@@ -48,6 +53,7 @@ class CApp : public CEvent {
     static SDL_Surface*    Surf_NumFont;
     static SDL_Surface*    Surf_NumFontBomb;
     static SDL_Surface*    Surf_GameOver;
+    static SDL_Surface*    Surf_Score;
     CApp();
 
     void SolveCollisions(int numIterations, double& dt);

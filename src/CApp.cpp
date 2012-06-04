@@ -5,7 +5,8 @@
  std::map<int, Effect> CApp::EffectPool;
 
  std::vector<CFollower*> CApp::Sheeps;
- 
+ int CApp::score=0; 
+ int CApp::scoreTimer=0; 
 
 CApp::CApp() {
     Surf_Display = NULL;

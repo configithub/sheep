@@ -35,6 +35,8 @@ class Level {
     
     bool isGameOver() { return _gameOver; }
 
+    int& getLevelNb() { return _levelNb; }
+
   private:
 
     std::string _name;

@@ -2,6 +2,7 @@
 #include <iostream>
 //#include <SDL_rotozoom.h>
 #include "Level.h" 
+//#include <math.h>
 
 void CApp::print_num(SDL_Surface *dst, SDL_Surface *font, int x, int y, float value)
 {
@@ -104,7 +105,9 @@ void CApp::OnRender() {
     OnGameOver();
   }
 
-  //print_num(Surf_Display, Surf_NumFont, 240, 11, JoyAxis.getY());
+  CSurface::OnDraw(Surf_Display, Surf_Score, 5, 5,1 ,1 ,44,9);
+
+  print_num(Surf_Display, Surf_NumFont, 50, 4, score);
 
 
   //print_num(Surf_Display, Surf_NumFont, Surf_Display->w-117, 12, 1);
