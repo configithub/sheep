@@ -43,8 +43,8 @@ void Bomb::OnAnimate() {
 
 void Bomb::generateRandom(Rectangle& boundaries) {
   int x,y;
-  x = abs (std::min( (int)(rand() % (boundaries.getWidth() ) + 1), WWIDTH) );
-  y = abs (std::min( (int)(rand() % (boundaries.getHeight() ) + 1), WHEIGHT) );
+  x = abs (std::min( (int)(rand() % (boundaries.getWidth() ) + boundaries.getCorner().getX()), WWIDTH) );
+  y = abs (std::min( (int)(rand() % (boundaries.getHeight() ) + boundaries.getCorner().getY()), WHEIGHT) );
 
   _position.set(x,y);
   _nextPosition.set(x,y);
