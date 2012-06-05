@@ -75,6 +75,13 @@ void CApp::DeselectAllSheeps() {
   }
 }
 
+void CApp::SelectAllSheeps() {
+  for(std::vector<CFollower*>::iterator itSheep = Sheeps.begin();
+      itSheep != Sheeps.end(); ++itSheep) {
+    (*itSheep)->id = 1;
+  }
+}
+
 
 void CApp::GetNearestEntityFromMouse(PointDouble& point, CFollower*& NearestEntityFromMouse, int& delta) {
   delta = 999999999;
@@ -93,7 +100,8 @@ void CApp::OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,
   Mouse.setY(mY);
 
   if(MultitouchEvent::Controller.getNumberOfActivePoints() < 2) {
-    SelectHerdAtCoord(Mouse);
+    //SelectHerdAtCoord(Mouse);
+    SelectAllSheeps();
     GoTo(Mouse);
   }
 }

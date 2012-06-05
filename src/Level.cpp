@@ -9,7 +9,7 @@ void Level::next(std::vector<CFollower*>& iSheeps, std::string& iLevelName, int 
   _preLevelDuration = iPreLevelDuration;
   _newSheepsIfSuccess = iNewSheepsIfSuccess;
   ++_levelNb;
-  Rectangle aScreenRect(33, 33, WWIDTH, WHEIGHT);
+  Rectangle aScreenRect(1, 1, WWIDTH-33, WHEIGHT-33);
 
   _grassPatches.clear();
   _grassPatches.reserve(iNbGrassPatches);
@@ -34,7 +34,7 @@ void Level::next(std::vector<CFollower*>& iSheeps, std::string& iLevelName, int 
     _bombs[key].generateRandom(aScreenRect);
   }
 
-  aScreenRect.set(60, 60, WWIDTH-60, WHEIGHT-60);
+  //aScreenRect.set(60, 60, WWIDTH-60, WHEIGHT-60);
   if(_levelNb % 10 == 0 && !iSheeps.empty()) {
     int key = CEntity::CurrentEntityId;
     CApp::EntityPool[key].generateRandom(aScreenRect);

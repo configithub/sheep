@@ -67,8 +67,8 @@ CEntity::CEntity()
 
 void CEntity::generateRandom(Rectangle& boundaries) {
   int x,y;
-  x = abs (std::min( (int)(rand() % (boundaries.getWidth() ) + boundaries.getCorner().getX()), WWIDTH) );
-  y = abs (std::min( (int)(rand() % (boundaries.getHeight() ) + boundaries.getCorner().getY()), WHEIGHT) );
+  x = abs (std::min( (int)(rand() % (boundaries.getWidth() ) + boundaries.getCorner().getX()), WWIDTH-33) );
+  y = abs (std::min( (int)(rand() % (boundaries.getHeight() ) + boundaries.getCorner().getY()), WHEIGHT-33) );
 
   _position.set(x,y);
   _nextPosition.set(x,y);

@@ -70,6 +70,8 @@ class CApp : public CEvent {
 
     void DeselectAllSheeps();
 
+    void SelectAllSheeps();
+
     void OnLoop();
 
     void OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode);
@@ -77,6 +79,8 @@ class CApp : public CEvent {
     void OnKeyUp(SDLKey sym, SDLMod mod, Uint16 unicode);
 
     void OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,bool Middle);
+
+    void OnDoubleClick(int mX, int mY);
 
     void OnJoyAxis(Uint8 which,Uint8 axis,Sint16 value);
 
