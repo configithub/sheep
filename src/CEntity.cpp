@@ -283,14 +283,12 @@ bool CEntity::PosValidOnMap(PointDouble& iNewPosition) {
       switch(Tile->TypeID) {
         case DOOR_STEP_RIGHT:
           if(this->_moveRight) {
-            std::cout << "go to door right" << std::endl;
             this->isTargettingPosition(true);
             this->getTargetPosition().set(_position.getX()+DOOR_MOVE_DISTANCE,_position.getY());
           }
           break;
         case DOOR_STEP_LEFT:
           if(this->_moveLeft) {
-            std::cout << "go to door left" << std::endl;
             this->isTargettingPosition(true);
             this->getTargetPosition().set(_position.getX()-DOOR_MOVE_DISTANCE,_position.getY());
           }

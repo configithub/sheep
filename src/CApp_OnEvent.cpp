@@ -114,11 +114,30 @@ void CApp::OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,
 {
   Mouse.setX(mX+_center->getX());
   Mouse.setY(mY+_center->getY());
-
-  if(MultitouchEvent::Controller.getNumberOfActivePoints() < 2) {
-    //SelectHerdAtCoord(Mouse);
-    SelectAllSheepsInCurrentRoom();
-    GoTo(Mouse);
+  int tileTypeOnMouse = CArea::AreaControl.GetTile(Mouse.getX(), Mouse.getY())->TypeID;
+  if(tileTypeOnMouse == TILE_TYPE_NORMAL) {
+    if(MultitouchEvent::Controller.getNumberOfActivePoints() < 2) {
+      //SelectHerdAtCoord(Mouse);
+      SelectAllSheepsInCurrentRoom();
+      GoTo(Mouse);
+    }
+  }else{
+    switch(tileTypeOnMouse) {
+      case TRANSLATE_LEFT:
+      _nextCenter->set(_center->getX()-WWIDTH, _center->getY());
+      break;
+      case TRANSLATE_RIGHT:
+      _nextCenter->set(_center->getX()+WWIDTH, _center->getY());
+      break;
+      case TRANSLATE_UP:
+      _nextCenter->set(_center->getX(), _center->getY()-WHEIGHT);
+      break;
+      case TRANSLATE_DOWN:
+      _nextCenter->set(_center->getX(), _center->getY()+WHEIGHT);
+      break;
+    }
+    
+    
   }
 }
 
@@ -134,7 +153,7 @@ void CApp::OnMultitouchEvent() {
     Mouse.setY(control1.getY());
     SelectHerdAtCoord(Mouse);
     GoTo(Mouse);
-  }*/
+    }*/
   if(MultitouchEvent::Controller.getNumberOfActivePoints() == 2) {
     PointDouble control1 = PointDouble(MultitouchEvent::Controller.getTouch(0).getX(), MultitouchEvent::Controller.getTouch(0).getY());
     PointDouble control2 = PointDouble(MultitouchEvent::Controller.getTouch(1).getX(), MultitouchEvent::Controller.getTouch(1).getY());
