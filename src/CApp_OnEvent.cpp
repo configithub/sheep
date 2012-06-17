@@ -138,8 +138,8 @@ void CApp::OnMultitouchEvent() {
   if(MultitouchEvent::Controller.getNumberOfActivePoints() == 2) {
     PointDouble control1 = PointDouble(MultitouchEvent::Controller.getTouch(0).getX(), MultitouchEvent::Controller.getTouch(0).getY());
     PointDouble control2 = PointDouble(MultitouchEvent::Controller.getTouch(1).getX(), MultitouchEvent::Controller.getTouch(1).getY());
-    control1 += _center;
-    control2 += _center;
+    control1 += *_center;
+    control2 += *_center;
     controls.push_back(control1);
     controls.push_back(control2);
   }
@@ -147,9 +147,9 @@ void CApp::OnMultitouchEvent() {
     PointDouble control1 = PointDouble(MultitouchEvent::Controller.getTouch(0).getX(), MultitouchEvent::Controller.getTouch(0).getY());
     PointDouble control2 = PointDouble(MultitouchEvent::Controller.getTouch(1).getX(), MultitouchEvent::Controller.getTouch(1).getY());
     PointDouble control3 = PointDouble(MultitouchEvent::Controller.getTouch(2).getX(), MultitouchEvent::Controller.getTouch(2).getY());
-    control1 += _center;
-    control2 += _center;
-    control3 += _center;
+    control1 += *_center;
+    control2 += *_center;
+    control3 += *_center;
     controls.push_back(control1);
     controls.push_back(control2);
     controls.push_back(control3);
@@ -159,10 +159,10 @@ void CApp::OnMultitouchEvent() {
     PointDouble control2 = PointDouble(MultitouchEvent::Controller.getTouch(1).getX(), MultitouchEvent::Controller.getTouch(1).getY());
     PointDouble control3 = PointDouble(MultitouchEvent::Controller.getTouch(2).getX(), MultitouchEvent::Controller.getTouch(2).getY());
     PointDouble control4 = PointDouble(MultitouchEvent::Controller.getTouch(3).getX(), MultitouchEvent::Controller.getTouch(3).getY());
-    control1 += _center;
-    control2 += _center;
-    control3 += _center;
-    control4 += _center;
+    control1 += *_center;
+    control2 += *_center;
+    control3 += *_center;
+    control4 += *_center;
     controls.push_back(control1);
     controls.push_back(control2);
     controls.push_back(control3);
