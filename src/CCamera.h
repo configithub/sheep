@@ -32,6 +32,8 @@ class CCamera {
 
     void translate(PointDouble& iPoint, double& dt);
 
+    bool& isTranslating() { return _isTranslating; }
+
   private:
     PointDouble _position;
 

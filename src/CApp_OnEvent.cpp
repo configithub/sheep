@@ -124,20 +124,28 @@ void CApp::OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,
   }else{
     switch(tileTypeOnMouse) {
       case TRANSLATE_LEFT:
-      _nextCenter->set(_center->getX()-WWIDTH, _center->getY());
-      break;
+        if(!CCamera::CameraControl.isTranslating()) {
+          _nextCenter->set(_center->getX()-WWIDTH, _center->getY());
+        }
+        break;
       case TRANSLATE_RIGHT:
-      _nextCenter->set(_center->getX()+WWIDTH, _center->getY());
-      break;
+        if(!CCamera::CameraControl.isTranslating()) {
+          _nextCenter->set(_center->getX()+WWIDTH, _center->getY());
+        }
+        break;
       case TRANSLATE_UP:
-      _nextCenter->set(_center->getX(), _center->getY()-WHEIGHT);
-      break;
+        if(!CCamera::CameraControl.isTranslating()) {
+          _nextCenter->set(_center->getX(), _center->getY()-WHEIGHT);
+        }
+        break;
       case TRANSLATE_DOWN:
-      _nextCenter->set(_center->getX(), _center->getY()+WHEIGHT);
-      break;
+        if(!CCamera::CameraControl.isTranslating()) {
+          _nextCenter->set(_center->getX(), _center->getY()+WHEIGHT);
+        }
+        break;
     }
-    
-    
+
+
   }
 }
 
