@@ -78,7 +78,7 @@ void CEntity::generateRandom(Rectangle& boundaries) {
   Rectangle mask(0,0,32,32);
   CEntity::OnLoad("./gfx/sheep6.png", mask, 4);
   
-
+  if(!this->PosValidOnMap(_position)) { this->generateRandom(boundaries); }
 
   CEntity::EntityList.push_back(this);
 }

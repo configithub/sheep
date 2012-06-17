@@ -3,48 +3,68 @@
 CCamera CCamera::CameraControl;
 
 CCamera::CCamera() {
-    X = Y = 0;
+  _position.set(0,0);
+  _target = NULL;
+  _isTranslating = false;
 
-    TargetX = TargetY = NULL;
-
-    TargetMode = TARGET_MODE_NORMAL;
+  TargetMode = TARGET_MODE_NORMAL;
 }
 
 void CCamera::OnMove(int MoveX, int MoveY) {
-    X += MoveX;
-    Y += MoveY;
+  _position.getX() += MoveX;
+  _position.getY() += MoveY;
 }
 
 int CCamera::GetX() {
-    if(TargetX != NULL) {
-        if(TargetMode == TARGET_MODE_CENTER) {
-            return *TargetX - (WWIDTH / 2);
-        }
-
-        return *TargetX;
+  if(_target != NULL) {
+    if(TargetMode == TARGET_MODE_CENTER) {
+      return _target->getX() - (WWIDTH / 2);
     }
 
-    return X;
+    return _target->getX();
+  }
+
+  return _position.getX();
 }
 
 int CCamera::GetY() {
-    if(TargetY != NULL) {
-        if(TargetMode == TARGET_MODE_CENTER) {
-            return *TargetY - (WHEIGHT / 2);
-        }
-
-        return *TargetY;
+  if(_target != NULL) {
+    if(TargetMode == TARGET_MODE_CENTER) {
+      return _target->getY() - (WHEIGHT / 2);
     }
 
-    return Y;
+    return _target->getY();
+  }
+
+  return _position.getY();
 }
 
-void CCamera::SetPos(int X, int Y) {
-    this->X = X;
-    this->Y = Y;
+
+void CCamera::translate(PointDouble& iPoint, double& dt) {
+  if( *_target == iPoint) { return; }
+
+  PointDouble dist;
+  distance(iPoint, *_target, dist);
+  if(!_isTranslating) {
+    _isTranslating = true;
+    // dt is the time between two frames
+    double entireTranslationTime = 1000; // in ms
+    _totalTranslationSteps = (int) (entireTranslationTime / dt);
+    _translationStep = 1;
+
+  }
+
+  double moveX = dist.getX() / _totalTranslationSteps;
+  double moveY = dist.getY() / _totalTranslationSteps;
+
+  _target->getX() += moveX;
+  _target->getY() += moveY;
+
+  ++_translationStep;
+  if(_translationStep == _totalTranslationSteps) {
+    _isTranslating = false;
+    *_target = iPoint;
+  }
+
 }
 
-void CCamera::SetTarget(float* X, float* Y) {
-    TargetX = X;
-    TargetY = Y;
-}

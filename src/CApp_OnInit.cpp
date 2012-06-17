@@ -42,8 +42,6 @@ bool CApp::OnInit() {
     return false;
   }
 
-  float* centerX = new float(WWIDTH/2+16);
-  float* centerY = new float(WHEIGHT/2+16);
 
   //EntityPool.reserve(1000);
   activeSheep = 1;
@@ -78,9 +76,15 @@ bool CApp::OnInit() {
   }
   //Surf_NumFont = CSurface::load_zoomed("./gfx/sheep.png", 0);
 
-  CCamera::CameraControl.TargetMode = TARGET_MODE_CENTER;
+  //float* centerX = new float(WWIDTH/2);
+  //float* centerY = new float(WHEIGHT/2);
+  //PointDouble* center = new PointDouble(WWIDTH/2, WHEIGHT/2);
+  //PointDouble* center = new PointDouble(WWIDTH, 0);
+  _center = new PointDouble(0, 0);
+
+  //CCamera::CameraControl.TargetMode = TARGET_MODE_CENTER;
   //CCamera::CameraControl.SetTarget(&Sheeps[activeSheep]->X, &Sheeps[activeSheep]->Y);
-  CCamera::CameraControl.SetTarget( centerX, centerY);
+  CCamera::CameraControl.SetTarget(_center);
 
   if(CArea::AreaControl.OnLoad("./maps/1.area") == false) {
     //std::cout << "area load unsuccessfull";
@@ -91,12 +95,12 @@ bool CApp::OnInit() {
 
   std::string levelName = "level";
 
-  Rectangle aScreenRect(33, 33, WWIDTH, WHEIGHT);
-  int key = CEntity::CurrentEntityId;
-  EntityPool[key].generateRandom(aScreenRect);
-  Sheeps.push_back(&CApp::EntityPool[key]);
+  //Rectangle aScreenRect(33, 33, WWIDTH, WHEIGHT);
+  //int key = CEntity::CurrentEntityId;
+  //EntityPool[key].generateRandom(aScreenRect);
+  //Sheeps.push_back(&CApp::EntityPool[key]);
 
-  Level::LevelInstance.next(Sheeps, levelName, 0, 2000, 1000, 2);
+  //Level::LevelInstance.next(Sheeps, levelName, 0, 2000, 1000, 2);
 
   return true;
   }

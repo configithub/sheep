@@ -96,8 +96,8 @@ void CApp::GetNearestEntityFromMouse(PointDouble& point, CFollower*& NearestEnti
 
 void CApp::OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,bool Middle)
 {
-  Mouse.setX(mX);
-  Mouse.setY(mY);
+  Mouse.setX(mX+_center->getX());
+  Mouse.setY(mY+_center->getY());
 
   if(MultitouchEvent::Controller.getNumberOfActivePoints() < 2) {
     //SelectHerdAtCoord(Mouse);
@@ -184,13 +184,31 @@ void CApp::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode)
 
     case SDLK_e: // Menu key
       {
-        AddNewSheepInPool(activeSheep);
+        Rectangle aScreenRect(33, 33, WWIDTH-33, WHEIGHT-33);
+        int key = CEntity::CurrentEntityId; 
+        CApp::EntityPool[key].generateRandom(aScreenRect);
+        Sheeps.push_back(&CApp::EntityPool[key]);
+        //AddNewSheepInPool(activeSheep);
         break;
       }
+
 
     case SDLK_f: // back key
       {
         exit(1);
+        break;
+      }
+
+    case SDLK_g:
+      {
+        _center->set(0, 0);
+        break;
+      }
+
+    case SDLK_h:
+      {
+        _center->set(WWIDTH, 0);
+        break;
       }
 
     default:

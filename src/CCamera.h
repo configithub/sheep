@@ -1,43 +1,46 @@
 #ifndef _CCAMERA_H_
-    #define _CCAMERA_H_
+#define _CCAMERA_H_
 
 #include <SDL.h>
 
 #include "Define.h"
+#include "Vectorial.h"
 
 enum {
-    TARGET_MODE_NORMAL = 0,
-    TARGET_MODE_CENTER
+  TARGET_MODE_NORMAL = 0,
+  TARGET_MODE_CENTER
 };
 
 class CCamera {
-    public:
-        static CCamera CameraControl;
+  public:
+    static CCamera CameraControl;
 
-    private:
-        int X;
-        int Y;
+    int TargetMode;
 
-        float* TargetX;
-        float* TargetY;
+    CCamera();
 
-    public:
-        int TargetMode;
+    void OnMove(int MoveX, int MoveY);
 
-    public:
-        CCamera();
+    PointDouble& GetPosition() { return _position; }
+    int GetX();
+    int GetY();
 
-    public:
-        void OnMove(int MoveX, int MoveY);
+    void SetPos(int X, int Y) { _position.set(X,Y); }
+    void SetPosition(PointDouble& iPosition) { _position = iPosition; }
 
-    public:
-        int GetX();
-        int GetY();
+    void SetTarget(PointDouble* iPositionPtr) { _target = iPositionPtr; }
 
-    public:
-        void SetPos(int X, int Y);
+    void translate(PointDouble& iPoint, double& dt);
 
-        void SetTarget(float* X, float* Y);
+  private:
+    PointDouble _position;
+
+    PointDouble* _target;
+
+    bool _isTranslating;
+    int _translationStep;
+    int _totalTranslationSteps;
+
 };
 
 #endif

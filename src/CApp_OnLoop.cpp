@@ -15,6 +15,8 @@ void CApp::OnLoop() {
   // time between two loops
   double dt = CFPS::FPSControl.GetSpeedFactor();
 
+  //CCamera::CameraControl.translate(*_center, dt);
+
   // todo, class for this
   CEntity::EntityList.clear();
   CEntity::EntityList.reserve(100);
@@ -89,7 +91,7 @@ void CApp::OnLoop() {
   }
 
   // update level information
-  Level::LevelInstance.OnLoop(Sheeps);
+  /*Level::LevelInstance.OnLoop(Sheeps);
   if( Level::LevelInstance.isOver() ) {
     if( Level::LevelInstance.isLevelSuccess() ) {
       if(Sheeps.size() <= 30 ) {
@@ -106,7 +108,7 @@ void CApp::OnLoop() {
     }else{
       Level::LevelInstance.next(Sheeps,levelName, 0, 100, 1000, 2);
     }
-  }
+  }*/
 
   CApp::updateScore();
 

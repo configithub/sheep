@@ -105,9 +105,9 @@ void CApp::OnRender() {
     OnGameOver();
   }
 
-  CSurface::OnDraw(Surf_Display, Surf_Score, 5, 5,1 ,1 ,44,9);
-
-  print_num(Surf_Display, Surf_NumFont, 50, 4, score);
+  // TODO score display here
+  //CSurface::OnDraw(Surf_Display, Surf_Score, 5, 5,1 ,1 ,44,9);
+  //print_num(Surf_Display, Surf_NumFont, 50, 4, score);
 
 
   //print_num(Surf_Display, Surf_NumFont, Surf_Display->w-117, 12, 1);

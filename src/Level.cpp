@@ -9,7 +9,7 @@ void Level::next(std::vector<CFollower*>& iSheeps, std::string& iLevelName, int 
   _preLevelDuration = iPreLevelDuration;
   _newSheepsIfSuccess = iNewSheepsIfSuccess;
   ++_levelNb;
-  Rectangle aScreenRect(1, 1, WWIDTH-33, WHEIGHT-33);
+  Rectangle aScreenRect(33, 33, WWIDTH-33, WHEIGHT-33);
 
   _grassPatches.clear();
   _grassPatches.reserve(iNbGrassPatches);
@@ -192,9 +192,10 @@ void Level::resetTiles() {
   int EndY = WHEIGHT / TILE_SIZE;
 
   // determine which tiles our entity is over
-  for(int iY = StartY; iY <= EndY; iY++) {
-    for(int iX = StartX; iX <= EndX; iX++) {
+  for(int iY = StartY; iY < EndY; iY++) {
+    for(int iX = StartX; iX < EndX; iX++) {
       CTile* Tile = CArea::AreaControl.GetTile(iX * TILE_SIZE, iY * TILE_SIZE);
+      if(Tile == NULL) { continue; }
       if(Tile->TypeID == TILE_TYPE_GRASS) {
         Tile->TileID = 15; // grass
         Tile->TypeID = TILE_TYPE_NORMAL; // grass
