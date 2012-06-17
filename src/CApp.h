@@ -46,6 +46,7 @@ class CApp : public CEvent {
     static void updateScore();
 
     PointDouble* _center;
+    PointDouble* _nextCenter;
   
     static std::vector<CFollower*> Sheeps;
     static void print_num(SDL_Surface *dst, SDL_Surface *font, int x, int y, float value);

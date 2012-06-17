@@ -15,7 +15,7 @@ void CApp::OnLoop() {
   // time between two loops
   double dt = CFPS::FPSControl.GetSpeedFactor();
 
-  //CCamera::CameraControl.translate(*_center, dt);
+  CCamera::CameraControl.translate(*_nextCenter, dt);
 
   // todo, class for this
   CEntity::EntityList.clear();

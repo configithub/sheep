@@ -81,6 +81,7 @@ bool CApp::OnInit() {
   //PointDouble* center = new PointDouble(WWIDTH/2, WHEIGHT/2);
   //PointDouble* center = new PointDouble(WWIDTH, 0);
   _center = new PointDouble(0, 0);
+  _nextCenter = new PointDouble(0, 0);
 
   //CCamera::CameraControl.TargetMode = TARGET_MODE_CENTER;
   //CCamera::CameraControl.SetTarget(&Sheeps[activeSheep]->X, &Sheeps[activeSheep]->Y);

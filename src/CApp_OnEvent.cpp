@@ -201,13 +201,13 @@ void CApp::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode)
 
     case SDLK_g:
       {
-        _center->set(0, 0);
+        _nextCenter->set(0, 0);
         break;
       }
 
     case SDLK_h:
       {
-        _center->set(WWIDTH, 0);
+        _nextCenter->set(WWIDTH, 0);
         break;
       }
 

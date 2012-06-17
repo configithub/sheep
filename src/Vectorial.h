@@ -80,6 +80,10 @@ template <class T, class V> void distance(Point<T>& a, Point<T>& b, Point<V>& oR
   oResult.set( abs(a.getX()-b.getX()), abs(a.getY()-b.getY()) );
 }
 
+template <class T, class V> void signedDistance(Point<T>& a, Point<T>& b, Point<V>& oResult) {
+  oResult.set( (a.getX()-b.getX()), (a.getY()-b.getY()) );
+}
+
 template <class T> T scalarProduct(Point<T>& a, Point<T>& b) {
   return a.getX()*b.getX() + a.getY()*b.getY();
 }

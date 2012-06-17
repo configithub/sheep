@@ -44,11 +44,11 @@ void CCamera::translate(PointDouble& iPoint, double& dt) {
   if( *_target == iPoint) { return; }
 
   PointDouble dist;
-  distance(iPoint, *_target, dist);
+  signedDistance(iPoint, *_target, dist);
   if(!_isTranslating) {
     _isTranslating = true;
     // dt is the time between two frames
-    double entireTranslationTime = 1000; // in ms
+    double entireTranslationTime = 10; // in ms
     _totalTranslationSteps = (int) (entireTranslationTime / dt);
     _translationStep = 1;
 
@@ -61,7 +61,9 @@ void CCamera::translate(PointDouble& iPoint, double& dt) {
   _target->getY() += moveY;
 
   ++_translationStep;
-  if(_translationStep == _totalTranslationSteps) {
+  PointDouble newDist;
+  distance(iPoint, *_target, newDist);
+  if(newDist.modulus() < 2){
     _isTranslating = false;
     *_target = iPoint;
   }
