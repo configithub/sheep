@@ -75,6 +75,8 @@ class CApp : public CEvent {
 
     void SelectAllSheeps();
 
+    void SelectAllSheepsInCurrentRoom();
+
     void OnLoop();
 
     void OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode);

@@ -44,6 +44,8 @@ class CEntity {
   static void dist(CEntity& entityA, CEntity& entityB, PointDouble& oResult);
 
   static void dist(CEntity& entity, PointInt& point, PointDouble& oResult);
+  static void dist(CEntity& entity, PointDouble& point, PointDouble& oResult);
+  static void signedDist(CEntity& entity, PointDouble& point, PointDouble& oResult);
 
   // keeps track of all entities addresses
   static std::vector<CEntity*> EntityList;

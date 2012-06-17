@@ -48,7 +48,7 @@ void CCamera::translate(PointDouble& iPoint, double& dt) {
   if(!_isTranslating) {
     _isTranslating = true;
     // dt is the time between two frames
-    double entireTranslationTime = 10; // in ms
+    double entireTranslationTime = 5; // in ms
     _totalTranslationSteps = (int) (entireTranslationTime / dt);
     _translationStep = 1;
 

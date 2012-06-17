@@ -82,6 +82,22 @@ void CApp::SelectAllSheeps() {
   }
 }
 
+void CApp::SelectAllSheepsInCurrentRoom() {
+  CMap* currentRoom = CArea::AreaControl.GetMap(_center->getX()+5, _center->getY()+5);
+  // get tile at center (where the camera stands)
+  
+
+  for(std::vector<CFollower*>::iterator itSheep = Sheeps.begin();
+      itSheep != Sheeps.end(); ++itSheep) {
+    CMap* currentSheepRoom = CArea::AreaControl.GetMap( (*itSheep)->getPosition().getX(), (*itSheep)->getPosition().getY());
+    if(currentRoom == currentSheepRoom) { // sheep is in currentRoom
+      (*itSheep)->id = 1;
+    }else{
+      (*itSheep)->id = 0;
+    }
+  }
+}
+
 
 void CApp::GetNearestEntityFromMouse(PointDouble& point, CFollower*& NearestEntityFromMouse, int& delta) {
   delta = 999999999;
@@ -101,7 +117,7 @@ void CApp::OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,
 
   if(MultitouchEvent::Controller.getNumberOfActivePoints() < 2) {
     //SelectHerdAtCoord(Mouse);
-    SelectAllSheeps();
+    SelectAllSheepsInCurrentRoom();
     GoTo(Mouse);
   }
 }
@@ -199,13 +215,13 @@ void CApp::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode)
         break;
       }
 
-    case SDLK_g:
+    case SDLK_c:
       {
         _nextCenter->set(0, 0);
         break;
       }
 
-    case SDLK_h:
+    case SDLK_d:
       {
         _nextCenter->set(WWIDTH, 0);
         break;

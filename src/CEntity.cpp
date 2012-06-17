@@ -107,14 +107,15 @@ bool CEntity::OnLoad(char* iFile, Rectangle& iRectangle, int iMaxFrames) {
 void CEntity::OnLoopApplyControls() {
   if(_isTargettingPosition) {
 
-    PointDouble distanceToTarget = _targetPosition - _position;
+    PointDouble distanceToTarget;
+    CEntity::signedDist(*this, _targetPosition, distanceToTarget);
 
 
     _moveLeft = false; _moveRight = false; _moveUp = false; _moveDown = false;
-    _moveLeft = distanceToTarget.getX() < -20;
-    _moveRight = distanceToTarget.getX() > 20;
-    _moveUp = distanceToTarget.getY() < -20;
-    _moveDown = distanceToTarget.getY() > 20;
+    _moveLeft = distanceToTarget.getX() < -5;
+    _moveRight = distanceToTarget.getX() > 5;
+    _moveUp = distanceToTarget.getY() < -5;
+    _moveDown = distanceToTarget.getY() > 5;
 
     if ( !_moveLeft && !_moveRight && !_moveUp && !_moveDown ) {
       //StopMove();
@@ -157,7 +158,10 @@ void CEntity::OnLoopMotionBounds() {
 
 
 void CEntity::OnLoopRealizeMotion() {
-  _position.set((_nextPosition.getX()), (_nextPosition.getY()) );
+  //_position.set((_nextPosition.getX()), (_nextPosition.getY()) );
+
+  setPosition(_nextPosition);
+
   _tileId = _nextTileId;
   _tileType = _nextTileType;
 }
@@ -275,6 +279,37 @@ bool CEntity::PosValidOnMap(PointDouble& iNewPosition) {
       _nextTileType = Tile->TypeID;
       // check collision with the map
       if(PosValidTile(Tile) == false)   { return false; }
+      // Door step
+      switch(Tile->TypeID) {
+        case DOOR_STEP_RIGHT:
+          if(this->_moveRight) {
+            std::cout << "go to door right" << std::endl;
+            this->isTargettingPosition(true);
+            this->getTargetPosition().set(_position.getX()+DOOR_MOVE_DISTANCE,_position.getY());
+          }
+          break;
+        case DOOR_STEP_LEFT:
+          if(this->_moveLeft) {
+            std::cout << "go to door left" << std::endl;
+            this->isTargettingPosition(true);
+            this->getTargetPosition().set(_position.getX()-DOOR_MOVE_DISTANCE,_position.getY());
+          }
+          break;
+        case DOOR_STEP_UP:
+          if(this->_moveUp) {
+            this->isTargettingPosition(true);
+            this->getTargetPosition().set(_position.getX(), _position.getY()-DOOR_MOVE_DISTANCE);
+          }
+          break;
+        case DOOR_STEP_DOWN:
+          if(this->_moveDown) {
+            this->isTargettingPosition(true);
+            this->getTargetPosition().set(_position.getX(), _position.getY()+DOOR_MOVE_DISTANCE);
+          }
+          break;
+      }
+      
+      
     }
   }
   return true;
@@ -351,5 +386,15 @@ void CEntity::dist(CEntity& entityA, CEntity& entityB, PointDouble& oResult) {
 
 void CEntity::dist(CEntity& entity, PointInt& point, PointDouble& oResult) {
   distance(entity.getCenter(), point, oResult);
+}
+
+void CEntity::dist(CEntity& entity, PointDouble& point, PointDouble& oResult) {
+  //oResult.set( abs(entity.getCenter().getX() - point.getX()) , abs(entity.getCenter().getY() - point.getY()) );
+  oResult.set( abs(entity.getPosition().getX() - point.getX()) , abs(entity.getPosition().getY() - point.getY()) );
+}
+
+void CEntity::signedDist(CEntity& entity, PointDouble& point, PointDouble& oResult) {
+  //oResult.set( abs(entity.getCenter().getX() - point.getX()) , abs(entity.getCenter().getY() - point.getY()) );
+  oResult.set( ( - entity.getCenter().getX() + point.getX()) , ( - entity.getCenter().getY() + point.getY()) );
 }
 

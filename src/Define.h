@@ -15,4 +15,6 @@
 
 #define FIXED_FPS    40
 
+#define DOOR_MOVE_DISTANCE 32
+
 #endif
