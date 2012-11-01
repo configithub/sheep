@@ -69,8 +69,10 @@ Release_target : Release_target.before $(Release_target.BIN) Release_target.afte
 Release_target : CFLAGS +=  
 Release_target : INCLUDES += -I/usr/lib -I/usr/include/SDL 
 Release_target : RCFLAGS += 
-Release_target : LDFLAGS +=  -lSDLmain -lSDL -lSDL_image -lSDL_gfx -L/usr/lib   
-Release_target : T_LDLIBS = /usr/lib/libSDLmain.a /usr/lib/libSDL.a /usr/lib/libSDL_image.a /usr/lib/libSDL_gfx.a 
+Release_target : LDFLAGS +=  -lSDLmain -lSDL -lSDL_image -L/usr/lib   
+#Release_target : LDFLAGS +=  -lSDLmain -lSDL -lSDL_image -lSDL_gfx -L/usr/lib   
+Release_target : T_LDLIBS = /usr/lib/libSDLmain.a /usr/lib/libSDL.a /usr/lib/libSDL_image.a
+#Release_target : T_LDLIBS = /usr/lib/libSDLmain.a /usr/lib/libSDL.a /usr/lib/libSDL_image.a /usr/lib/libSDL_gfx.a 
 
 Release_target.before :
 	

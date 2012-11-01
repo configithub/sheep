@@ -17,6 +17,12 @@ CEntity::CEntity()
   _position.set(100,100);
 
 
+  // locks
+  _lockLeft = 0;
+  _lockRight = 0;
+  _lockUp = 0;
+  _lockDown = 0;
+
   _isTargettingPosition = false;
 
   _nextPosition.set(100, 100);
@@ -60,7 +66,7 @@ CEntity::CEntity()
   // to identify the entity for debugging
   _entityId=CEntity::CurrentEntityId;
   //std::cout << "creating entity " << _entityId << std::endl;
-  
+
   ++CEntity::CurrentEntityId;
 
 }
@@ -77,7 +83,7 @@ void CEntity::generateRandom(Rectangle& boundaries) {
 
   Rectangle mask(0,0,32,32);
   CEntity::OnLoad("./gfx/sheep6.png", mask, 4);
-  
+
   if(!this->PosValidOnMap(_position)) { this->generateRandom(boundaries); }
 
   CEntity::EntityList.push_back(this);
@@ -85,9 +91,7 @@ void CEntity::generateRandom(Rectangle& boundaries) {
 
 
 
-CEntity::~CEntity()
-{
-}
+CEntity::~CEntity() { }
 
 bool CEntity::OnLoad(char* iFile, Rectangle& iRectangle, int iMaxFrames) {
   if(_sdlSurface == NULL) {
@@ -132,10 +136,10 @@ void CEntity::OnLoopDeriveAndCapSpeed(double& dt) {
   //We're not Moving
   if ( !_moveLeft && !_moveRight && !_moveUp && !_moveDown ) { StopMove(); }
 
-  if(_moveLeft ) { _accel.setX(-0.5); }
-  else if(_moveRight) { _accel.setX(0.5); }
-  if(_moveUp ) { _accel.setY(-0.5); }
-  else if(_moveDown) { _accel.setY(0.5); }
+  if(_moveLeft ) { _accel.setX(-0.5); _lockRight=0; }
+  else if(_moveRight) { _accel.setX(0.5); _lockLeft=0; }
+  if(_moveUp ) { _accel.setY(-0.5); _lockDown=0; }
+  else if(_moveDown) { _accel.setY(0.5); _lockUp=0; }
 
   // set speed according to acceleration
   // FPS control is included to be consistent across various system perfs
@@ -204,21 +208,31 @@ void CEntity::OnMove(Point<double>& vel, double& dt) {
 
     Point<double> testPosition((_nextPosition.getX()+planck.getX()), (_nextPosition.getY()+planck.getY()));
     if(_behavior & ENTITY_FLAG_GHOST) {
+
       PosValidOnMap(testPosition);
       _nextPosition = testPosition;
+
     } else {
 
       Point<double> testPositionX((_nextPosition.getX()+planck.getX()), (_nextPosition.getY()));
       if( PosValidOnMap(testPositionX) ) {
         _nextPosition = testPositionX;
 
-      } else { _speed.setX(0); }
+      } else { 
+        if( _speed.getX() > 0 ) { _lockRight = 1; }
+        if( _speed.getX() < 0 ) { _lockLeft = 1; }
+        _speed.setX(0);
+      }
 
       Point<double> testPositionY((_nextPosition.getX()), (_nextPosition.getY()+planck.getY()));
       if( PosValidOnMap(testPositionY) ) {
         _nextPosition = testPositionY;
 
-      } else { _speed.setY(0); }
+      } else {
+        if( _speed.getY() > 0 ) { _lockDown = 1; }
+        if( _speed.getY() < 0 ) { _lockUp = 1; }
+        _speed.setY(0);
+       }
 
     }
     dl -= planck;
@@ -306,8 +320,8 @@ bool CEntity::PosValidOnMap(PointDouble& iNewPosition) {
           }
           break;
       }
-      
-      
+
+
     }
   }
   return true;

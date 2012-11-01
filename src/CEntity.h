@@ -144,6 +144,13 @@ class CEntity {
 
   bool& removeAtNextLoop() { return _removeAtNextLoop; }
 
+
+  // locks
+  int _lockLeft;
+  int _lockRight;
+  int _lockDown;
+  int _lockUp;
+
   protected:
   bool _removeAtNextLoop;
 
@@ -196,6 +203,7 @@ class CEntity {
   CAnimation _animControl;
   int _currentFrameCol;
   int _currentFrameRow;
+
 
 };
 

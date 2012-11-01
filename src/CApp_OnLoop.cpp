@@ -82,7 +82,7 @@ void CApp::OnLoop() {
     (*itEntity)->OnMove((*itEntity)->getSpeed(), dt);
   }
 
-  SolveCollisions(3, dt);
+  SolveCollisions(5, dt);
 
   // fill collision container by checking every speculative collisions
   for(std::vector<CEntity*>::iterator itEntity = CEntity::EntityList.begin(); itEntity != CEntity::EntityList.end(); ++itEntity) {
@@ -148,28 +148,72 @@ void CApp::SolveCollisions(int numIterations, double& dt) {
 
       CEntityCol& contact = itEntityCol->second;
 
+      contact.updateContactSize();
       if(contact._rectangle.isVoid()) { continue; }
       CEntity& EntityA = *(contact.EntityA);
       CEntity& EntityB = *(contact.EntityB);
 
-      //int flip = rand()%2;
       if(contact._rectangle.getWidth() >= contact._rectangle.getHeight()) { // vertical collision
-      //if(flip) { // vertical collision
-        PointDouble repulsA = PointDouble(0, (sign(EntityA.getNextPosition().getY() - EntityB.getNextPosition().getY()) * contact._rectangle.getHeight())/2);
-        PointDouble repulsB = PointDouble(0, -(sign(EntityA.getNextPosition().getY() - EntityB.getNextPosition().getY()) * contact._rectangle.getHeight())/2);
-        EntityA.OnMove(repulsA, dt);
-        EntityB.OnMove(repulsB, dt);
+
+        //if(EntityA._lockDown + EntityA._lockUp + EntityB._lockDown + EntityB._lockUp == 0) {
+          PointDouble repulsA = PointDouble(0, (sign(EntityA.getNextPosition().getY()
+                               - EntityB.getNextPosition().getY()) * contact._rectangle.getHeight())/2);
+          PointDouble repulsB = PointDouble(0, -(sign(EntityA.getNextPosition().getY()
+                               - EntityB.getNextPosition().getY()) * contact._rectangle.getHeight())/2);
+          EntityA.OnMove(repulsA, dt);
+          EntityB.OnMove(repulsB, dt);
+
+        /*}else if( EntityA._lockDown && EntityA.getNextPosition().getY() > EntityB.getNextPosition().getY() ) {
+          PointDouble repulsB = PointDouble(0, -(sign(EntityA.getNextPosition().getY()
+                               - EntityB.getNextPosition().getY()) * contact._rectangle.getHeight()));
+          EntityB.OnMove(repulsB, dt);
+          EntityB._lockDown = 1;
+        }else if( EntityA._lockUp && EntityA.getNextPosition().getY() < EntityB.getNextPosition().getY() ) {
+          PointDouble repulsB = PointDouble(0, -(sign(EntityA.getNextPosition().getY()
+                               - EntityB.getNextPosition().getY()) * contact._rectangle.getHeight()));
+          EntityB.OnMove(repulsB, dt);
+          EntityB._lockUp = 1;
+        }else if( EntityB._lockDown && EntityB.getNextPosition().getY() > EntityA.getNextPosition().getY() ) {
+          PointDouble repulsA = PointDouble(0, -(sign(EntityB.getNextPosition().getY()
+                               - EntityA.getNextPosition().getY()) * contact._rectangle.getHeight()));
+          EntityA.OnMove(repulsA, dt);
+          EntityA._lockDown = 1;
+        }else if( EntityB._lockUp && EntityB.getNextPosition().getY() < EntityA.getNextPosition().getY() ) {
+          PointDouble repulsA = PointDouble(0, -(sign(EntityB.getNextPosition().getY()
+                               - EntityA.getNextPosition().getY()) * contact._rectangle.getHeight()));
+          EntityA.OnMove(repulsA, dt);
+          EntityA._lockUp = 1;
+        }*/
       } else { // latteral collision
-        PointDouble repulsA = PointDouble((sign(EntityA.getNextPosition().getX() - EntityB.getNextPosition().getX()) * contact._rectangle.getWidth())/2, 0);
-        PointDouble repulsB = PointDouble(-(sign(EntityA.getNextPosition().getX() - EntityB.getNextPosition().getX()) * contact._rectangle.getWidth())/2, 0);
-        EntityA.OnMove( repulsA, dt);
-        EntityB.OnMove( repulsB, dt);
+        //if(EntityA._lockRight + EntityA._lockLeft + EntityB._lockRight + EntityB._lockLeft == 0) {
+          PointDouble repulsA = PointDouble((sign(EntityA.getNextPosition().getX() 
+                                - EntityB.getNextPosition().getX()) * contact._rectangle.getWidth())/2, 0);
+          PointDouble repulsB = PointDouble(-(sign(EntityA.getNextPosition().getX()
+                                - EntityB.getNextPosition().getX()) * contact._rectangle.getWidth())/2, 0);
+          EntityA.OnMove( repulsA, dt);
+          EntityB.OnMove( repulsB, dt);
+        /*}else if( EntityA._lockRight && EntityA.getNextPosition().getX() > EntityB.getNextPosition().getX() ) {
+          PointDouble repulsB = PointDouble(-(sign(EntityA.getNextPosition().getX()
+                                - EntityB.getNextPosition().getX()) * contact._rectangle.getWidth()), 0);
+          EntityB.OnMove( repulsB, dt);
+          EntityB._lockRight = 1;
+        }else if( EntityA._lockLeft && EntityA.getNextPosition().getX() < EntityB.getNextPosition().getX() ) {
+          PointDouble repulsB = PointDouble(-(sign(EntityA.getNextPosition().getX()
+                                - EntityB.getNextPosition().getX()) * contact._rectangle.getWidth()), 0);
+          EntityB.OnMove( repulsB, dt);
+          EntityB._lockLeft = 1;
+        }else if( EntityB._lockRight && EntityB.getNextPosition().getX() > EntityA.getNextPosition().getX() ) {
+          PointDouble repulsA = PointDouble(-(sign(EntityB.getNextPosition().getX()
+                                - EntityA.getNextPosition().getX()) * contact._rectangle.getWidth()), 0);
+          EntityA.OnMove( repulsA, dt);
+          EntityA._lockRight = 1;
+        }else if( EntityB._lockLeft && EntityB.getNextPosition().getX() < EntityA.getNextPosition().getX() ) {
+          PointDouble repulsA = PointDouble(-(sign(EntityB.getNextPosition().getX()
+                                - EntityA.getNextPosition().getX()) * contact._rectangle.getWidth()), 0);
+          EntityA.OnMove( repulsA, dt);
+          EntityA._lockLeft = 1;
+        }*/
       }
-        //PointDouble repulsA = PointDouble( (sign(EntityA.getNextPosition().getX() - EntityB.getNextPosition().getX()) * contact._rectangle.getWidth())/2, (sign(EntityA.getNextPosition().getY() - EntityB.getNextPosition().getY()) * contact._rectangle.getHeight())/2);
-        //PointDouble repulsB = PointDouble( -(sign(EntityA.getNextPosition().getX() - EntityB.getNextPosition().getX()) * contact._rectangle.getWidth())/2, -(sign(EntityA.getNextPosition().getY() - EntityB.getNextPosition().getY()) * contact._rectangle.getHeight())/2);
-        //EntityA.OnMove(repulsA, dt);
-        //EntityB.OnMove(repulsB, dt);
-      contact.updateContactSize();
     }
 
   }
