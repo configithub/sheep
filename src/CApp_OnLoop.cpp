@@ -48,6 +48,32 @@ void CApp::OnLoop() {
     EffectPool.erase(*itId);
   }  
   entitiesToRemove.clear();
+  for(std::map<int,Bomb>::iterator itBomb = CApp::BombPool.begin(); 
+    itBomb != CApp::BombPool.end(); ++itBomb) { 
+    if(!itBomb->second.removeAtNextLoop()) {
+      CEntity::EntityList.push_back(&(itBomb->second));
+    }else{
+      entitiesToRemove.push_back(itBomb->second.getEntityId());
+    }
+  } 
+  for(std::vector<int>::iterator itId = entitiesToRemove.begin(); 
+    itId != entitiesToRemove.end(); ++itId) { 
+    BombPool.erase(*itId);
+  }  
+  entitiesToRemove.clear();
+  for(std::map<int,Switch>::iterator itSwitch = CApp::SwitchPool.begin(); 
+    itSwitch != CApp::SwitchPool.end(); ++itSwitch) { 
+    if(!itSwitch->second.removeAtNextLoop()) {
+      CEntity::EntityList.push_back(&(itSwitch->second));
+    }else{
+      entitiesToRemove.push_back(itSwitch->second.getEntityId());
+    }
+  } 
+  for(std::vector<int>::iterator itId = entitiesToRemove.begin(); 
+    itId != entitiesToRemove.end(); ++itId) { 
+    SwitchPool.erase(*itId);
+  }  
+  entitiesToRemove.clear();
   for(std::map<int,Bomb>::iterator itBomb = Level::LevelInstance.getBombs().begin(); 
     itBomb != Level::LevelInstance.getBombs().end(); ++itBomb) { 
     if(!itBomb->second.hasExploded()) {

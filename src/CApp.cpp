@@ -3,6 +3,8 @@
 
  std::map<int, CFollower> CApp::EntityPool;
  std::map<int, Effect> CApp::EffectPool;
+ std::map<int, Bomb> CApp::BombPool;
+ std::map<int, Switch> CApp::SwitchPool;
 
  std::vector<CFollower*> CApp::Sheeps;
  int CApp::score=0; 

@@ -14,6 +14,8 @@
 #include "MultitouchEvent.h"
 #include "CFPS.h"
 #include "Effect.h"
+#include "Bomb.h"
+#include "Switch.h"
 
 
 class CApp : public CEvent {
@@ -41,6 +43,8 @@ class CApp : public CEvent {
 
   public:
 
+    //static PointDouble& getMouse() { return Mouse; }
+
     static int score;
     static int scoreTimer;
     static void updateScore();
@@ -51,7 +55,9 @@ class CApp : public CEvent {
     static std::vector<CFollower*> Sheeps;
     static void print_num(SDL_Surface *dst, SDL_Surface *font, int x, int y, float value);
     static std::map<int, CFollower> EntityPool;
+    static std::map<int, Switch> SwitchPool;
     static std::map<int, Effect> EffectPool;
+    static std::map<int, Bomb> BombPool;
 
     static SDL_Surface*    Surf_NumFont;
     static SDL_Surface*    Surf_NumFontBomb;
@@ -120,6 +126,8 @@ class CApp : public CEvent {
     void OthersStop();
 
     void OnGameOver();
+
+    void triggerSwitchesOnTouch();
 };
 
 #endif

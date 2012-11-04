@@ -34,6 +34,7 @@ class CEntity {
   // Friend classes
   friend class CFollower;
   friend class Effect;
+  friend class Switch;
   friend class Bomb;
 
   // Public members

@@ -110,6 +110,16 @@ void CApp::GetNearestEntityFromMouse(PointDouble& point, CFollower*& NearestEnti
   }
 }
 
+void CApp::triggerSwitchesOnTouch() {
+
+  for(std::map<int,Switch>::iterator itSwitch = SwitchPool.begin(); 
+      itSwitch != SwitchPool.end(); ++itSwitch) { 
+    itSwitch->second.triggerOnTouch(Mouse);    
+  } 
+
+}
+
+
 void CApp::OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,bool Middle)
 {
   Mouse.setX(mX+_center->getX());
@@ -120,6 +130,7 @@ void CApp::OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,
       //SelectHerdAtCoord(Mouse);
       SelectAllSheepsInCurrentRoom();
       GoTo(Mouse);
+      triggerSwitchesOnTouch();
     }
   }else{
     switch(tileTypeOnMouse) {

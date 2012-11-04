@@ -72,6 +72,11 @@ bool CSurface::OnInit() {
   if( (explosionSurface = CSurface::OnLoad("./gfx/explosion.png")) == NULL ) { return false; }
   Sprites.push_back(explosionSurface);
 
+  // switch
+  SDL_Surface* switchSurface = NULL;
+  if( (switchSurface = CSurface::OnLoad("./gfx/switch.png")) == NULL ) { return false; }
+  Sprites.push_back(switchSurface);
+
   return true;
 }
 

@@ -22,10 +22,6 @@ void Level::next(std::vector<CFollower*>& iSheeps, std::string& iLevelName, int 
     _grassPatches.back().isValidated() = false;
   }
 
-  //_bombs.clear();
-
-  //Bomb aBomb;
-  //_bombs.insert(std::make_pair(aBomb.getEntityId(), aBomb));
 
   int nbNewBombs = rand() %3 +1;
 
@@ -34,7 +30,6 @@ void Level::next(std::vector<CFollower*>& iSheeps, std::string& iLevelName, int 
     _bombs[key].generateRandom(aScreenRect);
   }
 
-  //aScreenRect.set(60, 60, WWIDTH-60, WHEIGHT-60);
   if(_levelNb % 10 == 0 && !iSheeps.empty()) {
     int key = CEntity::CurrentEntityId;
     CApp::EntityPool[key].generateRandom(aScreenRect);
@@ -42,7 +37,6 @@ void Level::next(std::vector<CFollower*>& iSheeps, std::string& iLevelName, int 
   }
   if(iSheeps.empty()) {
     _gameOver = true;
-    //std::cout << "Level: game over" << std::endl;
   }
 
   _isRunning = false;
@@ -135,13 +129,11 @@ void Level::OnLoop(std::vector<CFollower*>& iSheeps) {
       itBomb != _bombs.end(); ++itBomb) {
     if(itBomb->second.hasExploded()) {
       bombIdsToRemove.push_back(itBomb->second.getEntityId());
-      //std::cout << "bomb id matching: " <<  itBomb->first << " " << itBomb->second.getEntityId() << std::endl;
     }
   }
 
   for(std::vector<int>::iterator itId = bombIdsToRemove.begin(); 
       itId != bombIdsToRemove.end(); ++itId) { 
-    //std::cout << "erase bomb " << *itId << std::endl;
     _bombs.erase(*itId);
   }  
 
