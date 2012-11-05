@@ -5,6 +5,7 @@
 bool Switch::OnLoad(char* File, int Width, int Height, int MaxFrames) {
 
   _sdlSurface = CSurface::Sprites[3];
+  _type = SWITCH;
   
   Rectangle mask(0,0,Width,Height);
   if(CEntity::OnLoad(File, mask, MaxFrames) == false) {
@@ -72,7 +73,7 @@ void Switch::triggerOnTouch(PointDouble& iMouse) {
   PointDouble distance;
   CEntity::dist(*this, iMouse, distance);
 
-  if ( distance.getX() < 16 && distance.getY() < 16 ) {
+  if ( distance.getX() < 32 && distance.getY() < 32 ) {
     trigger();
   }
 

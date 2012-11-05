@@ -179,66 +179,46 @@ void CApp::SolveCollisions(int numIterations, double& dt) {
       CEntity& EntityA = *(contact.EntityA);
       CEntity& EntityB = *(contact.EntityB);
 
+      //std::cout<< EntityA.getType() << std::endl;
+      //std::cout<< EntityB.getType() << std::endl;
+
       if(contact._rectangle.getWidth() >= contact._rectangle.getHeight()) { // vertical collision
 
-        //if(EntityA._lockDown + EntityA._lockUp + EntityB._lockDown + EntityB._lockUp == 0) {
+        if(EntityA.getType() == EntityB.getType() ) {
           PointDouble repulsA = PointDouble(0, (sign(EntityA.getNextPosition().getY()
                                - EntityB.getNextPosition().getY()) * contact._rectangle.getHeight())/2);
           PointDouble repulsB = PointDouble(0, -(sign(EntityA.getNextPosition().getY()
                                - EntityB.getNextPosition().getY()) * contact._rectangle.getHeight())/2);
           EntityA.OnMove(repulsA, dt);
           EntityB.OnMove(repulsB, dt);
+        }else if (EntityA.getType() > EntityB.getType() ) { // A heavier than B : A does not move
+          PointDouble repulsB = PointDouble(0, -(sign(EntityA.getNextPosition().getY()
+                               - EntityB.getNextPosition().getY()) * contact._rectangle.getHeight()));
+          EntityB.OnMove(repulsB, dt);
+        }else if (EntityB.getType() > EntityA.getType() ) { // B heavier than A : B does not move
+          PointDouble repulsA = PointDouble(0, -(sign(EntityB.getNextPosition().getY()
+                               - EntityA.getNextPosition().getY()) * contact._rectangle.getHeight()));
+          EntityA.OnMove(repulsA, dt);
+        }
 
-        /*}else if( EntityA._lockDown && EntityA.getNextPosition().getY() > EntityB.getNextPosition().getY() ) {
-          PointDouble repulsB = PointDouble(0, -(sign(EntityA.getNextPosition().getY()
-                               - EntityB.getNextPosition().getY()) * contact._rectangle.getHeight()));
-          EntityB.OnMove(repulsB, dt);
-          EntityB._lockDown = 1;
-        }else if( EntityA._lockUp && EntityA.getNextPosition().getY() < EntityB.getNextPosition().getY() ) {
-          PointDouble repulsB = PointDouble(0, -(sign(EntityA.getNextPosition().getY()
-                               - EntityB.getNextPosition().getY()) * contact._rectangle.getHeight()));
-          EntityB.OnMove(repulsB, dt);
-          EntityB._lockUp = 1;
-        }else if( EntityB._lockDown && EntityB.getNextPosition().getY() > EntityA.getNextPosition().getY() ) {
-          PointDouble repulsA = PointDouble(0, -(sign(EntityB.getNextPosition().getY()
-                               - EntityA.getNextPosition().getY()) * contact._rectangle.getHeight()));
-          EntityA.OnMove(repulsA, dt);
-          EntityA._lockDown = 1;
-        }else if( EntityB._lockUp && EntityB.getNextPosition().getY() < EntityA.getNextPosition().getY() ) {
-          PointDouble repulsA = PointDouble(0, -(sign(EntityB.getNextPosition().getY()
-                               - EntityA.getNextPosition().getY()) * contact._rectangle.getHeight()));
-          EntityA.OnMove(repulsA, dt);
-          EntityA._lockUp = 1;
-        }*/
       } else { // latteral collision
-        //if(EntityA._lockRight + EntityA._lockLeft + EntityB._lockRight + EntityB._lockLeft == 0) {
+        if(EntityA.getType() == EntityB.getType() ) {
           PointDouble repulsA = PointDouble((sign(EntityA.getNextPosition().getX() 
                                 - EntityB.getNextPosition().getX()) * contact._rectangle.getWidth())/2, 0);
           PointDouble repulsB = PointDouble(-(sign(EntityA.getNextPosition().getX()
                                 - EntityB.getNextPosition().getX()) * contact._rectangle.getWidth())/2, 0);
           EntityA.OnMove( repulsA, dt);
           EntityB.OnMove( repulsB, dt);
-        /*}else if( EntityA._lockRight && EntityA.getNextPosition().getX() > EntityB.getNextPosition().getX() ) {
+        }else if (EntityA.getType() > EntityB.getType() ) { // A heavier than B : A does not move
           PointDouble repulsB = PointDouble(-(sign(EntityA.getNextPosition().getX()
                                 - EntityB.getNextPosition().getX()) * contact._rectangle.getWidth()), 0);
           EntityB.OnMove( repulsB, dt);
-          EntityB._lockRight = 1;
-        }else if( EntityA._lockLeft && EntityA.getNextPosition().getX() < EntityB.getNextPosition().getX() ) {
-          PointDouble repulsB = PointDouble(-(sign(EntityA.getNextPosition().getX()
+        }else if (EntityB.getType() > EntityA.getType() ) { // B heavier than A : B does not move
+          PointDouble repulsA = PointDouble((sign(EntityA.getNextPosition().getX() 
                                 - EntityB.getNextPosition().getX()) * contact._rectangle.getWidth()), 0);
-          EntityB.OnMove( repulsB, dt);
-          EntityB._lockLeft = 1;
-        }else if( EntityB._lockRight && EntityB.getNextPosition().getX() > EntityA.getNextPosition().getX() ) {
-          PointDouble repulsA = PointDouble(-(sign(EntityB.getNextPosition().getX()
-                                - EntityA.getNextPosition().getX()) * contact._rectangle.getWidth()), 0);
           EntityA.OnMove( repulsA, dt);
-          EntityA._lockRight = 1;
-        }else if( EntityB._lockLeft && EntityB.getNextPosition().getX() < EntityA.getNextPosition().getX() ) {
-          PointDouble repulsA = PointDouble(-(sign(EntityB.getNextPosition().getX()
-                                - EntityA.getNextPosition().getX()) * contact._rectangle.getWidth()), 0);
-          EntityA.OnMove( repulsA, dt);
-          EntityA._lockLeft = 1;
-        }*/
+        }
+
       }
     }
 

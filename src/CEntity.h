@@ -21,7 +21,8 @@ class CEntity {
   // Enums used in this class
   typedef enum {
     ENTITY_TYPE_GENERIC = 0,
-    ENTITY_TYPE_PLAYER
+    ENTITY_TYPE_PLAYER,
+    SWITCH
   } EN_EntityType;
 
   typedef enum {
@@ -39,6 +40,8 @@ class CEntity {
 
   // Public members
   public:
+
+  EN_EntityType getType() { return _type; }
 
   void generateRandom(Rectangle& boundaries);
 

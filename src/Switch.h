@@ -8,6 +8,7 @@ class Switch : public CEntity {
   public:
 
     Switch(): _isPushed(false), _delay(400), _actionId(0), _triggerId(0) {
+      _type = SWITCH;
     }
 
 
