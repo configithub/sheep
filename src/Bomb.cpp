@@ -43,8 +43,8 @@ void Bomb::OnAnimate() {
 
 void Bomb::generateRandom(Rectangle& boundaries) {
   int x,y;
-  x = abs (std::min( (int)(rand() % (boundaries.getWidth() ) + boundaries.getCorner().getX()), WWIDTH-33) );
-  y = abs (std::min( (int)(rand() % (boundaries.getHeight() ) + boundaries.getCorner().getY()), WHEIGHT-33) );
+  x = abs (std::min( (int)(rand() % (boundaries.getWidth() ) + boundaries.getCorner().getX()), boundaries.getCorner().getX() ) );
+  y = abs (std::min( (int)(rand() % (boundaries.getHeight() ) + boundaries.getCorner().getY()), boundaries.getCorner().getY() ) );
 
   _position.set(x,y);
   _nextPosition.set(x,y);
@@ -104,7 +104,7 @@ void Bomb::explode(std::vector<CFollower*>& iSheeps) {
     int key = CEntity::CurrentEntityId;
     Effect& explosion = CApp::EffectPool[key];
     explosion.OnLoad("./gfx/explosion.png", 50, 32, 4); 
-    PointDouble position( abs( std::min( (int) (this->getPosition().getX() -10 + rand() % 20) , WWIDTH-33)) ,abs( std::min( (int) (this->getPosition().getY() -10 + rand() % 20), WHEIGHT-33)) );
+    PointDouble position( abs( std::min( (int) (this->getPosition().getX() -10 + rand() % 20) ,(int) this->getPosition().getX() )) ,abs( std::min( (int) (this->getPosition().getY() -10 + rand() % 20), (int) this->getPosition().getY() )) );
     explosion.setPosition(position, true);
   }
 

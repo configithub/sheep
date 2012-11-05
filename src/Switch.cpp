@@ -63,7 +63,7 @@ void Switch::trigger() {
   _startTime = SDL_GetTicks();   
 
   if(_actionId == 0) {
-    //spawnBombInRoom();
+    spawnBombInRoom();
   }
 
 }

@@ -56,6 +56,13 @@ void CApp::OnLoop() {
       entitiesToRemove.push_back(itBomb->second.getEntityId());
     }
   } 
+  for(std::map<int,Bomb>::iterator itBomb = CApp::BombPool.begin();
+      itBomb != CApp::BombPool.end(); ++itBomb) {
+    itBomb->second.explode(CApp::Sheeps);
+    if(itBomb->second.hasExploded()) {
+      entitiesToRemove.push_back(itBomb->second.getEntityId());
+    }
+  }
   for(std::vector<int>::iterator itId = entitiesToRemove.begin(); 
     itId != entitiesToRemove.end(); ++itId) { 
     BombPool.erase(*itId);
