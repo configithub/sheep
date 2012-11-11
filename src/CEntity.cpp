@@ -5,6 +5,8 @@
 
 
 std::vector<CEntity*>     CEntity::EntityList;
+std::vector<CEntity*>     CEntity::NextEntityList;
+std::vector<CEntity*>     CEntity::EntityListToRemove;
 int CEntity::CurrentEntityId = 0;
 
 
@@ -82,18 +84,30 @@ void CEntity::generateRandom(Rectangle& boundaries) {
   _sdlSurface = CSurface::Sprites[0];
 
   Rectangle mask(0,0,32,32);
-  CEntity::OnLoad("./gfx/sheep6.png", mask, 4);
+  OnLoad("./gfx/sheep6.png", mask, 4);
 
-  if(!this->PosValidOnMap(_position)) { this->generateRandom(boundaries); }
+  if(!this->PosValidOnMap(_position)) { this->generateRandom(boundaries); }else{
+    CEntity::EntityList.push_back(this);
+  }
 
-  CEntity::EntityList.push_back(this);
 }
 
 
 
 CEntity::~CEntity() { }
 
+void CEntity::OnLoop() {
+  if(!_removeAtNextLoop) {
+    CEntity::NextEntityList.push_back(this);
+  }else{
+    CEntity::EntityListToRemove.push_back(this);
+  }
+}
+
 bool CEntity::OnLoad(char* iFile, Rectangle& iRectangle, int iMaxFrames) {
+
+  std::cout<< "CEntity OnLoad" << std::endl;
+  
   if(_sdlSurface == NULL) {
     std::cout << "loading image file: " << iFile << std::endl;
     if((_sdlSurface = CSurface::OnLoad(iFile)) == NULL) {
@@ -352,6 +366,7 @@ void CEntity::updateCollisionMask() {
 
 // detect all collisions
 bool CEntity::PosValidOnEntities() {
+  
   bool result = true;
   if(_behavior & ENTITY_FLAG_MAPONLY || _behavior & ENTITY_FLAG_GHOST) {
   } else {
@@ -369,6 +384,7 @@ bool CEntity::PosValidOnEntities() {
 // position validity check against other entity
 // adds a new inter entity collision in the entity collision stack
 bool CEntity::PosValidEntity(CEntity* iEntity) {
+  
   bool result = true;
   if(this != iEntity && iEntity != NULL && iEntity->_dead == false &&
       iEntity->_behavior ^ ENTITY_FLAG_MAPONLY) {
@@ -379,11 +395,13 @@ bool CEntity::PosValidEntity(CEntity* iEntity) {
     EntityCol.EntityA = this;
     EntityCol.EntityB = iEntity;
     if(!result) {
+      
       int idA; int idB;
       if(_entityId > iEntity->_entityId) { idA = iEntity->_entityId; idB = _entityId; } else{ idB = iEntity->_entityId; idA = _entityId; }
       CEntityCol::EntityColList.insert(std::make_pair(std::make_pair(idA, idB), EntityCol));
     }
   }
+  
   return result;
 }
 

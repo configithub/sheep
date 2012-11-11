@@ -48,7 +48,7 @@ void CApp::getActiveGroup(std::vector<CFollower*>& ioGroup) {
 
   for(std::vector<CFollower*>::iterator itFollower = ioGroup.begin();
       itFollower != ioGroup.end(); ++itFollower) {
-    (*itFollower)->id = 1;
+    (*itFollower)->_selection = 1;
   }
 
 
@@ -57,7 +57,7 @@ void CApp::getActiveGroup(std::vector<CFollower*>& ioGroup) {
     for(std::vector<CFollower*>::iterator itSheep = Sheeps.begin();
         itSheep != Sheeps.end(); ++itSheep) {
       PointDouble distPoint; distance( (*itFollower)->getPosition(), (*itSheep)->getPosition(), distPoint);
-      if( distPoint.modulus() < delta && (*itSheep)->id == 0) {
+      if( distPoint.modulus() < delta && (*itSheep)->_selection == 0) {
         resultGroup.push_back(*itSheep);
       }
     }
@@ -71,14 +71,14 @@ void CApp::getActiveGroup(std::vector<CFollower*>& ioGroup) {
 void CApp::DeselectAllSheeps() {
   for(std::vector<CFollower*>::iterator itSheep = Sheeps.begin();
       itSheep != Sheeps.end(); ++itSheep) {
-    (*itSheep)->id = 0;
+    (*itSheep)->_selection = 0;
   }
 }
 
 void CApp::SelectAllSheeps() {
   for(std::vector<CFollower*>::iterator itSheep = Sheeps.begin();
       itSheep != Sheeps.end(); ++itSheep) {
-    (*itSheep)->id = 1;
+    (*itSheep)->_selection = 1;
   }
 }
 
@@ -91,9 +91,9 @@ void CApp::SelectAllSheepsInCurrentRoom() {
       itSheep != Sheeps.end(); ++itSheep) {
     CMap* currentSheepRoom = CArea::AreaControl.GetMap( (*itSheep)->getPosition().getX(), (*itSheep)->getPosition().getY());
     if(currentRoom == currentSheepRoom) { // sheep is in currentRoom
-      (*itSheep)->id = 1;
+      (*itSheep)->_selection = 1;
     }else{
-      (*itSheep)->id = 0;
+      (*itSheep)->_selection = 0;
     }
   }
 }
@@ -241,7 +241,6 @@ void CApp::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode)
 
     case SDLK_SPACE:
       {
-        //AddNewSheepInPool(activeSheep);
         break;
       }
 
@@ -250,8 +249,8 @@ void CApp::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode)
         Rectangle aScreenRect(33, 33, WWIDTH-33, WHEIGHT-33);
         int key = CEntity::CurrentEntityId; 
         CApp::EntityPool[key].generateRandom(aScreenRect);
+        CApp::EntityPool[key].setParent(this);
         Sheeps.push_back(&CApp::EntityPool[key]);
-        //AddNewSheepInPool(activeSheep);
         break;
       }
 
@@ -286,7 +285,7 @@ void CApp::GoTo(PointDouble& point) {
 
   for(std::vector<CFollower*>::iterator itSheep = Sheeps.begin();
       itSheep != Sheeps.end(); ++itSheep) {
-    if((*itSheep)->id == activeSheep) {
+    if((*itSheep)->_selection == activeSheep) {
       (*itSheep)->isTargettingPosition(true);
       (*itSheep)->getTargetPosition().set(point.getX(), point.getY());
     }
@@ -298,7 +297,7 @@ void CApp::GoTo(std::vector<PointDouble>& controls) {
       itSheep != Sheeps.end(); ++itSheep)
   {
 
-    if((*itSheep)->id == activeSheep )
+    if((*itSheep)->_selection == activeSheep )
     {
       (*itSheep)->isTargettingPosition(true);
 
@@ -329,28 +328,6 @@ void CApp::StopGoTo() {
   }
 }
 
-
-bool CApp::AddNewSheepInPool(int sheepId, double X, double Y) {
-  sheepId = (sheepId%5);
-
-  int key = CEntity::CurrentEntityId;
-  CFollower& newSheep = EntityPool[key];
-  std::cout << "new sheep id: " << newSheep.getEntityId() << std::endl;
-  for(std::map<int,CFollower>::iterator itSheep = EntityPool.begin(); 
-      itSheep != EntityPool.end(); ++itSheep) { 
-    std::cout << "map key: " << itSheep->first << " entityId: " << itSheep->second.getEntityId() << std::endl;
-  } 
-  Sheeps.push_back(&newSheep);
-
-  if(newSheep.OnLoad("./gfx/sheep6.png", 32, 32, 4) == false) {
-    return false;
-  }
-  newSheep.getPosition().set(X, Y);
-  newSheep.id = sheepId;
-
-  return true;
-
-}
 
 
 

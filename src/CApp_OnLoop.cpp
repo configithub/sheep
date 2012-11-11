@@ -15,91 +15,28 @@ void CApp::OnLoop() {
   // time between two loops
   double dt = CFPS::FPSControl.GetSpeedFactor();
 
+  // handle translation between two rooms
   CCamera::CameraControl.translate(*_nextCenter, dt);
 
-  // todo, class for this
-  CEntity::EntityList.clear();
-  CEntity::EntityList.reserve(100);
-  std::vector<int> entitiesToRemove; 
-  
-  for(std::map<int,CFollower>::iterator itSheep = EntityPool.begin();
-    itSheep != EntityPool.end(); ++itSheep) {
-    if(!itSheep->second.removeAtNextLoop()) {
-      CEntity::EntityList.push_back(&(itSheep->second));
-    }else{
-      entitiesToRemove.push_back(itSheep->second.getEntityId());
+
+  // handle entity disappearance and maintenance 
+  std::vector<CEntity*> newVect;
+  CEntity::NextEntityList = newVect; 
+  for(std::vector<CEntity*>::iterator itEntity = CEntity::EntityList.begin(); 
+    itEntity != CEntity::EntityList.end(); ++itEntity) { 
+    if( (*itEntity) != NULL) {
+      (*itEntity)->OnLoop();
     }
-  }
-  for(std::vector<int>::iterator itId = entitiesToRemove.begin(); 
-    itId != entitiesToRemove.end(); ++itId) { 
-    EntityPool.erase(*itId);
   }  
-  entitiesToRemove.clear(); 
-  for(std::map<int,Effect>::iterator itEffect = CApp::EffectPool.begin(); 
-    itEffect != CApp::EffectPool.end(); ++itEffect) { 
-    if(!itEffect->second.removeAtNextLoop()) {
-      CEntity::EntityList.push_back(&(itEffect->second));
-    }else{
-      entitiesToRemove.push_back(itEffect->second.getEntityId());
-    }
-  } 
-  for(std::vector<int>::iterator itId = entitiesToRemove.begin(); 
-    itId != entitiesToRemove.end(); ++itId) { 
-    EffectPool.erase(*itId);
-  }  
-  entitiesToRemove.clear();
-  for(std::map<int,Bomb>::iterator itBomb = CApp::BombPool.begin(); 
-    itBomb != CApp::BombPool.end(); ++itBomb) { 
-    if(!itBomb->second.removeAtNextLoop()) {
-      CEntity::EntityList.push_back(&(itBomb->second));
-    }else{
-      entitiesToRemove.push_back(itBomb->second.getEntityId());
-    }
-  } 
-  for(std::map<int,Bomb>::iterator itBomb = CApp::BombPool.begin();
-      itBomb != CApp::BombPool.end(); ++itBomb) {
-    itBomb->second.explode(CApp::Sheeps);
-    if(itBomb->second.hasExploded()) {
-      entitiesToRemove.push_back(itBomb->second.getEntityId());
-    }
-  }
-  for(std::vector<int>::iterator itId = entitiesToRemove.begin(); 
-    itId != entitiesToRemove.end(); ++itId) { 
-    BombPool.erase(*itId);
-  }  
-  entitiesToRemove.clear();
-  for(std::map<int,Switch>::iterator itSwitch = CApp::SwitchPool.begin(); 
-    itSwitch != CApp::SwitchPool.end(); ++itSwitch) { 
-    if(!itSwitch->second.removeAtNextLoop()) {
-      CEntity::EntityList.push_back(&(itSwitch->second));
-    }else{
-      entitiesToRemove.push_back(itSwitch->second.getEntityId());
-    }
-  } 
-  for(std::vector<int>::iterator itId = entitiesToRemove.begin(); 
-    itId != entitiesToRemove.end(); ++itId) { 
-    SwitchPool.erase(*itId);
-  }  
-  entitiesToRemove.clear();
-  for(std::map<int,Bomb>::iterator itBomb = Level::LevelInstance.getBombs().begin(); 
-    itBomb != Level::LevelInstance.getBombs().end(); ++itBomb) { 
-    if(!itBomb->second.hasExploded()) {
-      CEntity::EntityList.push_back(&(itBomb->second));
-    }else{
-      entitiesToRemove.push_back(itBomb->second.getEntityId());
-    }
-  } 
-  for(std::vector<int>::iterator itId = entitiesToRemove.begin(); 
-    itId != entitiesToRemove.end(); ++itId) { 
-    Level::LevelInstance.getBombs().erase(*itId);
-  }  
-  entitiesToRemove.clear();
-    
+
+
+  // next entities become current entities 
+  CEntity::EntityList.swap(CEntity::NextEntityList);
 
   // apply gravity and controls on all entities
   for(std::vector<CEntity*>::iterator itEntity = CEntity::EntityList.begin(); itEntity != CEntity::EntityList.end(); ++itEntity) {
     if((*itEntity) == NULL) continue;
-    //(*itEntity)->OnLoopApplyGravity();
+    
     (*itEntity)->OnLoopApplyControls();
     (*itEntity)->OnLoopDeriveAndCapSpeed(dt);
   }
@@ -110,6 +47,7 @@ void CApp::OnLoop() {
     (*itEntity)->OnLoopMotionBounds();
   }
 
+  // move entities 
   for(std::vector<CEntity*>::iterator itEntity = CEntity::EntityList.begin(); itEntity != CEntity::EntityList.end(); ++itEntity) {
     if((*itEntity) == NULL) continue;
     (*itEntity)->OnMove((*itEntity)->getSpeed(), dt);
@@ -123,29 +61,13 @@ void CApp::OnLoop() {
     (*itEntity)->OnLoopRealizeMotion();
   }
 
-  // update level information
-  /*Level::LevelInstance.OnLoop(Sheeps);
-  if( Level::LevelInstance.isOver() ) {
-    if( Level::LevelInstance.isLevelSuccess() ) {
-      if(Sheeps.size() <= 30 ) {
-        AddNewSheepInPool(activeSheep);
-      }
-    }
-    std::string levelName = "level2";
-    if(Level::LevelInstance.getLevelNb() <= 30) {
-      Level::LevelInstance.next(Sheeps,levelName, 0, 100, 2500, 2);
-    }else if(Level::LevelInstance.getLevelNb() <= 150) {
-      Level::LevelInstance.next(Sheeps,levelName, 0, 100, 2000, 2);
-    }else if(Level::LevelInstance.getLevelNb() <= 450) {
-      Level::LevelInstance.next(Sheeps,levelName, 0, 100, 1500, 2);
-    }else{
-      Level::LevelInstance.next(Sheeps,levelName, 0, 100, 1000, 2);
-    }
-  }*/
-
-  CApp::updateScore();
-
   CEntityCol::EntityColList.clear();
+  // delete entity that disappeared during this loop
+  for(std::vector<CEntity*>::iterator itEntity = CEntity::EntityListToRemove.begin(); 
+    itEntity != CEntity::EntityListToRemove.end(); ++itEntity) { 
+    (*itEntity)->OnCleanup();
+  }  
+  CEntity::EntityListToRemove.clear(); 
 }
 
 double sign(double value) {
@@ -174,6 +96,7 @@ void CApp::SolveCollisions(int numIterations, double& dt) {
       if((*itEntity) == NULL) continue;
       (*itEntity)->PosValidOnEntities();
     }
+    
     if(CEntityCol::EntityColList.empty()) { return; }
 
     for (std::map<std::pair<int, int>, CEntityCol>::iterator itEntityCol = CEntityCol::EntityColList.begin();

@@ -23,6 +23,15 @@ void Bomb::OnRender(SDL_Surface* Surf_Display) {
   CApp::print_num(Surf_Display, CApp::Surf_NumFontBomb, _position.getX(), _position.getY(), remaining ); 
 }
 
+void Bomb::OnLoop() {
+  explode(CApp::Sheeps);  
+  if(!_removeAtNextLoop) {
+    CEntity::NextEntityList.push_back(this);
+  }else{
+    CEntity::EntityListToRemove.push_back(this);
+  }
+}
+
 void Bomb::OnAnimate() {
 
 
@@ -55,7 +64,10 @@ void Bomb::generateRandom(Rectangle& boundaries) {
   CEntity::EntityList.push_back(this);
 }
 
-
+void Bomb::OnCleanup() {
+  //CEntity::OnCleanup();
+  CApp::BombPool.erase(_entityId); 
+}
 
 void Bomb::explode(std::vector<CFollower*>& iSheeps) {
 
@@ -95,17 +107,19 @@ void Bomb::explode(std::vector<CFollower*>& iSheeps) {
 
 
   _hasExploded = true;
+  _removeAtNextLoop = true;
 
+  /*
   // explosion effect
-
   int nbExplosionEffect = rand() % 5+3;
-
   for (int i = 0; i < nbExplosionEffect; i++) {
     int key = CEntity::CurrentEntityId;
     Effect& explosion = CApp::EffectPool[key];
-    explosion.OnLoad("./gfx/explosion.png", 50, 32, 4); 
+    CApp::EffectPool[key].setParent(this->_parent);
+    CApp::EffectPool[key].OnLoad("./gfx/explosion.png", 50, 32, 4); 
+    CEntity::EntityList.push_back(&CApp::EffectPool[key]);
     PointDouble position( abs( std::min( (int) (this->getPosition().getX() -10 + rand() % 20) ,(int) this->getPosition().getX() )) ,abs( std::min( (int) (this->getPosition().getY() -10 + rand() % 20), (int) this->getPosition().getY() )) );
-    explosion.setPosition(position, true);
+    CApp::EffectPool[key].setPosition(position, true);
   }
-
+  */
 }

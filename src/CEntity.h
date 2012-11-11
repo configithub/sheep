@@ -15,6 +15,7 @@
 #include "Vectorial.h"
 
 class CEntityCol;
+class CApp;
 
 class CEntity {
 
@@ -51,8 +52,14 @@ class CEntity {
   static void dist(CEntity& entity, PointDouble& point, PointDouble& oResult);
   static void signedDist(CEntity& entity, PointDouble& point, PointDouble& oResult);
 
-  // keeps track of all entities addresses
+  // keeps track of all current entities addresses
   static std::vector<CEntity*> EntityList;
+
+  // keeps track of all surviving entities addresses
+  static std::vector<CEntity*> NextEntityList;
+
+  // keeps track of all disapearing entities addresses
+  static std::vector<CEntity*> EntityListToRemove;
 
   // construct new entity
   CEntity();
@@ -60,8 +67,13 @@ class CEntity {
   // destroy entity
   virtual ~CEntity();
 
+  void setParent(CApp* aParent) { _parent = aParent; }
+
   // load a new entity in memory
-  virtual bool OnLoad(char* iFile, Rectangle& iMask, int iMaxFrames);
+  bool OnLoad(char* iFile, Rectangle& iMask, int iMaxFrames) ;
+
+  // decide whether this entity will be part of the next loop or not
+  virtual void OnLoop() ;
 
   // apply controls from the player -> should be moved to child class
   void OnLoopApplyControls();
@@ -78,14 +90,14 @@ class CEntity {
   // speculative collision : calculate next position regarding the map
   void OnMove(PointDouble& iVelocity, double& dt);
 
+  // animate the sprite of the entity
+  virtual void OnAnimate();
+
   // render the entity on the display surface
   virtual void OnRender(SDL_Surface* ioSdlDisplaySurface);
 
   // operations to be done at clean up time : free memory
   virtual void OnCleanup();
-
-  // animate the sprite of the entity
-  virtual void OnAnimate();
 
   // stop the motion
   void StopMove();
@@ -106,7 +118,7 @@ class CEntity {
     _position = iNewPosition;
     _mask.getCorner().set(_position.getX(), _position.getY());
     _center = _mask.getCenter();
-    
+
 
     if(next) {
       _nextPosition = iNewPosition; }
@@ -148,6 +160,7 @@ class CEntity {
 
   bool& removeAtNextLoop() { return _removeAtNextLoop; }
 
+  CApp* _parent;
 
   // locks
   int _lockLeft;

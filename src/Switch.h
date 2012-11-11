@@ -18,6 +18,8 @@ class Switch : public CEntity {
 
     void OnAnimate();
 
+    void OnCleanup();
+
     // action 0
     void spawnBombInRoom();
 

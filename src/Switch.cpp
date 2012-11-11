@@ -28,6 +28,11 @@ void Switch::OnRender(SDL_Surface* Surf_Display) {
 }
 
 
+void Switch::OnCleanup() {
+  //CEntity::OnCleanup();
+  //CApp::SwitchPool.erase(_entityId); 
+}
+
 void Switch::OnAnimate() {
 
   _currentFrameCol = 0;
@@ -53,6 +58,7 @@ void Switch::spawnBombInRoom() {
   // spawn a bomb randomly in this rectangle
   int key = CEntity::CurrentEntityId;
   CApp::BombPool[key].generateRandom(aScreenRect);
+  CApp::BombPool[key].setParent(this->_parent);
 
 }
 

@@ -15,6 +15,8 @@ class Effect : public CEntity {
     bool OnLoad(char* File, int Width, int Height, int MaxFrames);
 
     void OnRender(SDL_Surface* Surf_Display);
+
+    void OnCleanup();
   
     void OnAnimate();
 

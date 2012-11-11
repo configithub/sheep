@@ -71,8 +71,6 @@ class CApp : public CEvent {
 
     bool OnInit();
 
-    bool AddNewSheepInPool(int sheepIdbool, double X=300, double Y=300);
-
     void OnEvent(SDL_Event* Event);
 
     void SwitchActiveSheep(int newActiveSheep);

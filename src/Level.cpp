@@ -134,7 +134,7 @@ void Level::OnLoop(std::vector<CFollower*>& iSheeps) {
 
   for(std::vector<int>::iterator itId = bombIdsToRemove.begin(); 
       itId != bombIdsToRemove.end(); ++itId) { 
-    _bombs.erase(*itId);
+    //_bombs.erase(*itId);
   }  
 
 

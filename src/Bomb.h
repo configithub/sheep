@@ -19,6 +19,8 @@ class Bomb : public CEntity {
 
     void generateRandom(Rectangle& boundaries);
 
+    void OnLoop();
+
     void explode(std::vector<CFollower*>& iSheeps);
 
     bool OnLoad(char* File, int Width, int Height, int MaxFrames);
@@ -26,6 +28,8 @@ class Bomb : public CEntity {
     void OnRender(SDL_Surface* ioSdlDisplaySurface);
 
     bool hasExploded() { return _hasExploded; }
+
+    void OnCleanup();
 
     void OnAnimate();
 

@@ -61,6 +61,7 @@ bool CApp::OnInit() {
   PointDouble switchPosition(WWIDTH+60,WHEIGHT+ 90);
   int key = CEntity::CurrentEntityId;
   SwitchPool[key].generateAtPos(switchPosition);
+  SwitchPool[key].setParent(this);
 
   //Rectangle aScreenRect(33, 33, WWIDTH-33, WHEIGHT-33);
   //int keyB = CEntity::CurrentEntityId;

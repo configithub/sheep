@@ -1,37 +1,42 @@
 #include "CFollower.h"
+#include "CApp.h"
 
 #include <iostream>
 
 
-CFollower::CFollower() {
-  //std::cout << "creating sheep " << _entityId << std::endl;
-    id = 0;
-}
+CFollower::CFollower() : _selection(0){ }
 
-bool CFollower::OnLoad(char* File, int Width, int Height, int MaxFrames) {
+void CFollower::generateRandom(Rectangle& boundaries) {
+  std::cout<< "CFollower generateRandom" << std::endl;
+  
+  int x,y;
+  x = abs (std::min( (int)(rand() % (boundaries.getWidth() ) + boundaries.getCorner().getX()), WWIDTH-33) );
+  y = abs (std::min( (int)(rand() % (boundaries.getHeight() ) + boundaries.getCorner().getY()), WHEIGHT-33) );
+
+  _position.set(x,y);
+  _nextPosition.set(x,y);
 
   _sdlSurface = CSurface::Sprites[0];
 
-  Rectangle mask(0,0,Width,Height);
-  if(CEntity::OnLoad(File, mask, MaxFrames) == false) {
-    return false;
+  Rectangle mask(0,0,32,32);
+  OnLoad("./gfx/sheep6.png", mask, 4);
+
+  if(!this->PosValidOnMap(_position)) { this->generateRandom(boundaries); }else{
+    CEntity::EntityList.push_back(this);
   }
 
-  return true;
 }
 
 
-void CFollower::OnRender(SDL_Surface* Surf_Display) {
-  CEntity::OnRender(Surf_Display);
+void CFollower::OnLoop() {
+  if(!_removeAtNextLoop) {
+    CEntity::NextEntityList.push_back(this);
+  }else{
+    CEntity::EntityListToRemove.push_back(this);
+  }
 }
-
-void CFollower::OnCleanup() {
-  CEntity::OnCleanup();
-}
-
 
 void CFollower::OnAnimate() {
-
 
   // give correct entity orientation
   if(_moveLeft) {
@@ -63,6 +68,14 @@ void CFollower::OnAnimate() {
   CEntity::OnAnimate();
 }
 
+void CFollower::OnRender(SDL_Surface* Surf_Display) {
+  CEntity::OnRender(Surf_Display);
+}
+
+void CFollower::OnCleanup() {
+  //CEntity::OnCleanup();
+  CApp::EntityPool.erase(_entityId);
+}
 
 
 

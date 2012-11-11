@@ -1,7 +1,7 @@
 #include "Effect.h"
 #include "CFPS.h"
 #include <iostream>
-
+#include "CApp.h"
 
 bool Effect::OnLoad(char* File, int Width, int Height, int MaxFrames) {
   
@@ -22,10 +22,15 @@ void Effect::OnRender(SDL_Surface* Surf_Display) {
     _animControl.signal = false;
   }
   if(_iterationNb >= _maxIterationNb) { 
-    _removeAtNextLoop = true;
+  //  _removeAtNextLoop = true;
   }else{
     CEntity::OnRender(Surf_Display);
   }
+}
+
+void Effect::OnCleanup() {
+  //CEntity::OnCleanup();
+  //CApp::EffectPool.erase(_entityId); 
 }
 
 void Effect::OnAnimate() {
