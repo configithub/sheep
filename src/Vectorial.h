@@ -107,7 +107,8 @@ class Rectangle {
     _height = iHeight;
   }
 
-  void operator =(Rectangle& b) {
+
+  void operator =(Rectangle b) {
     _corner = b.getCorner();
     _width = b.getWidth();
     _height = b.getHeight();

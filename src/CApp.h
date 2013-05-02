@@ -52,9 +52,14 @@ class CApp : public CEvent {
     PointDouble* _center;
     PointDouble* _nextCenter;
   
-    static std::vector<CFollower*> Sheeps;
+    static std::vector<CEntity*> Sheeps;
     static void print_num(SDL_Surface *dst, SDL_Surface *font, int x, int y, float value);
-    static std::map<int, CFollower> EntityPool;
+
+    // all entities
+    static std::map<int, CEntity> EntityPool;
+
+    // behavior by type
+    static std::map<int, CFollower> SheepPool;
     static std::map<int, Switch> SwitchPool;
     static std::map<int, Effect> EffectPool;
     static std::map<int, Bomb> BombPool;
@@ -99,11 +104,11 @@ class CApp : public CEvent {
 
     void OnJoyButtonDown(Uint8 which,Uint8 button);
 
-    void getActiveGroup(std::vector<CFollower*>& ioGroup);
+    void getActiveGroup(std::vector<CEntity*>& ioGroup);
 
     void SelectHerdAtCoord(PointDouble& point);
 
-    void GetNearestEntityFromMouse(PointDouble& point, CFollower*& NearestEntityFromMouse, int& delta);
+    void GetNearestEntityFromMouse(PointDouble& point, CEntity*& NearestEntityFromMouse, int& delta);
 
     void GoTo(PointDouble& point);
 

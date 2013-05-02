@@ -2,75 +2,36 @@
 #include "Bomb.h"
 #include "CApp.h"
 #include "Effect.h"
-#include "Level.h" 
 
-bool Bomb::OnLoad(char* File, int Width, int Height, int MaxFrames) {
-  //std::cout << "creating bomb " << _entityId << std::endl;
-
-  _sdlSurface = CSurface::Sprites[1];
-  
-  Rectangle mask(0,0,Width,Height);
-  if(CEntity::OnLoad(File, mask, MaxFrames) == false) {
-    return false;
-  }
-
-  return true;
-}
 
 void Bomb::OnRender(SDL_Surface* Surf_Display) {
   int remaining = std::max(0, (int) (_delay - (SDL_GetTicks() - _startTime)) /1000);
-  CEntity::OnRender(Surf_Display);
-  CApp::print_num(Surf_Display, CApp::Surf_NumFontBomb, _position.getX(), _position.getY(), remaining ); 
+  // CApp::print_num(Surf_Display, CApp::Surf_NumFontBomb, e->_position.getX(), e->_position.getY(), remaining ); 
 }
 
 void Bomb::OnLoop() {
   explode(CApp::Sheeps);  
-  if(!_removeAtNextLoop) {
-    CEntity::NextEntityList.push_back(this);
-  }else{
-    CEntity::EntityListToRemove.push_back(this);
-  }
 }
 
 void Bomb::OnAnimate() {
-
-
   // give correct entity orientation
-  if(_moveLeft) {
-    _currentFrameCol = 0;
-  }else if(_moveRight) {
-    _currentFrameCol = 1;
+  if(e->_moveLeft) {
+    e->_currentFrameCol = 0;
+  }else if(e->_moveRight) {
+    e->_currentFrameCol = 1;
   }
 
-  _animControl.MinFrames = 0;
-  _animControl.MaxFrames = 2;
-  _animControl.Oscillate = true;
+  e->_animControl.MinFrames = 0;
+  e->_animControl.MaxFrames = 2;
+  e->_animControl.Oscillate = true;
 
-  CEntity::OnAnimate();
-
-}
-
-void Bomb::generateRandom(Rectangle& boundaries) {
-  int x,y;
-  x = abs (std::min( (int)(rand() % (boundaries.getWidth() ) + boundaries.getCorner().getX()), boundaries.getCorner().getX() ) );
-  y = abs (std::min( (int)(rand() % (boundaries.getHeight() ) + boundaries.getCorner().getY()), boundaries.getCorner().getY() ) );
-
-  _position.set(x,y);
-  _nextPosition.set(x,y);
-
-  OnLoad("./gfx/bomb.png", 32, 32, 4);
-  //std::cout << "bomb delay: " << _delay << std::endl;
-
-  CEntity::EntityList.push_back(this);
 }
 
 void Bomb::OnCleanup() {
-  //CEntity::OnCleanup();
-  CApp::BombPool.erase(_entityId); 
+  // CApp::BombPool.erase(e->_entityId); 
 }
 
-void Bomb::explode(std::vector<CFollower*>& iSheeps) {
-
+void Bomb::explode(std::vector<CEntity*>& iSheeps) {
 
   int currentTime = SDL_GetTicks();
   if(currentTime - _startTime < _delay) {
@@ -79,11 +40,11 @@ void Bomb::explode(std::vector<CFollower*>& iSheeps) {
   }
 
   // slightly dirty loop
-  if(_hasExploded) { return; }
-  for(std::vector<CFollower*>::iterator itSheep = iSheeps.begin();
+  /*if(_hasExploded) { return; }
+  for(std::vector<CEntity*>::iterator itSheep = iSheeps.begin();
       itSheep != iSheeps.end(); ) {
     PointDouble dist;
-    CEntity::dist( *this, **itSheep, dist);
+    CEntity::dist( *e, **itSheep, dist);
     if(dist.modulus() < _radius ) {
       // sheep died in explosion
       int sheepEntityId = (*itSheep)->getEntityId();
@@ -92,22 +53,10 @@ void Bomb::explode(std::vector<CFollower*>& iSheeps) {
     }else{
       ++itSheep;
     }
-  }
-  for(std::map<int,Bomb>::iterator itBomb = Level::LevelInstance.getBombs().begin(); 
-    itBomb != Level::LevelInstance.getBombs().end(); ++itBomb) { 
-    if(itBomb->second.getEntityId() != _entityId) {
-      PointDouble dist;
-      CEntity::dist( *this, itBomb->second, dist);
-      if(dist.modulus() < _radius ) {
-        // chain explosion
-        itBomb->second._delay = 1500;
-      }
-    }
-  } 
-
+  }*/
 
   _hasExploded = true;
-  _removeAtNextLoop = true;
+  e->_removeAtNextLoop = true;
 
   /*
   // explosion effect

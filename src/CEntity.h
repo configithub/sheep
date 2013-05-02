@@ -8,23 +8,23 @@
 #include "CArea.h"
 #include "CAnimation.h"
 #include "CCamera.h"
-
 #include "CSurface.h"
-
-
 #include "Vectorial.h"
+#include "Behavior.h"
 
 class CEntityCol;
 class CApp;
 
+// Enums used in this class
+typedef enum {
+  SHEEP = 0,
+  BOMB,
+  SWITCH,
+  EFFECT
+} EN_EntityType;
+
 class CEntity {
 
-  // Enums used in this class
-  typedef enum {
-    ENTITY_TYPE_GENERIC = 0,
-    ENTITY_TYPE_PLAYER,
-    SWITCH
-  } EN_EntityType;
 
   typedef enum {
     ENTITY_FLAG_NONE     = 0,
@@ -44,7 +44,9 @@ class CEntity {
 
   EN_EntityType getType() { return _type; }
 
-  void generateRandom(Rectangle& boundaries);
+  void generateRandom(Rectangle& iBoundaries, EN_EntityType iType);
+
+  void generateAtPos(PointDouble& iPosition, EN_EntityType iType);
 
   static void dist(CEntity& entityA, CEntity& entityB, PointDouble& oResult);
 
@@ -70,7 +72,7 @@ class CEntity {
   void setParent(CApp* aParent) { _parent = aParent; }
 
   // load a new entity in memory
-  bool OnLoad(char* iFile, Rectangle& iMask, int iMaxFrames) ;
+  bool OnLoad(Rectangle& iMask, int iMaxFrames) ;
 
   // decide whether this entity will be part of the next loop or not
   virtual void OnLoop() ;
@@ -114,15 +116,11 @@ class CEntity {
   // get the entity's top left corner's position
   PointDouble& getPosition() { return _position; }
 
-  void setPosition(PointDouble& iNewPosition, bool next=false) {
-    _position = iNewPosition;
-    _mask.getCorner().set(_position.getX(), _position.getY());
-    _center = _mask.getCenter();
+  int getAbsX() { return (_position.getX() - CCamera::CameraControl.GetX()); } 
+  int getAbsY() { return (_position.getY() - CCamera::CameraControl.GetY()); } 
 
-
-    if(next) {
-      _nextPosition = iNewPosition; }
-  }
+  // set the entity's top left corner's position
+  void setPosition(PointDouble& iNewPosition, bool next=false) ;
 
   // get the entity's rectangle center
   PointInt& getCenter() { return _center; }
@@ -167,6 +165,9 @@ class CEntity {
   int _lockRight;
   int _lockDown;
   int _lockUp;
+
+  // selection
+  int _selection;
 
   protected:
   bool _removeAtNextLoop;
@@ -221,6 +222,7 @@ class CEntity {
   int _currentFrameCol;
   int _currentFrameRow;
 
+  Behavior* b;
 
 };
 

@@ -1,15 +1,14 @@
 #include "CEntity.h"
+#include "CApp.h"
 #include <iostream>
 #include <math.h>
 #include <algorithm>
 
 
-std::vector<CEntity*>     CEntity::EntityList;
-std::vector<CEntity*>     CEntity::NextEntityList;
-std::vector<CEntity*>     CEntity::EntityListToRemove;
+std::vector<CEntity*> CEntity::EntityList;
+std::vector<CEntity*> CEntity::NextEntityList;
+std::vector<CEntity*> CEntity::EntityListToRemove;
 int CEntity::CurrentEntityId = 0;
-
-
 
 CEntity::CEntity()
 {
@@ -18,6 +17,8 @@ CEntity::CEntity()
   // entity coordinates and size
   _position.set(100,100);
 
+  // selection
+  _selection = 0;
 
   // locks
   _lockLeft = 0;
@@ -38,7 +39,7 @@ CEntity::CEntity()
   _moveDown = false;
 
   // entity type
-  _type = ENTITY_TYPE_GENERIC;
+  // _type = ENTITY_TYPE_GENERIC; // TODO: move this kind of stuff in behavior
 
   _dead = false;
   _behavior = ENTITY_FLAG_GRAVITY;
@@ -67,28 +68,56 @@ CEntity::CEntity()
 
   // to identify the entity for debugging
   _entityId=CEntity::CurrentEntityId;
-  //std::cout << "creating entity " << _entityId << std::endl;
 
   ++CEntity::CurrentEntityId;
 
 }
 
-void CEntity::generateRandom(Rectangle& boundaries) {
+void CEntity::generateRandom(Rectangle& iBoundaries, EN_EntityType iType) {
   int x,y;
-  x = abs (std::min( (int)(rand() % (boundaries.getWidth() ) + boundaries.getCorner().getX()), WWIDTH-33) );
-  y = abs (std::min( (int)(rand() % (boundaries.getHeight() ) + boundaries.getCorner().getY()), WHEIGHT-33) );
+  x = (int)(rand() % (iBoundaries.getWidth() ) + iBoundaries.getCorner().getX());
+  y = (int)(rand() % (iBoundaries.getHeight() ) + iBoundaries.getCorner().getY());
 
-  _position.set(x,y);
-  _nextPosition.set(x,y);
-
-  _sdlSurface = CSurface::Sprites[0];
-
-  Rectangle mask(0,0,32,32);
-  OnLoad("./gfx/sheep6.png", mask, 4);
-
-  if(!this->PosValidOnMap(_position)) { this->generateRandom(boundaries); }else{
-    CEntity::EntityList.push_back(this);
+  PointDouble randPos(x,y);
+  if(!this->PosValidOnMap(randPos)) { this->generateRandom(iBoundaries, iType); }else{
+    generateAtPos(randPos, iType);
   }
+
+}
+
+void CEntity::generateAtPos(PointDouble& iPosition, EN_EntityType iType) {
+  _position = iPosition;
+  _nextPosition = _position;
+
+  _sdlSurface = CSurface::Sprites[iType];
+  Rectangle mask;
+
+
+  switch(iType) {
+    case(SHEEP):
+      mask = Rectangle(0,0,32,32);
+      OnLoad(mask, 4);
+      b = &_parent->SheepPool[_entityId];
+    break;
+    case(BOMB):
+      mask = Rectangle(0,0,32,32);
+      OnLoad(mask, 4);
+      b = &_parent->BombPool[_entityId];
+    break;
+    case(SWITCH):
+      mask = Rectangle(0,0,32,32);
+      OnLoad(mask, 4);
+      b = &_parent->SwitchPool[_entityId];
+    break;
+    case(EFFECT):
+      mask = Rectangle(0,0,32,32);
+      OnLoad(mask, 4);
+      b = &_parent->EffectPool[_entityId];
+    break;
+  }
+
+  b->e = this;
+  CEntity::EntityList.push_back(this);
 
 }
 
@@ -97,6 +126,10 @@ void CEntity::generateRandom(Rectangle& boundaries) {
 CEntity::~CEntity() { }
 
 void CEntity::OnLoop() {
+  // Type dependant
+  b->OnLoop();
+
+  // Type independant
   if(!_removeAtNextLoop) {
     CEntity::NextEntityList.push_back(this);
   }else{
@@ -104,17 +137,8 @@ void CEntity::OnLoop() {
   }
 }
 
-bool CEntity::OnLoad(char* iFile, Rectangle& iRectangle, int iMaxFrames) {
 
-  std::cout<< "CEntity OnLoad" << std::endl;
-  
-  if(_sdlSurface == NULL) {
-    std::cout << "loading image file: " << iFile << std::endl;
-    if((_sdlSurface = CSurface::OnLoad(iFile)) == NULL) {
-      return false;
-    }
-  }
-
+bool CEntity::OnLoad(Rectangle& iRectangle, int iMaxFrames) {
   this->_mask = iRectangle;
   _animControl.MaxFrames = iMaxFrames;
   return true;
@@ -185,12 +209,19 @@ void CEntity::OnLoopRealizeMotion() {
 }
 
 
+void CEntity::setPosition(PointDouble& iNewPosition, bool next) {
+  _position = iNewPosition;
+  _mask.getCorner().set(_position.getX(), _position.getY());
+  _center = _mask.getCenter();
 
+  if(next) { _nextPosition = iNewPosition; }
+
+}
 
 // draw the entity
 void CEntity::OnRender(SDL_Surface* Surf_Display) {
   if(_sdlSurface == NULL || Surf_Display == NULL) return;
-
+  b->OnRender(Surf_Display);
   CSurface::OnDraw(Surf_Display, _sdlSurface, // draw the entity's surface on the target surface Surf_Display
       // camera coordinates are taken into account, so if the camera moves, the entities will be displayed accordingly
       _position.getX() - CCamera::CameraControl.GetX(),
@@ -202,7 +233,9 @@ void CEntity::OnRender(SDL_Surface* Surf_Display) {
 
 // handles entity animation
 void CEntity::OnAnimate() {
-  // give correct entity orientation
+  // type dependant animation
+  b->OnAnimate();
+  // type independant stuff
   _animControl.OnAnimate();
 }
 
@@ -246,7 +279,7 @@ void CEntity::OnMove(Point<double>& vel, double& dt) {
         if( _speed.getY() > 0 ) { _lockDown = 1; }
         if( _speed.getY() < 0 ) { _lockUp = 1; }
         _speed.setY(0);
-       }
+      }
 
     }
     dl -= planck;
@@ -366,7 +399,7 @@ void CEntity::updateCollisionMask() {
 
 // detect all collisions
 bool CEntity::PosValidOnEntities() {
-  
+
   bool result = true;
   if(_behavior & ENTITY_FLAG_MAPONLY || _behavior & ENTITY_FLAG_GHOST) {
   } else {
@@ -384,7 +417,7 @@ bool CEntity::PosValidOnEntities() {
 // position validity check against other entity
 // adds a new inter entity collision in the entity collision stack
 bool CEntity::PosValidEntity(CEntity* iEntity) {
-  
+
   bool result = true;
   if(this != iEntity && iEntity != NULL && iEntity->_dead == false &&
       iEntity->_behavior ^ ENTITY_FLAG_MAPONLY) {
@@ -395,19 +428,21 @@ bool CEntity::PosValidEntity(CEntity* iEntity) {
     EntityCol.EntityA = this;
     EntityCol.EntityB = iEntity;
     if(!result) {
-      
+
       int idA; int idB;
       if(_entityId > iEntity->_entityId) { idA = iEntity->_entityId; idB = _entityId; } else{ idB = iEntity->_entityId; idA = _entityId; }
       CEntityCol::EntityColList.insert(std::make_pair(std::make_pair(idA, idB), EntityCol));
     }
   }
-  
+
   return result;
 }
 
 void CEntity::OnCleanup() {
-  if(_sdlSurface) { SDL_FreeSurface(_sdlSurface); }
-  _sdlSurface = NULL;
+  b->OnCleanup();
+  // if(_sdlSurface!=NULL) { SDL_FreeSurface(_sdlSurface); }
+  // _sdlSurface = NULL;
+  CApp::EntityPool.erase(_entityId);
 }
 
 void CEntity::dist(CEntity& entityA, CEntity& entityB, PointDouble& oResult) {

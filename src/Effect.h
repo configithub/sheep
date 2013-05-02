@@ -1,18 +1,14 @@
 #ifndef EFFECT_H
 #define EFFECT_H
 
-#include "CEntity.h"
+#include "Behavior.h"
 
-class Effect : public CEntity {
+class Effect : public Behavior {
 
   public:
 
     Effect() : _id(0), _iterationNb(0), _maxIterationNb(1) {
-      //_behavior = ENTITY_FLAG_GHOST;
-      //std::cout << "creating effect " << _entityId << std::endl;
     }
-
-    bool OnLoad(char* File, int Width, int Height, int MaxFrames);
 
     void OnRender(SDL_Surface* Surf_Display);
 

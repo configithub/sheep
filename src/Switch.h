@@ -2,8 +2,9 @@
 #define SWITCH_H
 
 #include "CFollower.h"
+#include "Vectorial.h"
 
-class Switch : public CEntity {
+class Switch : public Behavior {
 
   public:
 
@@ -11,9 +12,6 @@ class Switch : public CEntity {
       _type = SWITCH;
     }
 
-
-    bool OnLoad(char* File, int Width, int Height, int MaxFrames);
-  
     void OnRender(SDL_Surface* ioSdlDisplaySurface);
 
     void OnAnimate();
@@ -34,19 +32,28 @@ class Switch : public CEntity {
 
     void generateAtPos(PointDouble& iPosition);
 
+    void addTarget(int& iTarget) { _targets.push_back(iTarget); }
+
+    void broadcastToTargets();
+
   private:
 
     bool _isPushed; // the button is pushed 
 
     int _startTime;   
     int _delay; // delay at which the button can be repushed after trigger, in ms
- 
+
     int _actionId; // defines which action will be triggered on activation
     // 0 : spawns a bomb at random in the room
+    // 1 : broadcast to the targets to call their OnActivate function
 
     int _triggerId; // defines what will trigger the action
     // 0 : activation on touch
     // 1 : activation on sheep collision
+
+    // define the objetcs that will be affected by the switch
+    std::vector<int> _targets;
+    
 
 };
 

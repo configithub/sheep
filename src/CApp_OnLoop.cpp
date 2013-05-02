@@ -2,7 +2,6 @@
 #include <iostream>
 #include <math.h>
 #include <algorithm>
-#include "Level.h"
 
 
 // move all entity, report all collision, then resolve the list of collision even (for loop)
@@ -65,7 +64,7 @@ void CApp::OnLoop() {
   // delete entity that disappeared during this loop
   for(std::vector<CEntity*>::iterator itEntity = CEntity::EntityListToRemove.begin(); 
     itEntity != CEntity::EntityListToRemove.end(); ++itEntity) { 
-    (*itEntity)->OnCleanup();
+    (*itEntity)->OnCleanup(); 
   }  
   CEntity::EntityListToRemove.clear(); 
 }
@@ -109,8 +108,6 @@ void CApp::SolveCollisions(int numIterations, double& dt) {
       CEntity& EntityA = *(contact.EntityA);
       CEntity& EntityB = *(contact.EntityB);
 
-      //std::cout<< EntityA.getType() << std::endl;
-      //std::cout<< EntityB.getType() << std::endl;
 
       if(contact._rectangle.getWidth() >= contact._rectangle.getHeight()) { // vertical collision
 

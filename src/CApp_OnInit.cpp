@@ -1,6 +1,5 @@
 #include "CApp.h"
 #include <iostream>
-#include "Level.h"
 
 SDL_Surface* CApp::Surf_NumFont = NULL;
 SDL_Surface* CApp::Surf_NumFontBomb = NULL;
@@ -58,10 +57,10 @@ bool CApp::OnInit() {
   }
 
   //PointDouble switchPosition(WWIDTH+60, WHEIGHT+90);
-  PointDouble switchPosition(WWIDTH+60,WHEIGHT+ 90);
+  PointDouble switchPosition(WWIDTH+190,WHEIGHT+ 160);
   int key = CEntity::CurrentEntityId;
-  SwitchPool[key].generateAtPos(switchPosition);
-  SwitchPool[key].setParent(this);
+  EntityPool[key].generateAtPos(switchPosition, SWITCH);
+  EntityPool[key].setParent(this);
 
   //Rectangle aScreenRect(33, 33, WWIDTH-33, WHEIGHT-33);
   //int keyB = CEntity::CurrentEntityId;
@@ -76,7 +75,6 @@ bool CApp::OnInit() {
   //EntityPool[key].generateRandom(aScreenRect);
   //Sheeps.push_back(&CApp::EntityPool[key]);
 
-  //Level::LevelInstance.next(Sheeps, levelName, 0, 2000, 1000, 2);
 
   return true;
   }

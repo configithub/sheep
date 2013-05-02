@@ -2,18 +2,6 @@
 #include "Switch.h"
 #include "CApp.h"
 
-bool Switch::OnLoad(char* File, int Width, int Height, int MaxFrames) {
-
-  _sdlSurface = CSurface::Sprites[3];
-  _type = SWITCH;
-  
-  Rectangle mask(0,0,Width,Height);
-  if(CEntity::OnLoad(File, mask, MaxFrames) == false) {
-    return false;
-  }
-
-  return true;
-}
 
 void Switch::OnRender(SDL_Surface* Surf_Display) {
   if(_isPushed) {
@@ -24,42 +12,55 @@ void Switch::OnRender(SDL_Surface* Surf_Display) {
       _isPushed = false;
     }
   }
-  CEntity::OnRender(Surf_Display);
 }
 
 
 void Switch::OnCleanup() {
   //CEntity::OnCleanup();
-  //CApp::SwitchPool.erase(_entityId); 
+  CApp::SwitchPool.erase(e->_entityId); 
 }
 
 void Switch::OnAnimate() {
 
-  _currentFrameCol = 0;
+  e->_currentFrameCol = 0;
 
   if (!_isPushed) {
-    _animControl.MinFrames = 0;
-    _animControl.MaxFrames = 0;
+    e->_animControl.MinFrames = 0;
+    e->_animControl.MaxFrames = 0;
   }else{
-    _animControl.MinFrames = 1;
-    _animControl.MaxFrames = 1;
+    e->_animControl.MinFrames = 1;
+    e->_animControl.MaxFrames = 1;
   }
-
-  CEntity::OnAnimate();
 
 }
 
 // action 0
 void Switch::spawnBombInRoom() {
   // get suitable rectangle for the current room
-  Rectangle aScreenRect(_center.getX()+33,
-      _center.getY()+33, WWIDTH-33, WHEIGHT-33);
+  //Rectangle aScreenRect(e->_center.getX()+10,
+      //e->_center.getY(), e->_center.getX()+20, e->_center.getY()+10);
+  Rectangle aScreenRect(e->getPosition().getX()+10,
+      e->getPosition().getY(), 10, 10);
+
+  std::cout << "e->getAbsX(): " << e->getAbsX() << std::endl;
+  std::cout << "e->getPosition().getX(): " << e->getPosition().getX() << std::endl;
+  
+    
 
   // spawn a bomb randomly in this rectangle
   int key = CEntity::CurrentEntityId;
-  CApp::BombPool[key].generateRandom(aScreenRect);
-  CApp::BombPool[key].setParent(this->_parent);
+  CApp::EntityPool[key].generateRandom(aScreenRect, BOMB); 
+  CApp::EntityPool[key].setParent(e->_parent);
 
+}
+
+// action 1
+void Switch::broadcastToTargets() {
+  for(std::vector<int>::iterator itTarget = _targets.begin(); 
+    itTarget != _targets.end(); ++itTarget) { 
+    
+  }  
+  
 }
 
 void Switch::trigger() {
@@ -68,8 +69,13 @@ void Switch::trigger() {
   _isPushed = true;
   _startTime = SDL_GetTicks();   
 
-  if(_actionId == 0) {
-    spawnBombInRoom();
+  switch(_actionId) {
+    case 0:
+      spawnBombInRoom();
+    break;
+    case 1:
+      broadcastToTargets();
+    break;
   }
 
 }
@@ -77,39 +83,13 @@ void Switch::trigger() {
 void Switch::triggerOnTouch(PointDouble& iMouse) { 
   if(_triggerId != 0) { return; }
   PointDouble distance;
-  CEntity::dist(*this, iMouse, distance);
+  CEntity::dist(*e, iMouse, distance);
 
   if ( distance.getX() < 32 && distance.getY() < 32 ) {
     trigger();
   }
 
 }
-
-
-void Switch::generateAtPos(PointDouble& iPosition) {
-  _position = iPosition;
-  _nextPosition = _position;
-
-  OnLoad("./gfx/switch.png", 32, 32, 4);
-
-  CEntity::EntityList.push_back(this);
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

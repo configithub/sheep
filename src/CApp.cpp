@@ -1,12 +1,12 @@
 #include "CApp.h"
-#include "Level.h"
 
- std::map<int, CFollower> CApp::EntityPool;
+ std::map<int, CEntity> CApp::EntityPool;
+ std::map<int, CFollower> CApp::SheepPool;
  std::map<int, Effect> CApp::EffectPool;
  std::map<int, Bomb> CApp::BombPool;
  std::map<int, Switch> CApp::SwitchPool;
 
- std::vector<CFollower*> CApp::Sheeps;
+ std::vector<CEntity*> CApp::Sheeps;
  int CApp::score=0; 
  int CApp::scoreTimer=0; 
 

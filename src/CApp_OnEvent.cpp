@@ -26,35 +26,35 @@ void CApp::SelectHerdAtCoord(PointDouble& point) {
 
   DeselectAllSheeps();
 
-  CFollower* NearestEntityFromMouse = NULL;
+  CEntity* NearestEntityFromMouse = NULL;
 
   int distance = 0;
 
   GetNearestEntityFromMouse(point, NearestEntityFromMouse, distance);
 
   if(NearestEntityFromMouse == NULL) { return; }
-  std::vector<CFollower*> herd;
+  std::vector<CEntity*> herd;
   herd.push_back(NearestEntityFromMouse);
   getActiveGroup(herd);
 
 }
 
-void CApp::getActiveGroup(std::vector<CFollower*>& ioGroup) {
+void CApp::getActiveGroup(std::vector<CEntity*>& ioGroup) {
 
   if(ioGroup.empty()) { return; }
 
-  std::vector<CFollower*> resultGroup;
+  std::vector<CEntity*> resultGroup;
   int delta = 80;
 
-  for(std::vector<CFollower*>::iterator itFollower = ioGroup.begin();
+  for(std::vector<CEntity*>::iterator itFollower = ioGroup.begin();
       itFollower != ioGroup.end(); ++itFollower) {
     (*itFollower)->_selection = 1;
   }
 
 
-  for(std::vector<CFollower*>::iterator itFollower = ioGroup.begin();
+  for(std::vector<CEntity*>::iterator itFollower = ioGroup.begin();
       itFollower != ioGroup.end(); ++itFollower) {
-    for(std::vector<CFollower*>::iterator itSheep = Sheeps.begin();
+    for(std::vector<CEntity*>::iterator itSheep = Sheeps.begin();
         itSheep != Sheeps.end(); ++itSheep) {
       PointDouble distPoint; distance( (*itFollower)->getPosition(), (*itSheep)->getPosition(), distPoint);
       if( distPoint.modulus() < delta && (*itSheep)->_selection == 0) {
@@ -69,14 +69,14 @@ void CApp::getActiveGroup(std::vector<CFollower*>& ioGroup) {
 }
 
 void CApp::DeselectAllSheeps() {
-  for(std::vector<CFollower*>::iterator itSheep = Sheeps.begin();
+  for(std::vector<CEntity*>::iterator itSheep = Sheeps.begin();
       itSheep != Sheeps.end(); ++itSheep) {
     (*itSheep)->_selection = 0;
   }
 }
 
 void CApp::SelectAllSheeps() {
-  for(std::vector<CFollower*>::iterator itSheep = Sheeps.begin();
+  for(std::vector<CEntity*>::iterator itSheep = Sheeps.begin();
       itSheep != Sheeps.end(); ++itSheep) {
     (*itSheep)->_selection = 1;
   }
@@ -87,7 +87,7 @@ void CApp::SelectAllSheepsInCurrentRoom() {
   // get tile at center (where the camera stands)
   
 
-  for(std::vector<CFollower*>::iterator itSheep = Sheeps.begin();
+  for(std::vector<CEntity*>::iterator itSheep = Sheeps.begin();
       itSheep != Sheeps.end(); ++itSheep) {
     CMap* currentSheepRoom = CArea::AreaControl.GetMap( (*itSheep)->getPosition().getX(), (*itSheep)->getPosition().getY());
     if(currentRoom == currentSheepRoom) { // sheep is in currentRoom
@@ -99,10 +99,10 @@ void CApp::SelectAllSheepsInCurrentRoom() {
 }
 
 
-void CApp::GetNearestEntityFromMouse(PointDouble& point, CFollower*& NearestEntityFromMouse, int& delta) {
+void CApp::GetNearestEntityFromMouse(PointDouble& point, CEntity*& NearestEntityFromMouse, int& delta) {
   delta = 999999999;
   NearestEntityFromMouse = NULL;
-  for(std::vector<CFollower*>::iterator itSheep = Sheeps.begin();
+  for(std::vector<CEntity*>::iterator itSheep = Sheeps.begin();
       itSheep != Sheeps.end(); ++itSheep) {
     PointDouble distPoint; distance( point,(*itSheep)->getPosition(), distPoint);
     int dist = distPoint.modulus();
@@ -112,6 +112,7 @@ void CApp::GetNearestEntityFromMouse(PointDouble& point, CFollower*& NearestEnti
 
 void CApp::triggerSwitchesOnTouch() {
 
+  // TODO, only impact switches in current room
   for(std::map<int,Switch>::iterator itSwitch = SwitchPool.begin(); 
       itSwitch != SwitchPool.end(); ++itSwitch) { 
     itSwitch->second.triggerOnTouch(Mouse);    
@@ -238,7 +239,6 @@ void CApp::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode)
   switch(sym)
   {
 
-
     case SDLK_SPACE:
       {
         break;
@@ -246,9 +246,9 @@ void CApp::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode)
 
     case SDLK_e: // Menu key
       {
-        Rectangle aScreenRect(33, 33, WWIDTH-33, WHEIGHT-33);
+        Rectangle aScreenRect(33, 33, WWIDTH-99, WHEIGHT-99);
         int key = CEntity::CurrentEntityId; 
-        CApp::EntityPool[key].generateRandom(aScreenRect);
+        CApp::EntityPool[key].generateRandom(aScreenRect, SHEEP);
         CApp::EntityPool[key].setParent(this);
         Sheeps.push_back(&CApp::EntityPool[key]);
         break;
@@ -273,9 +273,7 @@ void CApp::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode)
         break;
       }
 
-    default:
-      {
-      }
+    default: {}
   }
 }
 
@@ -283,7 +281,7 @@ void CApp::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode)
 
 void CApp::GoTo(PointDouble& point) {
 
-  for(std::vector<CFollower*>::iterator itSheep = Sheeps.begin();
+  for(std::vector<CEntity*>::iterator itSheep = Sheeps.begin();
       itSheep != Sheeps.end(); ++itSheep) {
     if((*itSheep)->_selection == activeSheep) {
       (*itSheep)->isTargettingPosition(true);
@@ -293,9 +291,8 @@ void CApp::GoTo(PointDouble& point) {
 }
 
 void CApp::GoTo(std::vector<PointDouble>& controls) {
-  for(std::vector<CFollower*>::iterator itSheep = Sheeps.begin();
-      itSheep != Sheeps.end(); ++itSheep)
-  {
+  for(std::vector<CEntity*>::iterator itSheep = Sheeps.begin();
+      itSheep != Sheeps.end(); ++itSheep) {
 
     if((*itSheep)->_selection == activeSheep )
     {
@@ -322,7 +319,7 @@ void CApp::GoTo(std::vector<PointDouble>& controls) {
 }
 
 void CApp::StopGoTo() {
-  for(std::vector<CFollower*>::iterator itSheep = Sheeps.begin();
+  for(std::vector<CEntity*>::iterator itSheep = Sheeps.begin();
       itSheep != Sheeps.end(); ++itSheep) {
     (*itSheep)->StopMove();
   }

@@ -1,7 +1,6 @@
 #include "CApp.h"
 #include <iostream>
 //#include <SDL_rotozoom.h>
-#include "Level.h" 
 //#include <math.h>
 
 void CApp::print_num(SDL_Surface *dst, SDL_Surface *font, int x, int y, float value)
@@ -73,13 +72,11 @@ void CApp::OnRender() {
 
   //CArea::AreaControl.OnRender(Surf_Display, CCamera::CameraControl.GetX(), CCamera::CameraControl.GetY());
 
-  Level::LevelInstance.OnRender();
 
   CArea::AreaControl.OnRender(Surf_Display, -CCamera::CameraControl.GetX(), -CCamera::CameraControl.GetY());
 
   for(int i = 0;i < CEntity::EntityList.size();i++) {
     if(!CEntity::EntityList[i]) continue;
-    //std::cout << CEntity::EntityList[i]->getEntityId() << std::endl;
     CEntity::EntityList[i]->OnRender(Surf_Display);
   }
 
@@ -101,9 +98,6 @@ void CApp::OnRender() {
 
   }
 
-  if(Level::LevelInstance.isGameOver()) {
-    OnGameOver();
-  }
 
   // TODO score display here
   //CSurface::OnDraw(Surf_Display, Surf_Score, 5, 5,1 ,1 ,44,9);
