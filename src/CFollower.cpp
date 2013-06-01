@@ -13,6 +13,14 @@ void CFollower::kill() {
 
 void CFollower::OnCleanup() {
   CApp::SheepPool.erase(e->_entityId); 
+  for(std::vector<CEntity*>::iterator itSheep = CApp::Sheeps.begin(); 
+    itSheep != CApp::Sheeps.end(); ++itSheep) { 
+    if(e->_entityId == (*itSheep)->_entityId){
+      itSheep = CApp::Sheeps.erase(itSheep);
+      break;
+    }
+  }  
+  
 }
 
 void CFollower::OnAnimate() {
