@@ -49,8 +49,7 @@ void Switch::spawnBombInRoom() {
 
   // spawn a bomb randomly in this rectangle
   int key = CEntity::CurrentEntityId;
-  CApp::EntityPool[key].generateRandom(aScreenRect, BOMB); 
-  CApp::EntityPool[key].setParent(e->_parent);
+  CApp::EntityPool[key].generateRandom(aScreenRect, BOMB, e->_parent); 
 
 }
 

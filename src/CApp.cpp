@@ -5,6 +5,7 @@
  std::map<int, Effect> CApp::EffectPool;
  std::map<int, Bomb> CApp::BombPool;
  std::map<int, Switch> CApp::SwitchPool;
+ std::map<int, Saw> CApp::SawPool;
 
  std::vector<CEntity*> CApp::Sheeps;
  int CApp::score=0; 

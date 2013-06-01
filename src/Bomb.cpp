@@ -28,7 +28,7 @@ void Bomb::OnAnimate() {
 }
 
 void Bomb::OnCleanup() {
-  // CApp::BombPool.erase(e->_entityId); 
+  CApp::BombPool.erase(e->_entityId); 
 }
 
 void Bomb::explode(std::vector<CEntity*>& iSheeps) {

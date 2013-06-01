@@ -77,6 +77,11 @@ bool CSurface::OnInit() {
   if( (explosionSurface = CSurface::OnLoad("./gfx/explosion.png")) == NULL ) { return false; }
   Sprites.push_back(explosionSurface);
 
+  // saw
+  SDL_Surface* sawSurface = NULL;
+  if( (sawSurface = CSurface::OnLoad("./gfx/saw2.png")) == NULL ) { return false; }
+  Sprites.push_back(sawSurface);
+
   return true;
 }
 

@@ -6,7 +6,14 @@
 
 CFollower::CFollower() {}
 
+void CFollower::kill() {
+  e->_removeAtNextLoop = true;
+  std::cout << "killing a sheep" << std::endl;
+}
 
+void CFollower::OnCleanup() {
+  CApp::SheepPool.erase(e->_entityId); 
+}
 
 void CFollower::OnAnimate() {
 

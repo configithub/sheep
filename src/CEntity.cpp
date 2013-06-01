@@ -73,25 +73,28 @@ CEntity::CEntity()
 
 }
 
-void CEntity::generateRandom(Rectangle& iBoundaries, EN_EntityType iType) {
+void CEntity::generateRandom(Rectangle& iBoundaries, EN_EntityType iType, CApp* iParent) {
   int x,y;
   x = (int)(rand() % (iBoundaries.getWidth() ) + iBoundaries.getCorner().getX());
   y = (int)(rand() % (iBoundaries.getHeight() ) + iBoundaries.getCorner().getY());
 
   PointDouble randPos(x,y);
-  if(!this->PosValidOnMap(randPos)) { this->generateRandom(iBoundaries, iType); }else{
-    generateAtPos(randPos, iType);
+  if(!this->PosValidOnMap(randPos)) { this->generateRandom(iBoundaries, iType, iParent); }else{
+    generateAtPos(randPos, iType, iParent);
   }
 
 }
 
-void CEntity::generateAtPos(PointDouble& iPosition, EN_EntityType iType) {
+void CEntity::generateAtPos(PointDouble& iPosition, EN_EntityType iType, CApp* iParent) {
   _position = iPosition;
   _nextPosition = _position;
+
+  setParent(iParent);
 
   _sdlSurface = CSurface::Sprites[iType];
   Rectangle mask;
 
+  _type = iType;
 
   switch(iType) {
     case(SHEEP):
@@ -114,9 +117,16 @@ void CEntity::generateAtPos(PointDouble& iPosition, EN_EntityType iType) {
       OnLoad(mask, 4);
       b = &_parent->EffectPool[_entityId];
     break;
+    case(SAW):
+      mask = Rectangle(0,0,32,32);
+      OnLoad(mask, 4);
+      b = &_parent->SawPool[_entityId];
+    break;
   }
 
   b->e = this;
+  b->OnInit();
+  
   CEntity::EntityList.push_back(this);
 
 }

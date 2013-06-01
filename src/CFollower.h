@@ -9,6 +9,9 @@ class CFollower : public Behavior {
 
     void OnAnimate();
 
+    void kill();
+
+    void OnCleanup();
 
 };
 

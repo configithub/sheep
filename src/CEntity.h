@@ -20,7 +20,8 @@ typedef enum {
   SHEEP = 0,
   BOMB,
   SWITCH,
-  EFFECT
+  EFFECT,
+  SAW
 } EN_EntityType;
 
 class CEntity {
@@ -38,15 +39,16 @@ class CEntity {
   friend class Effect;
   friend class Switch;
   friend class Bomb;
+  friend class Saw;
 
   // Public members
   public:
 
   EN_EntityType getType() { return _type; }
 
-  void generateRandom(Rectangle& iBoundaries, EN_EntityType iType);
+  void generateRandom(Rectangle& iBoundaries, EN_EntityType iType, CApp* iParent);
 
-  void generateAtPos(PointDouble& iPosition, EN_EntityType iType);
+  void generateAtPos(PointDouble& iPosition, EN_EntityType iType, CApp* iParent);
 
   static void dist(CEntity& entityA, CEntity& entityB, PointDouble& oResult);
 
@@ -221,7 +223,7 @@ class CEntity {
   CAnimation _animControl;
   int _currentFrameCol;
   int _currentFrameRow;
-
+public:
   Behavior* b;
 
 };

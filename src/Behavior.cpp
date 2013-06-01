@@ -17,3 +17,7 @@ void Behavior::OnRender(SDL_Surface* ioSdlDisplaySurface){}
 
 // operations to be done at clean up time : free memory
 void Behavior::OnCleanup(){}
+
+void Behavior::kill(){}
+
+void Behavior::OnInit(){}

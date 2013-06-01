@@ -59,8 +59,11 @@ bool CApp::OnInit() {
   //PointDouble switchPosition(WWIDTH+60, WHEIGHT+90);
   PointDouble switchPosition(WWIDTH+190,WHEIGHT+ 160);
   int key = CEntity::CurrentEntityId;
-  EntityPool[key].generateAtPos(switchPosition, SWITCH);
-  EntityPool[key].setParent(this);
+  EntityPool[key].generateAtPos(switchPosition, SWITCH, this);
+
+  PointDouble sawPosition(WWIDTH+100,WHEIGHT+ 100);
+  key = CEntity::CurrentEntityId;
+  EntityPool[key].generateAtPos(sawPosition, SAW, this);
 
   //Rectangle aScreenRect(33, 33, WWIDTH-33, WHEIGHT-33);
   //int keyB = CEntity::CurrentEntityId;

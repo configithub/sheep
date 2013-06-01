@@ -108,6 +108,11 @@ void CApp::SolveCollisions(int numIterations, double& dt) {
       CEntity& EntityA = *(contact.EntityA);
       CEntity& EntityB = *(contact.EntityB);
 
+      // SAW kills SHEEP
+      if(EntityB.getType() == SHEEP && EntityA.getType() == SAW) {
+        EntityB.b->kill();
+        continue;
+      }
 
       if(contact._rectangle.getWidth() >= contact._rectangle.getHeight()) { // vertical collision
 

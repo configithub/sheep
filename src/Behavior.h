@@ -43,8 +43,10 @@ class Behavior {
 
   void setEntity(CEntity* aEntity) { e = aEntity; }
 
+  virtual void OnInit();
+
   // decide whether this entity will be part of the next loop or not
-  virtual void OnLoop() ;
+  virtual void OnLoop();
 
   // animate the sprite of the entity
   virtual void OnAnimate();
@@ -54,6 +56,9 @@ class Behavior {
 
   // operations to be done at clean up time : free memory
   virtual void OnCleanup();
+
+  // when something dies
+  virtual void kill();
 
   EN_EntityType _type;
   bool _dead;

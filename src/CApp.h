@@ -16,6 +16,7 @@
 #include "Effect.h"
 #include "Bomb.h"
 #include "Switch.h"
+#include "Saw.h"
 
 
 class CApp : public CEvent {
@@ -63,6 +64,7 @@ class CApp : public CEvent {
     static std::map<int, Switch> SwitchPool;
     static std::map<int, Effect> EffectPool;
     static std::map<int, Bomb> BombPool;
+    static std::map<int, Saw> SawPool;
 
     static SDL_Surface*    Surf_NumFont;
     static SDL_Surface*    Surf_NumFontBomb;

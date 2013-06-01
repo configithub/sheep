@@ -248,8 +248,7 @@ void CApp::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode)
       {
         Rectangle aScreenRect(33, 33, WWIDTH-99, WHEIGHT-99);
         int key = CEntity::CurrentEntityId; 
-        CApp::EntityPool[key].generateRandom(aScreenRect, SHEEP);
-        CApp::EntityPool[key].setParent(this);
+        CApp::EntityPool[key].generateRandom(aScreenRect, SHEEP, this);
         Sheeps.push_back(&CApp::EntityPool[key]);
         break;
       }
