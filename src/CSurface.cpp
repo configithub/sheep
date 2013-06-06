@@ -82,6 +82,11 @@ bool CSurface::OnInit() {
   if( (sawSurface = CSurface::OnLoad("./gfx/saw2.png")) == NULL ) { return false; }
   Sprites.push_back(sawSurface);
 
+  // door
+  SDL_Surface* doorSurface = NULL;
+  if( (doorSurface = CSurface::OnLoad("./gfx/door.png")) == NULL ) { return false; }
+  Sprites.push_back(doorSurface);
+
   return true;
 }
 

@@ -13,6 +13,11 @@ bool CApp::OnInit() {
     return false;
   }
 
+  CEntity::EntityList.reserve(5000);
+  CEntity::NextEntityList.reserve(5000);
+  CEntity::EntityListToRemove.reserve(5000);
+  CApp::Sheeps.reserve(5000);
+  _currentSpawningEntity = SHEEP;
   for(int i=0; i < SDL_NumJoysticks(); i++ ) {
     std::cout<<  SDL_JoystickName(i) << std::endl;
   }
@@ -61,9 +66,29 @@ bool CApp::OnInit() {
   int key = CEntity::CurrentEntityId;
   EntityPool[key].generateAtPos(switchPosition, SWITCH, this);
 
-  PointDouble sawPosition(WWIDTH+100,WHEIGHT+ 100);
+  PointDouble sawPosition(100,WHEIGHT+ 60);
   key = CEntity::CurrentEntityId;
   EntityPool[key].generateAtPos(sawPosition, SAW, this);
+
+  sawPosition = PointDouble(100,WHEIGHT+ 100);
+  key = CEntity::CurrentEntityId;
+  EntityPool[key].generateAtPos(sawPosition, SAW, this);
+
+  sawPosition = PointDouble(140,WHEIGHT+ 140);
+  key = CEntity::CurrentEntityId;
+  EntityPool[key].generateAtPos(sawPosition, SAW, this);
+
+  PointDouble doorPosition(304, 80);
+  key = CEntity::CurrentEntityId;
+  EntityPool[key].generateAtPos(doorPosition, DOOR, this);
+  int doorId = key;
+
+  switchPosition = PointDouble(260, 55);
+  key = CEntity::CurrentEntityId;
+  EntityPool[key].generateAtPos(switchPosition, SWITCH, this);
+  EntityPool[key].b->addTarget(doorId);
+  EntityPool[key].b->setActionId(1);
+
 
   //Rectangle aScreenRect(33, 33, WWIDTH-33, WHEIGHT-33);
   //int keyB = CEntity::CurrentEntityId;

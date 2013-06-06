@@ -18,6 +18,11 @@ void Behavior::OnRender(SDL_Surface* ioSdlDisplaySurface){}
 // operations to be done at clean up time : free memory
 void Behavior::OnCleanup(){}
 
+void Behavior::OnTriggeredAction(){}
+
 void Behavior::kill(){}
 
 void Behavior::OnInit(){}
+
+void Behavior::setActionId(int id) {}
+void Behavior::addTarget(int iTarget) {}

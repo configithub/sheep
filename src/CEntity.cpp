@@ -31,6 +31,7 @@ CEntity::CEntity()
   _nextPosition.set(100, 100);
 
   _mask.set(_position.getX(), _position.getY(), 0, 0);
+  _drawRectangle.set(_position.getX(), _position.getY(), 0, 0);
 
   // animate left or right?
   _moveLeft  = false;
@@ -93,34 +94,46 @@ void CEntity::generateAtPos(PointDouble& iPosition, EN_EntityType iType, CApp* i
 
   _sdlSurface = CSurface::Sprites[iType];
   Rectangle mask;
+  Rectangle drawRectangle;
 
   _type = iType;
 
   switch(iType) {
     case(SHEEP):
       mask = Rectangle(0,0,32,32);
-      OnLoad(mask, 4);
+      drawRectangle = Rectangle(0,0,32,32);
+      OnLoad(mask, drawRectangle, 4);
       b = &_parent->SheepPool[_entityId];
     break;
     case(BOMB):
       mask = Rectangle(0,0,32,32);
-      OnLoad(mask, 4);
+      drawRectangle = Rectangle(0,0,32,32);
+      OnLoad(mask, drawRectangle, 4);
       b = &_parent->BombPool[_entityId];
     break;
     case(SWITCH):
       mask = Rectangle(0,0,32,32);
-      OnLoad(mask, 4);
+      drawRectangle = Rectangle(0,0,32,32);
+      OnLoad(mask, drawRectangle, 4);
       b = &_parent->SwitchPool[_entityId];
     break;
     case(EFFECT):
       mask = Rectangle(0,0,32,32);
-      OnLoad(mask, 4);
+      drawRectangle = Rectangle(0,0,32,32);
+      OnLoad(mask, drawRectangle, 4);
       b = &_parent->EffectPool[_entityId];
     break;
     case(SAW):
       mask = Rectangle(0,0,32,32);
-      OnLoad(mask, 4);
+      drawRectangle = Rectangle(0,0,32,32);
+      OnLoad(mask, drawRectangle, 4);
       b = &_parent->SawPool[_entityId];
+    break;
+    case(DOOR):
+      mask = Rectangle(0,0,32,64);
+      drawRectangle = Rectangle(0,0,32,64);
+      OnLoad(mask, drawRectangle, 4);
+      b = &_parent->DoorPool[_entityId];
     break;
   }
 
@@ -136,8 +149,6 @@ void CEntity::generateAtPos(PointDouble& iPosition, EN_EntityType iType, CApp* i
 CEntity::~CEntity() { }
 
 void CEntity::OnLoop() {
-  // Type dependant
-  b->OnLoop();
 
   // Type independant
   if(!_removeAtNextLoop) {
@@ -145,11 +156,14 @@ void CEntity::OnLoop() {
   }else{
     CEntity::EntityListToRemove.push_back(this);
   }
+  // Type dependant
+  b->OnLoop();
 }
 
 
-bool CEntity::OnLoad(Rectangle& iRectangle, int iMaxFrames) {
-  this->_mask = iRectangle;
+bool CEntity::OnLoad(Rectangle& iMask, Rectangle& iDrawRectangle, int iMaxFrames) {
+  this->_mask = iMask;
+  this->_drawRectangle = iDrawRectangle;
   _animControl.MaxFrames = iMaxFrames;
   return true;
 }
@@ -236,9 +250,9 @@ void CEntity::OnRender(SDL_Surface* Surf_Display) {
       // camera coordinates are taken into account, so if the camera moves, the entities will be displayed accordingly
       _position.getX() - CCamera::CameraControl.GetX(),
       _position.getY() - CCamera::CameraControl.GetY(),
-      _currentFrameCol * _mask.getWidth(), // X coordinate on the entity's animation tile
-      (_currentFrameRow + _animControl.GetCurrentFrame()) * _mask.getHeight(), // Y coordinate on the entity's animation tile
-      _mask.getWidth(), _mask.getHeight()); // to set the rectangle size on the animation tile to be displayed
+      _currentFrameCol * _drawRectangle.getWidth(), // X coordinate on the entity's animation tile
+      (_currentFrameRow + _animControl.GetCurrentFrame()) * _drawRectangle.getHeight(), // Y coordinate on the entity's animation tile
+      _drawRectangle.getWidth(), _drawRectangle.getHeight()); // to set the rectangle size on the animation tile to be displayed
 }
 
 // handles entity animation

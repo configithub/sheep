@@ -15,8 +15,7 @@ void Effect::OnRender(SDL_Surface* Surf_Display) {
 }
 
 void Effect::OnCleanup() {
-  //CEntity::OnCleanup();
-  //CApp::EffectPool.erase(_entityId); 
+  CApp::EffectPool.erase(e->_entityId); 
 }
 
 void Effect::OnAnimate() {

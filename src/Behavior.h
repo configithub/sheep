@@ -51,6 +51,9 @@ class Behavior {
   // animate the sprite of the entity
   virtual void OnAnimate();
 
+  // trigger reception from a switch for instance
+  virtual void OnTriggeredAction();
+
   // render the entity on the display surface
   virtual void OnRender(SDL_Surface* ioSdlDisplaySurface);
 
@@ -59,6 +62,9 @@ class Behavior {
 
   // when something dies
   virtual void kill();
+
+  virtual void setActionId(int id);
+  virtual void addTarget(int iTarget);
 
   EN_EntityType _type;
   bool _dead;

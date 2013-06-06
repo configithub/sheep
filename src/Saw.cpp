@@ -4,7 +4,7 @@
 void Saw::OnInit() {
 
   // adjust the frame rate for the saw animation
-  e->_animControl.SetFrameRate(25);
+  e->_animControl.SetFrameRate(1);
 
 }
 

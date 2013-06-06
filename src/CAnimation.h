@@ -29,6 +29,8 @@ class CAnimation {
     public:
         void SetFrameRate(int Rate);
 
+        void SetFrameInc(int Inc) { FrameInc = Inc; }
+
         int GetFrameRate() { return FrameRate; }
 
         void SetCurrentFrame(int Frame);

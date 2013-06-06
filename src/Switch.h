@@ -26,13 +26,15 @@ class Switch : public Behavior {
     // trigger 0 
     void triggerOnTouch(PointDouble& iMouse);
 
+    void setActionId(int id) { _actionId = id; } 
+
     void trigger();
 
     bool getTriggerId() { return _triggerId; }
 
     void generateAtPos(PointDouble& iPosition);
 
-    void addTarget(int& iTarget) { _targets.push_back(iTarget); }
+    void addTarget(int iTarget) { _targets.push_back(iTarget); }
 
     void broadcastToTargets();
 

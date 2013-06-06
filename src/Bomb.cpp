@@ -32,43 +32,31 @@ void Bomb::OnCleanup() {
 }
 
 void Bomb::explode(std::vector<CEntity*>& iSheeps) {
-
   int currentTime = SDL_GetTicks();
   if(currentTime - _startTime < _delay) {
     // bomb did not explode yet
     return;
   }
-
+  std::cout << "bomb is exploding: " << e->_entityId << std::endl;
   // slightly dirty loop
-  /*if(_hasExploded) { return; }
+  if(_hasExploded) { return; }
   for(std::vector<CEntity*>::iterator itSheep = iSheeps.begin();
-      itSheep != iSheeps.end(); ) {
+      itSheep != iSheeps.end(); ++itSheep ) {
     PointDouble dist;
     CEntity::dist( *e, **itSheep, dist);
     if(dist.modulus() < _radius ) {
       // sheep died in explosion
-      int sheepEntityId = (*itSheep)->getEntityId();
-      (*itSheep)->removeAtNextLoop() = true;
-      itSheep = iSheeps.erase(itSheep);
-    }else{
-      ++itSheep;
+      (*itSheep)->b->kill();
     }
-  }*/
-
+  }
   _hasExploded = true;
   e->_removeAtNextLoop = true;
-
-  /*
   // explosion effect
   int nbExplosionEffect = rand() % 5+3;
   for (int i = 0; i < nbExplosionEffect; i++) {
     int key = CEntity::CurrentEntityId;
-    Effect& explosion = CApp::EffectPool[key];
-    CApp::EffectPool[key].setParent(this->_parent);
-    CApp::EffectPool[key].OnLoad("./gfx/explosion.png", 50, 32, 4); 
-    CEntity::EntityList.push_back(&CApp::EffectPool[key]);
-    PointDouble position( abs( std::min( (int) (this->getPosition().getX() -10 + rand() % 20) ,(int) this->getPosition().getX() )) ,abs( std::min( (int) (this->getPosition().getY() -10 + rand() % 20), (int) this->getPosition().getY() )) );
-    CApp::EffectPool[key].setPosition(position, true);
+    PointDouble position( abs( std::min( (int) (this->e->getPosition().getX() -10 + rand() % 20) ,(int) this->e->getPosition().getX() )) ,abs( std::min( (int) (this->e->getPosition().getY() -10 + rand() % 20), (int) this->e->getPosition().getY() )) );
+    CApp::EntityPool[key].generateAtPos(position, EFFECT, e->_parent); // CORE
   }
-  */
+ 
 }

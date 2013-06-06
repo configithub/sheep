@@ -57,6 +57,7 @@ void Switch::spawnBombInRoom() {
 void Switch::broadcastToTargets() {
   for(std::vector<int>::iterator itTarget = _targets.begin(); 
     itTarget != _targets.end(); ++itTarget) { 
+    CApp::EntityPool[*itTarget].b->OnTriggeredAction();
     
   }  
   

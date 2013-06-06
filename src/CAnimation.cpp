@@ -14,6 +14,7 @@ CAnimation::CAnimation() {
 }
 
 void CAnimation::OnAnimate() {
+  if(MaxFrames == MinFrames) { CurrentFrame = MinFrames; return; }
   if(SDL_GetTicks() < OldTime + FrameRate) {
     return;
   }
@@ -24,8 +25,9 @@ void CAnimation::OnAnimate() {
 
   if(Oscillate) {
     if(FrameInc > 0) {
-      if(CurrentFrame >= MaxFrames - 1) {
+      if(CurrentFrame >= MaxFrames ) {
         FrameInc = -FrameInc;
+        signal = !signal;
       }
     }else{
       if(CurrentFrame <= MinFrames) {

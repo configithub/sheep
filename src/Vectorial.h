@@ -57,7 +57,7 @@ template <class T> class Point {
   }
 
 
-  void operator =(Point<T>& b) {
+  void operator =(Point<T> b) {
     _x = b.getX(); _y = b.getY();
   }
 

@@ -17,6 +17,7 @@
 #include "Bomb.h"
 #include "Switch.h"
 #include "Saw.h"
+#include "Door.h"
 
 
 class CApp : public CEvent {
@@ -38,13 +39,16 @@ class CApp : public CEvent {
 
     //CFollower Follower;
 
-
+    EN_EntityType _currentSpawningEntity;
 
     PointDouble Mouse;
 
   public:
 
     //static PointDouble& getMouse() { return Mouse; }
+
+    EN_EntityType& getCurrentSpawningEntity() { _currentSpawningEntity; }
+    void setCurrentSpawningEntity(EN_EntityType& iType) { _currentSpawningEntity = iType; }
 
     static int score;
     static int scoreTimer;
@@ -65,6 +69,7 @@ class CApp : public CEvent {
     static std::map<int, Effect> EffectPool;
     static std::map<int, Bomb> BombPool;
     static std::map<int, Saw> SawPool;
+    static std::map<int, Door> DoorPool;
 
     static SDL_Surface*    Surf_NumFont;
     static SDL_Surface*    Surf_NumFontBomb;

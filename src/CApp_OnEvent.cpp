@@ -126,6 +126,7 @@ void CApp::OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,
   Mouse.setX(mX+_center->getX());
   Mouse.setY(mY+_center->getY());
   int tileTypeOnMouse = CArea::AreaControl.GetTile(Mouse.getX(), Mouse.getY())->TypeID;
+  //std::cout << "bop" << std::endl;
   if(tileTypeOnMouse == TILE_TYPE_NORMAL) {
     if(MultitouchEvent::Controller.getNumberOfActivePoints() < 2) {
       //SelectHerdAtCoord(Mouse);
@@ -137,21 +138,25 @@ void CApp::OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,
     switch(tileTypeOnMouse) {
       case TRANSLATE_LEFT:
         if(!CCamera::CameraControl.isTranslating()) {
+          //std::cout << "Left" << std::endl;
           _nextCenter->set(_center->getX()-WWIDTH, _center->getY());
         }
         break;
       case TRANSLATE_RIGHT:
         if(!CCamera::CameraControl.isTranslating()) {
+          //std::cout << "Right" << std::endl;
           _nextCenter->set(_center->getX()+WWIDTH, _center->getY());
         }
         break;
       case TRANSLATE_UP:
         if(!CCamera::CameraControl.isTranslating()) {
+          //std::cout << "Up" << std::endl;
           _nextCenter->set(_center->getX(), _center->getY()-WHEIGHT);
         }
         break;
       case TRANSLATE_DOWN:
         if(!CCamera::CameraControl.isTranslating()) {
+          //std::cout << "Down" << std::endl;
           _nextCenter->set(_center->getX(), _center->getY()+WHEIGHT);
         }
         break;
@@ -244,15 +249,6 @@ void CApp::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode)
         break;
       }
 
-    case SDLK_e: // Menu key
-      {
-        Rectangle aScreenRect(33, 33, WWIDTH-99, WHEIGHT-99);
-        int key = CEntity::CurrentEntityId; 
-        CApp::EntityPool[key].generateRandom(aScreenRect, SHEEP, this);
-        Sheeps.push_back(&CApp::EntityPool[key]);
-        break;
-      }
-
 
     case SDLK_f: // back key
       {
@@ -260,17 +256,6 @@ void CApp::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode)
         break;
       }
 
-    case SDLK_c:
-      {
-        _nextCenter->set(0, 0);
-        break;
-      }
-
-    case SDLK_d:
-      {
-        _nextCenter->set(WWIDTH, 0);
-        break;
-      }
 
     default: {}
   }
@@ -333,7 +318,31 @@ void CApp::OnKeyUp(SDLKey sym, SDLMod mod, Uint16 unicode)
   {
     case SDLK_e:
       {
+        Rectangle aScreenRect(33, 33, WWIDTH-99, WHEIGHT-99);
+        int key = CEntity::CurrentEntityId; 
+        CApp::EntityPool[key].generateRandom(aScreenRect, _currentSpawningEntity, this);
+        Sheeps.push_back(&CApp::EntityPool[key]);
+        break;
+      }
+    case SDLK_c:
+      {
+        //_nextCenter->set(0, 0);
+        _currentSpawningEntity = (EN_EntityType)((int)_currentSpawningEntity+1);
+        if(_currentSpawningEntity == NUM_TYPE) {
+          _currentSpawningEntity = SHEEP;
+        }
+        std::cout << "Spawning: " << _currentSpawningEntity << std::endl;
+        break;
+      }
 
+    case SDLK_d:
+      {
+        //_nextCenter->set(WWIDTH, 0);
+        _currentSpawningEntity = (EN_EntityType)((int)_currentSpawningEntity-1);
+        if(_currentSpawningEntity < 0) {
+          _currentSpawningEntity = (EN_EntityType)((int)NUM_TYPE-1);
+        }
+        std::cout << "Spawning: " << _currentSpawningEntity << std::endl;
         break;
       }
 

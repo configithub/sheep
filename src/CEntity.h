@@ -21,7 +21,9 @@ typedef enum {
   BOMB,
   SWITCH,
   EFFECT,
-  SAW
+  SAW,
+  DOOR,
+  NUM_TYPE
 } EN_EntityType;
 
 class CEntity {
@@ -40,6 +42,7 @@ class CEntity {
   friend class Switch;
   friend class Bomb;
   friend class Saw;
+  friend class Door;
 
   // Public members
   public:
@@ -74,7 +77,7 @@ class CEntity {
   void setParent(CApp* aParent) { _parent = aParent; }
 
   // load a new entity in memory
-  bool OnLoad(Rectangle& iMask, int iMaxFrames) ;
+  bool OnLoad(Rectangle& iMask, Rectangle& iDrawRectangle, int iMaxFrames) ;
 
   // decide whether this entity will be part of the next loop or not
   virtual void OnLoop() ;
@@ -147,8 +150,10 @@ class CEntity {
 
   void isTargettingPosition(bool isIt) { _isTargettingPosition = isIt; }
 
-  // the base rectangle of this entity (i.e. its sprite)
+  // the collision mask of this entity (i.e. its sprite)
   Rectangle& getMask() { return _mask; }
+
+  Rectangle& getDrawRectangle() { return _drawRectangle; }
 
   // the collision mask of this entity
   Rectangle& getCollisionMask() { return _collisionMask; }
@@ -196,6 +201,7 @@ class CEntity {
   bool _isTargettingPosition;
 
   Rectangle _mask;
+  Rectangle _drawRectangle;
 
   Rectangle _collisionMask;
   Rectangle _collisionOffset;
