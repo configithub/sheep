@@ -7,7 +7,7 @@
 #include "CAnimation.h"
 #include "CEntity.h"
 #include "Define.h"
-#include "CArea.h"
+#include "Area.h"
 #include "CCamera.h"
 #include "CFollower.h"
 #include "Vectorial.h"
@@ -25,9 +25,6 @@ class CApp : public CEvent {
     bool            Running;
 
     SDL_Surface*    Surf_Display;
-
-    SDL_Surface*    Surf_Test;
-
 
     //Multitouch     _multitouch;
 

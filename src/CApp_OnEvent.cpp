@@ -83,13 +83,13 @@ void CApp::SelectAllSheeps() {
 }
 
 void CApp::SelectAllSheepsInCurrentRoom() {
-  CMap* currentRoom = CArea::AreaControl.GetMap(_center->getX()+5, _center->getY()+5);
+  CMap* currentRoom = Area::AreaControl.GetMap(_center->getX()+5, _center->getY()+5);
   // get tile at center (where the camera stands)
   
 
   for(std::vector<CEntity*>::iterator itSheep = Sheeps.begin();
       itSheep != Sheeps.end(); ++itSheep) {
-    CMap* currentSheepRoom = CArea::AreaControl.GetMap( (*itSheep)->getPosition().getX(), (*itSheep)->getPosition().getY());
+    CMap* currentSheepRoom = Area::AreaControl.GetMap( (*itSheep)->getPosition().getX(), (*itSheep)->getPosition().getY());
     if(currentRoom == currentSheepRoom) { // sheep is in currentRoom
       (*itSheep)->_selection = 1;
     }else{
@@ -125,7 +125,7 @@ void CApp::OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,
 {
   Mouse.setX(mX+_center->getX());
   Mouse.setY(mY+_center->getY());
-  int tileTypeOnMouse = CArea::AreaControl.GetTile(Mouse.getX(), Mouse.getY())->TypeID;
+  int tileTypeOnMouse = Area::AreaControl.GetTile(Mouse.getX(), Mouse.getY())->TypeID;
   //std::cout << "bop" << std::endl;
   if(tileTypeOnMouse == TILE_TYPE_NORMAL) {
     if(MultitouchEvent::Controller.getNumberOfActivePoints() < 2) {

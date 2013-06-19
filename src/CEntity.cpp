@@ -359,7 +359,7 @@ bool CEntity::PosValidOnMap(PointDouble& iNewPosition) {
   // determine which tiles our entity is over
   for(int iY = StartY; iY <= EndY; iY++) {
     for(int iX = StartX; iX <= EndX; iX++) {
-      CTile* Tile = CArea::AreaControl.GetTile(iX * TILE_SIZE, iY * TILE_SIZE);
+      CTile* Tile = Area::AreaControl.GetTile(iX * TILE_SIZE, iY * TILE_SIZE);
       _nextTileId = Tile->TileID;
       _nextTileType = Tile->TypeID;
       // check collision with the map

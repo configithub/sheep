@@ -58,22 +58,8 @@ void CApp::print_num(SDL_Surface *dst, SDL_Surface *font, int x, int y, float va
 
 void CApp::OnRender() {
 
-  // draw test surface on main surface at coord 0,0
-  //CSurface::OnDraw(Surf_Display, Surf_Test, 0, 0);
 
-  // draw the current animation frame for our animation
-  //CSurface::OnDraw(Surf_Display, Surf_Test, 290, 220, 0, Anim_Yoshi.GetCurrentFrame() * 64, 64, 64);
-
-  // draw part (rectangle 0,0,25,25) of the test surface on the main surface at coord 100,100
-  //CSurface::OnDraw(Surf_Display, Surf_Test, 100, 100, 0, 0, 25, 25);
-
-  // refresh main surface, once everything is in place in memory
-  // AKA double buffering (enabled at SDL init time)
-
-  //CArea::AreaControl.OnRender(Surf_Display, CCamera::CameraControl.GetX(), CCamera::CameraControl.GetY());
-
-
-  CArea::AreaControl.OnRender(Surf_Display, -CCamera::CameraControl.GetX(), -CCamera::CameraControl.GetY());
+  Area::AreaControl.OnRender(Surf_Display, -CCamera::CameraControl.GetX(), -CCamera::CameraControl.GetY());
 
   for(int i = 0;i < CEntity::EntityList.size();i++) {
     if(!CEntity::EntityList[i]) continue;

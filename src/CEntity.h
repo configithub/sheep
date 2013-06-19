@@ -5,7 +5,7 @@
 #include <map>
 #include <set>
 
-#include "CArea.h"
+#include "Area.h"
 #include "CAnimation.h"
 #include "CCamera.h"
 #include "CSurface.h"

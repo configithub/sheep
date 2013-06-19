@@ -2,7 +2,6 @@
 
 void CApp::OnCleanup() {
     // clean SDL objects
-    //SDL_FreeSurface(Surf_Test);
     //SDL_FreeSurface(Surf_Display);
 
     // clean all entities
@@ -14,7 +13,7 @@ void CApp::OnCleanup() {
 
     CEntity::EntityList.clear();*/
 
-    CArea::AreaControl.OnCleanup();
+    Area::AreaControl.OnCleanup();
 
     // and terminate SDL
     SDL_Quit();

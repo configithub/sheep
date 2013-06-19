@@ -14,7 +14,6 @@
 
 CApp::CApp() {
     Surf_Display = NULL;
-    Surf_Test = NULL;
     Surf_NumFont = NULL;
     Surf_NumFontBomb = NULL;
     Surf_GameOver = NULL;

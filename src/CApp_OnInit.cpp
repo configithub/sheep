@@ -57,7 +57,7 @@ bool CApp::OnInit() {
 
   CCamera::CameraControl.SetTarget(_center);
 
-  if(CArea::AreaControl.OnLoad("./maps/1.area") == false) {
+  if(Area::AreaControl.OnLoad("./maps/1.area") == false) {
     return false;
   }
 

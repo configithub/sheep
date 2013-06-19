@@ -2,7 +2,7 @@
 #define GRASSPATCH_H
 
 #include "Vectorial.h"
-#include "CArea.h"
+#include "Area.h"
 #include "Define.h"
 #include <SDL.h>
 
