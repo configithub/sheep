@@ -9,7 +9,7 @@ class Saw : public Behavior {
   public:
 
 
-    void OnRender(SDL_Surface* ioSdlDisplaySurface);
+    void OnRender();
     void OnCleanup();
     void OnAnimate();
     void OnInit();

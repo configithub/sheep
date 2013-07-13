@@ -13,14 +13,14 @@ class Area {
     private:
         int                     AreaSize;
 
-        SDL_Surface*        Surf_Tileset;
+        GLuint        glTileset;
 
     public:
         Area();
 
         bool    OnLoad(char* File);
 
-        void    OnRender(SDL_Surface* Surf_Display, int CameraX, int CameraY);
+        void    OnRender(int CameraX, int CameraY);
 
         void    OnCleanup();
 

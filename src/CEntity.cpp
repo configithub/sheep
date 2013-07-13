@@ -12,7 +12,7 @@ int CEntity::CurrentEntityId = 0;
 
 CEntity::CEntity()
 {
-  _sdlSurface = NULL;
+  _glTexture = 0;
 
   // entity coordinates and size
   _position.set(100,100);
@@ -92,7 +92,7 @@ void CEntity::generateAtPos(PointDouble& iPosition, EN_EntityType iType, CApp* i
 
   setParent(iParent);
 
-  _sdlSurface = CSurface::Sprites[iType];
+  _glTexture = CSurface::Sprites[iType];
   Rectangle mask;
   Rectangle drawRectangle;
 
@@ -168,9 +168,8 @@ bool CEntity::OnLoad(Rectangle& iMask, Rectangle& iDrawRectangle, int iMaxFrames
   return true;
 }
 
-
-// 1. factor in controls applied by the player
-void CEntity::OnLoopApplyControls() {
+/*
+{
   if(_isTargettingPosition) {
 
     PointDouble distanceToTarget;
@@ -189,11 +188,47 @@ void CEntity::OnLoopApplyControls() {
       _targetPosition = _position;
     }
   }
-}
+
+  //We're not Moving
+  if ( !_moveLeft && !_moveRight && !_moveUp && !_moveDown ) { StopMove(); }
+
+  if(_moveLeft ) { _accel.setX(-0.5); _lockRight=0; }
+  else if(_moveRight) { _accel.setX(0.5); _lockLeft=0; }
+  if(_moveUp ) { _accel.setY(-0.5); _lockDown=0; }
+  else if(_moveDown) { _accel.setY(0.5); _lockUp=0; }
+
+  // set speed according to acceleration
+  // FPS control is included to be consistent across various system perfs
+  // => acceleration is constant in terms of pixel * second^-2 for diff. perfs
+
+  _speed += (_accel - _speed*(double)0.1) * dt;
+
+  // cap the speed
+  _speed.cap(_maxSpeed);
+
+  OnAnimate(); // update entity animation
+}*/
+
+// 1. factor in controls applied by the player
+void CEntity::OnLoopApplyControls(double& dt) {
+  if(_isTargettingPosition) {
+
+    PointDouble distanceToTarget;
+    CEntity::signedDist(*this, _targetPosition, distanceToTarget);
 
 
-// 2. calculate natural accelerations and speeds
-void CEntity::OnLoopDeriveAndCapSpeed(double& dt) {
+    _moveLeft = false; _moveRight = false; _moveUp = false; _moveDown = false;
+    _moveLeft = distanceToTarget.getX() < -5;
+    _moveRight = distanceToTarget.getX() > 5;
+    _moveUp = distanceToTarget.getY() < -5;
+    _moveDown = distanceToTarget.getY() > 5;
+
+    if ( !_moveLeft && !_moveRight && !_moveUp && !_moveDown ) {
+      //StopMove();
+      _isTargettingPosition = false;
+      _targetPosition = _position;
+    }
+  }
 
   //We're not Moving
   if ( !_moveLeft && !_moveRight && !_moveUp && !_moveDown ) { StopMove(); }
@@ -243,10 +278,10 @@ void CEntity::setPosition(PointDouble& iNewPosition, bool next) {
 }
 
 // draw the entity
-void CEntity::OnRender(SDL_Surface* Surf_Display) {
-  if(_sdlSurface == NULL || Surf_Display == NULL) return;
-  b->OnRender(Surf_Display);
-  CSurface::OnDraw(Surf_Display, _sdlSurface, // draw the entity's surface on the target surface Surf_Display
+void CEntity::OnRender() {
+  if( _glTexture == 0 ) return;
+  b->OnRender();
+  CSurface::draw(_glTexture, // draw the entity's surface on the target surface Surf_Display
       // camera coordinates are taken into account, so if the camera moves, the entities will be displayed accordingly
       _position.getX() - CCamera::CameraControl.GetX(),
       _position.getY() - CCamera::CameraControl.GetY(),
@@ -464,8 +499,8 @@ bool CEntity::PosValidEntity(CEntity* iEntity) {
 
 void CEntity::OnCleanup() {
   b->OnCleanup();
-  // if(_sdlSurface!=NULL) { SDL_FreeSurface(_sdlSurface); }
-  // _sdlSurface = NULL;
+  // if(_glTexture!=NULL) { SDL_FreeSurface(_glTexture); }
+  // _glTexture = NULL;
   CApp::EntityPool.erase(_entityId);
 }
 

@@ -12,7 +12,7 @@ class Door : public Behavior {
     Door() : _iterationNb(0), _maxIterationNb(1), _isClose(true), _isOpen(false), _isClosing(false), _isOpening(false) {
     }
 
-    void OnRender(SDL_Surface* ioSdlDisplaySurface);
+    void OnRender();
     void OnCleanup();
     void OnAnimate();
     void OnInit();

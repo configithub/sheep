@@ -10,7 +10,7 @@ class Effect : public Behavior {
     Effect() : _id(0), _iterationNb(0), _maxIterationNb(1) {
     }
 
-    void OnRender(SDL_Surface* Surf_Display);
+    void OnRender();
 
     void OnCleanup();
   

@@ -55,7 +55,7 @@ class Behavior {
   virtual void OnTriggeredAction();
 
   // render the entity on the display surface
-  virtual void OnRender(SDL_Surface* ioSdlDisplaySurface);
+  virtual void OnRender();
 
   // operations to be done at clean up time : free memory
   virtual void OnCleanup();

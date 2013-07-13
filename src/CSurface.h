@@ -4,32 +4,34 @@
 #include <SDL.h>
 #include <SDL_image.h>
 #include <vector>
+#include <map>
+
+#ifdef ANDROID
+#include <GLES/gl.h>
+#define glOrtho glOrthof
+
+#include <android/log.h>
+#define fprintf(X, ...) __android_log_print(ANDROID_LOG_INFO, "Ballfield", __VA_ARGS__)
+#define printf(...) __android_log_print(ANDROID_LOG_INFO, "Ballfield", __VA_ARGS__)
+#else
+#include <GL/gl.h>
+#endif
 
 class CSurface {
-  public:
-    CSurface();
 
   public:
 
-    static SDL_Surface* load_zoomed(char *name, int alpha);
+    static int powerOfTwo(int i);
 
-    static SDL_Surface* OnLoadBMP(char* File);
-    static SDL_Surface* OnLoad(char* File);
-
-    // draw Surf_Src to Surf_Dest
-    static bool OnDraw(SDL_Surface* Surf_Dest, SDL_Surface* Surf_Src, int X, int Y);
+    static bool load(char *name);
 
     // draw part of Surf_Src to Surf_Dest
-    static bool OnDraw(SDL_Surface* Surf_Dest, SDL_Surface* Surf_Src, int X, int Y, int X2, int Y2, int W, int H);
-
-    // draw part of Surf_Src to Surf_Dest with a rotation by input angle
-    static bool OnDraw(SDL_Surface* Surf_Dest, SDL_Surface* Surf_Src, int X, int Y, int X2, int Y2, int W, int H, double angle, double zoom);
-
-    // make input color transparent for this surface
-    static bool Transparent(SDL_Surface* Surf_Dest, int R, int G, int B);
+    static bool draw(GLuint texture, int X, int Y, int Xtex, int Ytex, int Wtex, int Htex, GLfloat r = 1.0f, GLfloat g = 1.0f, GLfloat b = 1.0f, GLfloat a = 1.0f);
 
     static bool OnInit(); // load sprites
-    static std::vector<SDL_Surface*> Sprites; 
+
+    static std::vector<GLuint> Sprites; 
+    static std::map<GLuint, std::pair<int,int> > WHmap; 
 
 };
 

@@ -83,10 +83,7 @@ class CEntity {
   virtual void OnLoop() ;
 
   // apply controls from the player -> should be moved to child class
-  void OnLoopApplyControls();
-
-  // limit the speed of entities -> might need to be overridden in child class
-  void OnLoopDeriveAndCapSpeed(double& dt);
+  void OnLoopApplyControls(double& dt);
 
   // speculative collision : initiate next position
   void OnLoopMotionBounds();
@@ -101,7 +98,7 @@ class CEntity {
   virtual void OnAnimate();
 
   // render the entity on the display surface
-  virtual void OnRender(SDL_Surface* ioSdlDisplaySurface);
+  virtual void OnRender();
 
   // operations to be done at clean up time : free memory
   virtual void OnCleanup();
@@ -225,7 +222,7 @@ class CEntity {
   int _nextTileType;
 
   // animation
-  SDL_Surface* _sdlSurface;
+  GLuint _glTexture;
   CAnimation _animControl;
   int _currentFrameCol;
   int _currentFrameRow;

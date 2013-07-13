@@ -1,7 +1,8 @@
 #include "CMap.h"
+#include <iostream>
 
 CMap::CMap() {
-    Surf_Tileset = NULL;
+    glTileset = 0;
     Map_X = 0;
     Map_Y = 0;
 }
@@ -31,11 +32,23 @@ bool CMap::OnLoad(char* File) {
     return true;
 }
 
-void CMap::OnRender(SDL_Surface* Surf_Display, int MapX, int MapY) {
-    if(Surf_Tileset == NULL) return;
+void CMap::OnRender(int MapX, int MapY) {
+    if(glTileset == 0) {
+      //std::cout << "invalid glTileset in map" << std::endl;
+      return;
+    }
 
-    int TilesetWidth  = Surf_Tileset->w / TILE_SIZE;
-    int TilesetHeight = Surf_Tileset->h / TILE_SIZE;
+    int& w = CSurface::WHmap[glTileset].first;
+    int& h = CSurface::WHmap[glTileset].second;
+
+    
+    int TilesetWidth  = w / TILE_SIZE;
+    int TilesetHeight = h / TILE_SIZE;
+
+    // TODO to avoid doing this : the tileset picture must be a power of 2 square...
+    TilesetWidth = 6;
+    TilesetHeight = 7;
+
 
     int ID = 0;
 
@@ -52,7 +65,8 @@ void CMap::OnRender(SDL_Surface* Surf_Display, int MapX, int MapY) {
             int TilesetX = (TileList[ID].TileID % TilesetWidth) * TILE_SIZE;
             int TilesetY = (TileList[ID].TileID / TilesetWidth) * TILE_SIZE;
 
-            CSurface::OnDraw(Surf_Display, Surf_Tileset, tX, tY, TilesetX, TilesetY, TILE_SIZE, TILE_SIZE);
+            
+            CSurface::draw(glTileset, tX, tY, TilesetX, TilesetY, TILE_SIZE, TILE_SIZE);
 
             ID++;
         }

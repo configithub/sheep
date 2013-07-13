@@ -8,11 +8,11 @@ CFollower::CFollower() {}
 
 void CFollower::kill() {
   e->_removeAtNextLoop = true;
-  std::cout << "killing a sheep" << std::endl;
 }
 
 void CFollower::OnCleanup() {
   CApp::SheepPool.erase(e->_entityId); 
+  std::cout << "killing a sheep" << std::endl;
   for(std::vector<CEntity*>::iterator itSheep = CApp::Sheeps.begin(); 
     itSheep != CApp::Sheeps.end(); ++itSheep) { 
     if(e->_entityId == (*itSheep)->_entityId){

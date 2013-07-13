@@ -9,7 +9,7 @@
 
 class CMap {
     public:
-        SDL_Surface* Surf_Tileset;
+        GLuint glTileset;
 
     private:
         std::vector<CTile> TileList;
@@ -24,7 +24,7 @@ class CMap {
     public:
         bool OnLoad(char* File);
 
-        void OnRender(SDL_Surface* Surf_Display, int MapX, int MapY);
+        void OnRender(int MapX, int MapY);
 
         CTile*    GetTile(int X, int Y);
 };

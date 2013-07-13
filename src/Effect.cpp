@@ -4,7 +4,7 @@
 #include "CApp.h"
 
 
-void Effect::OnRender(SDL_Surface* Surf_Display) {
+void Effect::OnRender() {
   if(e->_animControl.signal) {
     ++_iterationNb;
     e->_animControl.signal = false;

@@ -3,7 +3,7 @@
 #include "CApp.h"
 
 
-void Switch::OnRender(SDL_Surface* Surf_Display) {
+void Switch::OnRender() {
   if(_isPushed) {
     int currentTime = SDL_GetTicks();
     if(currentTime - _startTime < _delay) {

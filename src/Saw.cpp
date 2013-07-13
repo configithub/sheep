@@ -11,7 +11,7 @@ void Saw::OnInit() {
 
 
 
-void Saw::OnRender(SDL_Surface* Surf_Display) { }
+void Saw::OnRender() { }
 
 
 void Saw::OnCleanup() {

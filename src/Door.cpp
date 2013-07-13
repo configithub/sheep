@@ -10,7 +10,7 @@ void Door::OnInit() {
 }
 
 
-void Door::OnRender(SDL_Surface* Surf_Display) {
+void Door::OnRender() {
   if(_isOpening) {
     if(e->_animControl.signal) {
       ++_iterationNb;

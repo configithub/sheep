@@ -12,7 +12,7 @@ class Switch : public Behavior {
       _type = SWITCH;
     }
 
-    void OnRender(SDL_Surface* ioSdlDisplaySurface);
+    void OnRender();
 
     void OnAnimate();
 

@@ -24,9 +24,6 @@ class CApp : public CEvent {
   private:
     bool            Running;
 
-    SDL_Surface*    Surf_Display;
-
-    //Multitouch     _multitouch;
 
     std::vector<SDL_Joystick*> _sdlJoysticks;
 
@@ -68,10 +65,6 @@ class CApp : public CEvent {
     static std::map<int, Saw> SawPool;
     static std::map<int, Door> DoorPool;
 
-    static SDL_Surface*    Surf_NumFont;
-    static SDL_Surface*    Surf_NumFontBomb;
-    static SDL_Surface*    Surf_GameOver;
-    static SDL_Surface*    Surf_Score;
     CApp();
 
     void SolveCollisions(int numIterations, double& dt);
@@ -135,6 +128,8 @@ class CApp : public CEvent {
     void OnGameOver();
 
     void triggerSwitchesOnTouch();
+
+    static void clearScreen();
 };
 
 #endif

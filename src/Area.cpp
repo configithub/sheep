@@ -22,11 +22,12 @@ bool Area::OnLoad(char* File) {
 
     fscanf(FileHandle, "%s\n", TilesetFile);
 
-    if((Surf_Tileset = CSurface::OnLoad(TilesetFile)) == false) {
+    if(!CSurface::load(TilesetFile)) {
         fclose(FileHandle);
         std::cout << "file handle false: " << TilesetFile;
         return false;
     }
+    glTileset = CSurface::Sprites.back();
 
     fscanf(FileHandle, "%d\n", &AreaSize);
 
@@ -45,7 +46,7 @@ bool Area::OnLoad(char* File) {
                 return false;
             }
 
-            tempMap.Surf_Tileset = Surf_Tileset;
+            tempMap.glTileset = glTileset;
 
             MapList.push_back(tempMap);
         }
@@ -58,7 +59,7 @@ bool Area::OnLoad(char* File) {
 }
 
 // renders the four maps visible on screen (overlapping with it)
-void Area::OnRender(SDL_Surface* Surf_Display, int CameraX, int CameraY) {
+void Area::OnRender(int CameraX, int CameraY) {
     int MapWidth  = MAP_WIDTH * TILE_SIZE;
     int MapHeight = MAP_HEIGHT * TILE_SIZE;
 
@@ -76,7 +77,7 @@ void Area::OnRender(SDL_Surface* Surf_Display, int CameraX, int CameraY) {
         int Y = ((ID / AreaSize) * MapHeight) + CameraY;
 
         // renders the four maps
-        MapList[ID].OnRender(Surf_Display, X, Y);
+        MapList[ID].OnRender(X, Y);
     }
 }
 
@@ -113,8 +114,8 @@ CTile* Area::GetTile(int X, int Y) {
 
 // cleans the entire area
 void Area::OnCleanup() {
-    if(Surf_Tileset) {
-        SDL_FreeSurface(Surf_Tileset);
+    if(glTileset) {
+       // SDL_FreeSurface(glTileset);
     }
 
     MapList.clear();

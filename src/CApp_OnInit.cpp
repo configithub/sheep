@@ -1,10 +1,6 @@
 #include "CApp.h"
 #include <iostream>
 
-SDL_Surface* CApp::Surf_NumFont = NULL;
-SDL_Surface* CApp::Surf_NumFontBomb = NULL;
-SDL_Surface* CApp::Surf_GameOver = NULL;
-SDL_Surface* CApp::Surf_Score = NULL;
 
 bool CApp::OnInit() {
 
@@ -12,45 +8,49 @@ bool CApp::OnInit() {
   if ( SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER|SDL_INIT_AUDIO|SDL_INIT_JOYSTICK) == -1 ) {
     return false;
   }
+  if(! SDL_SetVideoMode(WWIDTH, WHEIGHT, BPP_DEPTH, SDL_OPENGL|SDL_DOUBLEBUF)  ) {
+    return false;
+  }
+  // initialize OpenGL
+#ifdef ANDROID
+  int screenWidth = SDL_GetVideoInfo()->current_w;
+  int screenHeight = SDL_GetVideoInfo()->current_h;
+  glViewport(0, 0, screenWidth, screenHeight);
+#else
+  glViewport(0, 0, WWIDTH, WHEIGHT);
+#endif
 
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
+
+
+  glOrtho(0.0f, WWIDTH, WHEIGHT, 0.0f, 1.0f, -1.0f);
+  //glOrtho(0.0f, WWIDTH, 0.0f, WHEIGHT, -1.0f, 1.0f);
+  glMatrixMode(GL_MODELVIEW);
+
+  glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+  glDisable(GL_DEPTH_TEST);
+
+  std::cout << "glGetError(): " << glGetError() << std::endl;
+  
+
+  // joystick (multitouch) init
+  SDL_JoystickEventState(SDL_ENABLE);
+  SDL_Joystick* joystick = SDL_JoystickOpen(0);
+  for(int i=0; i < SDL_NumJoysticks(); i++ ) {
+    std::cout<<  SDL_JoystickName(i) << std::endl;
+  }
+
+  // reserve stuff
   CEntity::EntityList.reserve(5000);
   CEntity::NextEntityList.reserve(5000);
   CEntity::EntityListToRemove.reserve(5000);
   CApp::Sheeps.reserve(5000);
   _currentSpawningEntity = SHEEP;
-  for(int i=0; i < SDL_NumJoysticks(); i++ ) {
-    std::cout<<  SDL_JoystickName(i) << std::endl;
-  }
-
-  SDL_JoystickEventState(SDL_ENABLE);
-  SDL_Joystick* joystick = SDL_JoystickOpen(0);
-
-  // create main surface
-  // resolution, bit resolution, HW = hardware memory, double buffering prevent flickering
-  // if((Surf_Display = SDL_SetVideoMode(WWIDTH, WHEIGHT, BPP_DEPTH, SDL_HWSURFACE | SDL_DOUBLEBUF|SDL_HWACCEL)) == NULL) {
-  if((Surf_Display = SDL_SetVideoMode(WWIDTH, WHEIGHT, BPP_DEPTH, SDL_SWSURFACE )) == NULL) {
-    return false;
-  }
   CSurface::OnInit();
 
   //EntityPool.reserve(1000);
   activeSheep = 1;
-
-
-  // to display number information, for now only framerate
-  if(Surf_NumFont == NULL) {
-    Surf_NumFont = CSurface::OnLoad("./gfx/font.png");
-  }
-  if(Surf_NumFontBomb == NULL) {
-    Surf_NumFontBomb = CSurface::OnLoad("./gfx/font1.png");
-  }
-  if(Surf_GameOver == NULL) {
-    Surf_GameOver = CSurface::OnLoad("./gfx/gameover.png");
-  }
-  if(Surf_Score == NULL) {
-    Surf_Score = CSurface::OnLoad("./gfx/scorefont.png");
-  }
-  //Surf_NumFont = CSurface::load_zoomed("./gfx/sheep.png", 0);
 
   _center = new PointDouble(0, 0);
   _nextCenter = new PointDouble(0, 0);
@@ -105,4 +105,4 @@ bool CApp::OnInit() {
 
 
   return true;
-  }
+}

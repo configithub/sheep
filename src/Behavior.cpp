@@ -13,7 +13,7 @@ void Behavior::OnLoop(){}
 void Behavior::OnAnimate(){}
 
 // render the entity on the display surface
-void Behavior::OnRender(SDL_Surface* ioSdlDisplaySurface){}
+void Behavior::OnRender(){}
 
 // operations to be done at clean up time : free memory
 void Behavior::OnCleanup(){}

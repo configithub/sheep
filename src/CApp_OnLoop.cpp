@@ -36,8 +36,8 @@ void CApp::OnLoop() {
   for(std::vector<CEntity*>::iterator itEntity = CEntity::EntityList.begin(); itEntity != CEntity::EntityList.end(); ++itEntity) {
     if((*itEntity) == NULL) continue;
     
-    (*itEntity)->OnLoopApplyControls();
-    (*itEntity)->OnLoopDeriveAndCapSpeed(dt);
+    (*itEntity)->OnLoopApplyControls(dt);
+    //(*itEntity)->OnLoopDeriveAndCapSpeed(dt);
   }
 
   // apply gravity and controls on all entities
