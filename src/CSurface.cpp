@@ -13,25 +13,47 @@ int CSurface::powerOfTwo(int i) {
   return r;
 }
 
+SDL_Color translate_color(Uint32 int_color)                           
+{
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+  SDL_Color color={(int_color & 0x00ff0000)/0x10000,(int_color &
+      0x0000ff00)/0x100,(int_color & 0x000000ff),0};
+#else
+  SDL_Color color={(int_color & 0x000000ff),(int_color &
+      0x0000ff00)/0x100,(int_color & 0x00ff0000)/0x10000,0};    
+#endif
+  return color;
+}
 
 bool CSurface::load(char *name) {
   SDL_Surface *pic = IMG_Load(name);
   /*if(pic != NULL) {
     std::cout << pic->format->BitsPerPixel << std::endl;
-  }else{
+    }else{
     std::cout << "pic surface null" << std::endl;
-  }
-  if(pic == NULL ||
-      (pic->format->BitsPerPixel != 32
-       || pic->format->BitsPerPixel != 16
-          || pic->format->BitsPerPixel != 24) ) {
+    }
+    if(pic == NULL ||
+    (pic->format->BitsPerPixel != 32
+    || pic->format->BitsPerPixel != 16
+    || pic->format->BitsPerPixel != 24) ) {
     fprintf(stderr, "Could not load pic\n");
     SDL_FreeSurface(pic);
     return NULL;
-  }*/
+    }*/
 
   //SDL_SetColorKey(pic, SDL_SRCCOLORKEY,
   //    SDL_MapRGB(pic->format, 255, 0, 255));
+
+  // color keying in SDL before creating the opengl texture
+  SDL_Color color;
+  for (int y = 0; y < pic->h; y++) {
+    for (int x = 0; x < pic->w; x++) {
+      unsigned int pix = ((unsigned int*)pic->pixels)[y*(pic->pitch/sizeof(unsigned int)) + x];
+      color =  translate_color(pix);
+      if (color.r == 255 && color.b == 255)    
+      {((unsigned int*)pic->pixels)[y*(pic->pitch/sizeof(unsigned int)) + x] = SDL_MapRGBA(pic->format, 0, 0, 0,0);}
+    }
+  }
 
   GLenum glFormat = (pic->format->BitsPerPixel == 32 ? GL_RGBA : GL_RGB);
   int w = pic->w; int h = pic->h;
@@ -40,6 +62,11 @@ bool CSurface::load(char *name) {
   float texcoord_w = (float) w / (float) upload_w;
   float texcoord_h = (float) h / (float) upload_h;
 
+  std::cout << "name: " << name << std::endl;
+  std::cout << "pic->format->BitsPerPixel: " << pic->format->BitsPerPixel << std::endl;
+  
+  
+
   GLuint currentTexture = 0;
   glGenTextures(1, &currentTexture);
 
@@ -47,7 +74,7 @@ bool CSurface::load(char *name) {
   std::cout << "currentTexture: " << currentTexture << std::endl;
   Sprites.push_back(currentTexture);
   std::cout << "Sprites.back(): " << Sprites.back() << std::endl;
-  
+
   WHmap[currentTexture] = std::make_pair(upload_w, upload_h);
   glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
@@ -64,7 +91,7 @@ bool CSurface::load(char *name) {
   SDL_FreeSurface(pic);
 
   std::cout << "glGetError(): " << glGetError() << std::endl;
-  
+
   return true;
 }
 
@@ -74,7 +101,7 @@ bool CSurface::OnInit() {
   if(!Sprites.empty()) { return false; }
 
   // sheep
-  if( !CSurface::load("./gfx/sheep6.png") ) { std::cout << "fail load sheep6.png" << std::endl; return false; }
+  if( !CSurface::load("./gfx/sheep.png") ) { std::cout << "fail load sheep.png" << std::endl; return false; }
   // bomb
   if( !CSurface::load("./gfx/bomb.png") ) { return false; }
   // switch
@@ -82,10 +109,10 @@ bool CSurface::OnInit() {
   // explosion
   if( !CSurface::load("./gfx/explosion.png") ) { return false; }
   // saw
-  if( !CSurface::load("./gfx/saw2.png") ) { return false; }
+  if( !CSurface::load("./gfx/saw.png") ) { return false; }
   // door
   if( !CSurface::load("./gfx/door.png") ) { return false; }
-  
+
   std::cout << "entity sprites initalized" << std::endl;  
 
   return true;
@@ -102,13 +129,13 @@ bool CSurface::draw(GLuint texture, int X, int Y, int Xtex, int Ytex, int Wtex, 
   //std::cout << "X1: " << X1 << std::endl;
   float Y1 = Ytex / (float)totalTexH;  
   //std::cout << "Y1: " << Y1 << std::endl;
-  
+
   float X2 = (Xtex + Wtex) / (float)totalTexW;  
   //std::cout << "X2: " << X2 << std::endl;
-  
+
   float Y2 = (Ytex + Htex) / (float)totalTexH;  
   //std::cout << "Y2: " << Y2 << std::endl;
-  
+
   //std::cout << "X: " << X << std::endl;
   //std::cout << "Y: " << Y << std::endl;
   //std::cout << "Wtex: " << Wtex << std::endl;
