@@ -16,11 +16,11 @@ int CSurface::powerOfTwo(int i) {
 SDL_Color translate_color(Uint32 int_color)                           
 {
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
-  SDL_Color color={(int_color & 0x00ff0000)/0x10000,(int_color &
-      0x0000ff00)/0x100,(int_color & 0x000000ff),0};
+  SDL_Color color={static_cast<unsigned char>(int_color & 0x00ff0000)/0x10000, static_cast<unsigned char>(int_color &
+      0x0000ff00)/0x100, static_cast<unsigned char>(int_color & 0x000000ff),0};
 #else
-  SDL_Color color={(int_color & 0x000000ff),(int_color &
-      0x0000ff00)/0x100,(int_color & 0x00ff0000)/0x10000,0};    
+  SDL_Color color={ static_cast<unsigned char>(int_color & 0x000000ff), static_cast<unsigned char>(int_color &
+      0x0000ff00)/0x100, static_cast<unsigned char>(int_color & 0x00ff0000)/0x10000,0};    
 #endif
   return color;
 }

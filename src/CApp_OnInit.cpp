@@ -8,13 +8,16 @@ bool CApp::OnInit() {
   if ( SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER|SDL_INIT_AUDIO|SDL_INIT_JOYSTICK) == -1 ) {
     return false;
   }
+#ifdef ANDROID
+  int screenWidth = SDL_GetVideoInfo()->current_w;
+  int screenHeight = SDL_GetVideoInfo()->current_h;
+#endif
   if(! SDL_SetVideoMode(WWIDTH, WHEIGHT, BPP_DEPTH, SDL_OPENGL|SDL_DOUBLEBUF)  ) {
     return false;
   }
   // initialize OpenGL
+  glEnable(GL_BLEND);
 #ifdef ANDROID
-  int screenWidth = SDL_GetVideoInfo()->current_w;
-  int screenHeight = SDL_GetVideoInfo()->current_h;
   glViewport(0, 0, screenWidth, screenHeight);
 #else
   glViewport(0, 0, WWIDTH, WHEIGHT);
@@ -24,15 +27,16 @@ bool CApp::OnInit() {
   glLoadIdentity();
 
 
+  // glOrtho(0.0f, screenWidth, screenHeight, 0.0f, 1.0f, -1.0f);
   glOrtho(0.0f, WWIDTH, WHEIGHT, 0.0f, 1.0f, -1.0f);
-  //glOrtho(0.0f, WWIDTH, 0.0f, WHEIGHT, -1.0f, 1.0f);
   glMatrixMode(GL_MODELVIEW);
 
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
   glDisable(GL_DEPTH_TEST);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
   std::cout << "glGetError(): " << glGetError() << std::endl;
-  
+
 
   // joystick (multitouch) init
   SDL_JoystickEventState(SDL_ENABLE);
