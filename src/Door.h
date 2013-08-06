@@ -17,7 +17,7 @@ class Door : public Behavior {
     void OnAnimate();
     void OnInit();
    
-    void OnTriggeredAction(); 
+    void OnTriggeredAction(int id); 
     void Open();
     void Close();
 

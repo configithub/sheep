@@ -47,7 +47,7 @@ void Door::OnCleanup() {
 }
 
 
-void Door::OnTriggeredAction() {
+void Door::OnTriggeredAction(int id) {
 
   if(_isOpening || _isClosing) { return; }
 

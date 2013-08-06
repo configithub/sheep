@@ -52,7 +52,7 @@ class Behavior {
   virtual void OnAnimate();
 
   // trigger reception from a switch for instance
-  virtual void OnTriggeredAction();
+  virtual void OnTriggeredAction(int id=0);
 
   // render the entity on the display surface
   virtual void OnRender();
@@ -64,6 +64,8 @@ class Behavior {
   virtual void kill();
 
   virtual void setActionId(int id);
+  virtual void setTriggerId(int id);
+  virtual void setSwitchId(int id);
   virtual void addTarget(int iTarget);
 
   EN_EntityType _type;

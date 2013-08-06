@@ -247,7 +247,7 @@ void CEntity::OnLoopApplyControls(double& dt) {
   // cap the speed
   _speed.cap(_maxSpeed);
 
-  OnAnimate(); // update entity animation
+  //OnAnimate(); // update entity animation
 }
 
 // 3. initiate nextX and nextY
@@ -279,6 +279,7 @@ void CEntity::setPosition(PointDouble& iNewPosition, bool next) {
 
 // draw the entity
 void CEntity::OnRender() {
+  OnAnimate(); // update entity animation
   if( _glTexture == 0 ) return;
   b->OnRender();
   CSurface::draw(_glTexture, // draw the entity's surface on the target surface Surf_Display

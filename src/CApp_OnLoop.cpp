@@ -112,7 +112,17 @@ void CApp::SolveCollisions(int numIterations, double& dt) {
       if(EntityB.getType() == SHEEP && EntityA.getType() == SAW) {
         EntityB.b->kill();
         continue;
-      }
+      } 
+      if (EntityA.getType() == SHEEP && EntityB.getType() == SAW) {
+        EntityA.b->kill();
+        continue;
+      } 
+
+      // SHEEP triggers SWITCH
+      if(EntityB.getType() == SHEEP && EntityA.getType() == SWITCH) {
+        EntityA.b->OnTriggeredAction(1);
+        continue;
+      } 
 
       if(contact._rectangle.getWidth() >= contact._rectangle.getHeight()) { // vertical collision
 

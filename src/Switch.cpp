@@ -1,4 +1,3 @@
-
 #include "Switch.h"
 #include "CApp.h"
 
@@ -9,11 +8,19 @@ void Switch::OnRender() {
     if(currentTime - _startTime < _delay) {
       // switch did not go back to unpushed state yet 
     }else{
-      _isPushed = false;
+      if(_switchType == 1) {
+        _isPushed = false;
+      }
     }
   }
 }
 
+void Switch::OnLoop() {
+  _isPushedBefore = _isPushed;
+  if(_switchType == 2) { // needs continual pressure
+    _isPushed = false;
+  }
+}
 
 void Switch::OnCleanup() {
   //CEntity::OnCleanup();
@@ -24,12 +31,25 @@ void Switch::OnAnimate() {
 
   e->_currentFrameCol = 0;
 
+  int initialState = e->_animControl.MinFrames;
+
   if (!_isPushed) {
     e->_animControl.MinFrames = 0;
     e->_animControl.MaxFrames = 0;
   }else{
     e->_animControl.MinFrames = 1;
     e->_animControl.MaxFrames = 1;
+  }
+
+  if(_switchType == 2 && initialState == 1 && e->_animControl.MinFrames == 0) {
+    switch(_actionId) {
+      case 0:
+        spawnBombInRoom();
+      break;
+      case 1:
+        broadcastToTargets();
+      break;
+    }
   }
 
 }
@@ -63,19 +83,21 @@ void Switch::broadcastToTargets() {
   
 }
 
-void Switch::trigger() {
-
+void Switch::OnTriggeredAction(int id) {
+  if(id != _triggerId) { return; }
   if(_isPushed) { return; }
   _isPushed = true;
   _startTime = SDL_GetTicks();   
 
-  switch(_actionId) {
-    case 0:
-      spawnBombInRoom();
-    break;
-    case 1:
-      broadcastToTargets();
-    break;
+  if(_switchType != 2 || ((_switchType == 2) && !_isPushedBefore) ) {
+    switch(_actionId) {
+      case 0:
+        spawnBombInRoom();
+      break;
+      case 1:
+        broadcastToTargets();
+      break;
+    }
   }
 
 }
@@ -86,7 +108,7 @@ void Switch::triggerOnTouch(PointDouble& iMouse) {
   CEntity::dist(*e, iMouse, distance);
 
   if ( distance.getX() < 32 && distance.getY() < 32 ) {
-    trigger();
+    OnTriggeredAction(0);
   }
 
 }

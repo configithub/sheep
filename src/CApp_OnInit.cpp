@@ -69,6 +69,9 @@ bool CApp::OnInit() {
   PointDouble switchPosition(WWIDTH+190,WHEIGHT+ 160);
   int key = CEntity::CurrentEntityId;
   EntityPool[key].generateAtPos(switchPosition, SWITCH, this);
+  EntityPool[key].b->setTriggerId(TRIGGER_ON_MOUSE);
+  EntityPool[key].b->setActionId(SPAWN_BOMB);
+  EntityPool[key].b->setSwitchId(ONE_SHOT);
 
   PointDouble sawPosition(100,WHEIGHT+ 60);
   key = CEntity::CurrentEntityId;
@@ -91,7 +94,9 @@ bool CApp::OnInit() {
   key = CEntity::CurrentEntityId;
   EntityPool[key].generateAtPos(switchPosition, SWITCH, this);
   EntityPool[key].b->addTarget(doorId);
-  EntityPool[key].b->setActionId(1);
+  EntityPool[key].b->setTriggerId(TRIGGER_ON_COLISION);
+  EntityPool[key].b->setSwitchId(NEED_CONTINUAL_PRESSURE);
+  EntityPool[key].b->setActionId(BROADCAST);
 
 
   //Rectangle aScreenRect(33, 33, WWIDTH-33, WHEIGHT-33);

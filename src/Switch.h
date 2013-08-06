@@ -8,7 +8,7 @@ class Switch : public Behavior {
 
   public:
 
-    Switch(): _isPushed(false), _delay(400), _actionId(0), _triggerId(0) {
+    Switch(): _isPushed(false), _isPushedBefore(false), _delay(400), _actionId(0), _triggerId(0), _switchType(1) {
       _type = SWITCH;
     }
 
@@ -17,6 +17,8 @@ class Switch : public Behavior {
     void OnAnimate();
 
     void OnCleanup();
+
+    void OnLoop();
 
     // action 0
     void spawnBombInRoom();
@@ -27,8 +29,10 @@ class Switch : public Behavior {
     void triggerOnTouch(PointDouble& iMouse);
 
     void setActionId(int id) { _actionId = id; } 
+    void setTriggerId(int id) { _triggerId = id; } 
+    void setSwitchId(int id) { _switchType = id; } 
 
-    void trigger();
+    void OnTriggeredAction(int id = 0);
 
     bool getTriggerId() { return _triggerId; }
 
@@ -41,6 +45,7 @@ class Switch : public Behavior {
   private:
 
     bool _isPushed; // the button is pushed 
+    bool _isPushedBefore; // the button was pushed during the last loop
 
     int _startTime;   
     int _delay; // delay at which the button can be repushed after trigger, in ms
@@ -52,6 +57,11 @@ class Switch : public Behavior {
     int _triggerId; // defines what will trigger the action
     // 0 : activation on touch
     // 1 : activation on sheep collision
+
+    int _switchType;
+    // 0 : one shot stay pushed
+    // 1 : one shot release after some time
+    // 2 : need continual pressure
 
     // define the objetcs that will be affected by the switch
     std::vector<int> _targets;

@@ -11,8 +11,8 @@
 #define glOrtho glOrthof
 
 #include <android/log.h>
-#define fprintf(X, ...) __android_log_print(ANDROID_LOG_INFO, "Ballfield", __VA_ARGS__)
-#define printf(...) __android_log_print(ANDROID_LOG_INFO, "Ballfield", __VA_ARGS__)
+#define fprintf(X, ...) __android_log_print(ANDROID_LOG_INFO, "sheepApp", __VA_ARGS__)
+#define printf(...) __android_log_print(ANDROID_LOG_INFO, "sheepApp", __VA_ARGS__)
 #else
 #include <GL/gl.h>
 #endif

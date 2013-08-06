@@ -18,11 +18,13 @@ void Behavior::OnRender(){}
 // operations to be done at clean up time : free memory
 void Behavior::OnCleanup(){}
 
-void Behavior::OnTriggeredAction(){}
+void Behavior::OnTriggeredAction(int id){}
 
 void Behavior::kill(){}
 
 void Behavior::OnInit(){}
 
 void Behavior::setActionId(int id) {}
+void Behavior::setTriggerId(int id) {}
+void Behavior::setSwitchId(int id) {}
 void Behavior::addTarget(int iTarget) {}
