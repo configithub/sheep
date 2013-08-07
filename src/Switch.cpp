@@ -41,7 +41,8 @@ void Switch::OnAnimate() {
     e->_animControl.MaxFrames = 1;
   }
 
-  if(_switchType == 2 && initialState == 1 && e->_animControl.MinFrames == 0) {
+  if(_switchType == 2 && ((initialState == 1 && e->_animControl.MinFrames == 0) 
+          || (initialState == 0 && e->_animControl.MinFrames == 1) )) {
     switch(_actionId) {
       case 0:
         spawnBombInRoom();
@@ -89,7 +90,7 @@ void Switch::OnTriggeredAction(int id) {
   _isPushed = true;
   _startTime = SDL_GetTicks();   
 
-  if(_switchType != 2 || ((_switchType == 2) && !_isPushedBefore) ) {
+  if(_switchType != 2) {
     switch(_actionId) {
       case 0:
         spawnBombInRoom();
