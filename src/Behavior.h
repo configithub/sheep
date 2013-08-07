@@ -67,7 +67,9 @@ class Behavior {
   virtual void setTriggerId(int id);
   virtual void setSwitchId(int id);
   virtual void addTarget(int iTarget);
+  virtual int& getActionId(){ return _actionId; };
 
+  int _actionId;
   EN_EntityType _type;
   bool _dead;
   EN_EntityBehavior _behavior; // ghost or dead ...

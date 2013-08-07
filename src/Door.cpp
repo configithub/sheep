@@ -49,10 +49,17 @@ void Door::OnCleanup() {
 
 void Door::OnTriggeredAction(int id) {
 
-  if(_isOpening || _isClosing) { return; }
+  if ( id == 2 ) {
+    if(_isOpening || _isClosing) { return; }
 
-  if(_isOpen) { Close(); }
-  else { Open(); }
+    if(_isOpen) { Close(); }
+    else { Open(); }
+  }else if (id == OPEN_DOOR) {
+    if(_isClose && !_isOpening) { Open(); }
+  }else if (id == CLOSE_DOOR) {
+    // Close();
+    if(_isOpen && !_isClose) { Close(); }
+  }
 
 }
 

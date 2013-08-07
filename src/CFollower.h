@@ -5,7 +5,7 @@
 
 class CFollower : public Behavior {
   public:
-    CFollower();
+    CFollower(): _isActive(0) {};
 
     void OnAnimate();
 
@@ -13,6 +13,11 @@ class CFollower : public Behavior {
 
     void OnCleanup();
 
+    void setActionId(int id) { _isActive = id; }
+    int& getActionId() { return _isActive; }
+
+  private:
+    int _isActive;
 };
 
 #endif

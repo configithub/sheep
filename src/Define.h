@@ -27,4 +27,7 @@
 #define ONE_SHOT 1
 #define NEED_CONTINUAL_PRESSURE 2
 
+#define OPEN_DOOR 1
+#define CLOSE_DOOR 0
+
 #endif

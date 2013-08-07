@@ -90,7 +90,7 @@ bool CApp::OnInit() {
   EntityPool[key].generateAtPos(doorPosition, DOOR, this);
   int doorId = key;
 
-  switchPosition = PointDouble(260, 55);
+  switchPosition = PointDouble(60, 55);
   key = CEntity::CurrentEntityId;
   EntityPool[key].generateAtPos(switchPosition, SWITCH, this);
   EntityPool[key].b->addTarget(doorId);
@@ -98,6 +98,9 @@ bool CApp::OnInit() {
   EntityPool[key].b->setSwitchId(NEED_CONTINUAL_PRESSURE);
   EntityPool[key].b->setActionId(BROADCAST);
 
+  PointDouble sheepPosition(540, 80);
+  key = CEntity::CurrentEntityId;
+  EntityPool[key].generateAtPos(sheepPosition, SHEEP, this);
 
   //Rectangle aScreenRect(33, 33, WWIDTH-33, WHEIGHT-33);
   //int keyB = CEntity::CurrentEntityId;

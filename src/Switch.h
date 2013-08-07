@@ -40,7 +40,7 @@ class Switch : public Behavior {
 
     void addTarget(int iTarget) { _targets.push_back(iTarget); }
 
-    void broadcastToTargets();
+    void broadcastToTargets(int id = 2);
 
   private:
 

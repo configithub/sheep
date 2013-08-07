@@ -41,14 +41,23 @@ void Switch::OnAnimate() {
     e->_animControl.MaxFrames = 1;
   }
 
-  if(_switchType == 2 && ((initialState == 1 && e->_animControl.MinFrames == 0) 
-          || (initialState == 0 && e->_animControl.MinFrames == 1) )) {
+  if(_switchType == 2 && (initialState == 1 && e->_animControl.MinFrames == 0) ) {
     switch(_actionId) {
       case 0:
         spawnBombInRoom();
       break;
       case 1:
-        broadcastToTargets();
+        broadcastToTargets(CLOSE_DOOR);
+      break;
+    }
+  }
+  if(_switchType == 2 && (initialState == 0 && e->_animControl.MinFrames == 1) ) {
+    switch(_actionId) {
+      case 0:
+        spawnBombInRoom();
+      break;
+      case 1:
+        broadcastToTargets(OPEN_DOOR);
       break;
     }
   }
@@ -75,10 +84,10 @@ void Switch::spawnBombInRoom() {
 }
 
 // action 1
-void Switch::broadcastToTargets() {
+void Switch::broadcastToTargets(int id) {
   for(std::vector<int>::iterator itTarget = _targets.begin(); 
     itTarget != _targets.end(); ++itTarget) { 
-    CApp::EntityPool[*itTarget].b->OnTriggeredAction();
+    CApp::EntityPool[*itTarget].b->OnTriggeredAction(id);
     
   }  
   
@@ -109,7 +118,7 @@ void Switch::triggerOnTouch(PointDouble& iMouse) {
   CEntity::dist(*e, iMouse, distance);
 
   if ( distance.getX() < 32 && distance.getY() < 32 ) {
-    OnTriggeredAction(0);
+    OnTriggeredAction(2);
   }
 
 }

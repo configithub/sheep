@@ -118,6 +118,15 @@ void CApp::SolveCollisions(int numIterations, double& dt) {
         continue;
       } 
 
+      // ACTIVE SHEEP TOUCHES INACTIVE SHEEP
+      if(EntityB.getType() == SHEEP && EntityA.getType() == SHEEP) {
+        if(EntityA.b->getActionId() == 0) {
+          std::cout << "activating a sheep" << std::endl;
+          EntityA.b->setActionId(1);
+          Sheeps.push_back(&EntityA);
+        }
+      } 
+
       // SHEEP triggers SWITCH
       if(EntityB.getType() == SHEEP && EntityA.getType() == SWITCH) {
         EntityA.b->OnTriggeredAction(1);

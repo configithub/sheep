@@ -4,7 +4,6 @@
 #include <iostream>
 
 
-CFollower::CFollower() {}
 
 void CFollower::kill() {
   e->_removeAtNextLoop = true;
