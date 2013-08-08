@@ -9,8 +9,11 @@ bool CApp::OnInit() {
     return false;
   }
 #ifdef ANDROID
-  int screenWidth = SDL_GetVideoInfo()->current_w;
-  int screenHeight = SDL_GetVideoInfo()->current_h;
+  screenWidth = SDL_GetVideoInfo()->current_w;
+  screenHeight = SDL_GetVideoInfo()->current_h;
+#else
+  screenWidth = WWIDTH;
+  screenHeight = WHEIGHT;
 #endif
   if(! SDL_SetVideoMode(WWIDTH, WHEIGHT, BPP_DEPTH, SDL_OPENGL|SDL_DOUBLEBUF)  ) {
     return false;

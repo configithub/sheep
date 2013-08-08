@@ -102,7 +102,8 @@ bool CSurface::load(char *name) {
 
 bool CSurface::OnInit() {
 
-  if(!Sprites.empty()) { return false; }
+  // if(!Sprites.empty()) { return false; }
+  Sprites.clear();
 
   // sheep
   if( !CSurface::load("./gfx/sheep.png") ) { std::cout << "fail load sheep.png" << std::endl; return false; }

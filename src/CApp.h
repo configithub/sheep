@@ -39,6 +39,9 @@ class CApp : public CEvent {
 
   public:
 
+    int screenWidth;
+    int screenHeight;
+
     //static PointDouble& getMouse() { return Mouse; }
 
     EN_EntityType& getCurrentSpawningEntity() { _currentSpawningEntity; }
@@ -126,6 +129,8 @@ class CApp : public CEvent {
     void OthersStop();
 
     void OnGameOver();
+
+    void OnResize(int w, int h);
 
     void triggerSwitchesOnTouch();
 

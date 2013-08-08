@@ -121,6 +121,42 @@ void CApp::triggerSwitchesOnTouch() {
 }
 
 
+void CApp::OnResize(int w, int h) {
+// reload open gl stuff
+
+//#ifdef ANDROID
+  //if(! SDL_SetVideoMode(WWIDTH, WHEIGHT, BPP_DEPTH, SDL_OPENGL|SDL_DOUBLEBUF | SDL_FULLSCREEN)  ) {
+//#else
+  //if(! SDL_SetVideoMode(WWIDTH, WHEIGHT, BPP_DEPTH, SDL_OPENGL|SDL_DOUBLEBUF)  ) {
+//#endif
+  //}
+  // initialize OpenGL
+  glEnable(GL_BLEND);
+#ifdef ANDROID
+  glViewport(0, 0, screenWidth, screenHeight);
+#else
+  glViewport(0, 0, WWIDTH, WHEIGHT);
+#endif
+
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
+
+
+  // glOrtho(0.0f, screenWidth, screenHeight, 0.0f, 1.0f, -1.0f);
+  glOrtho(0.0f, WWIDTH, WHEIGHT, 0.0f, 1.0f, -1.0f);
+  glMatrixMode(GL_MODELVIEW);
+
+  glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+  glDisable(GL_DEPTH_TEST);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+  std::cout << "glGetError(): " << glGetError() << std::endl;
+  CSurface::OnInit();
+  if(Area::AreaControl.OnLoad("./maps/1.area") == false) {
+    return ;
+  }
+}
+
 void CApp::OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,bool Middle)
 {
   Mouse.setX(mX+_center->getX());
