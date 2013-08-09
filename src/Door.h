@@ -4,13 +4,18 @@
 #include "Behavior.h"
 #include "CFollower.h"
 
+typedef enum {
+  CLOSED = 0,
+  CLOSING,
+  OPEN,
+  OPENING
+} EN_DoorState;
+
 class Door : public Behavior {
 
   public:
 
-
-    Door() : _iterationNb(0), _maxIterationNb(1), _isClose(true), _isOpen(false), _isClosing(false), _isOpening(false) {
-    }
+    Door() : _iterationNb(0), _maxIterationNb(1), _doorState(CLOSED) { }
 
     void OnRender();
     void OnCleanup();
@@ -26,11 +31,7 @@ class Door : public Behavior {
     int _iterationNb;
     int _maxIterationNb;
 
-    bool _isClosing;
-    bool _isOpening;
-    bool _isOpen;
-    bool _isClose;
-
+    EN_DoorState _doorState;
 };
 
 

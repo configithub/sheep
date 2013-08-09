@@ -29,5 +29,6 @@
 
 #define OPEN_DOOR 1
 #define CLOSE_DOOR 0
+#define CHANGE_DOOR_STATE 2
 
 #endif
