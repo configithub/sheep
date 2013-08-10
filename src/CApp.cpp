@@ -1,5 +1,6 @@
 #include "CApp.h"
 
+CApp theApp;
  std::map<int, CEntity> CApp::EntityPool;
  std::map<int, CFollower> CApp::SheepPool;
  std::map<int, Effect> CApp::EffectPool;
@@ -44,7 +45,7 @@ int CApp::OnExecute() {
 }
 
 int main(int argc, char* argv[]) {
-    CApp theApp;
+    // CApp theApp;
 
     return theApp.OnExecute();
 }

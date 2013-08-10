@@ -129,7 +129,7 @@ void CApp::SolveCollisions(int numIterations, double& dt) {
 
       // SHEEP triggers SWITCH
       if(EntityB.getType() == SHEEP && EntityA.getType() == SWITCH) {
-        EntityA.b->OnTriggeredAction(1);
+        EntityA.b->OnTriggeredAction(TRIGGER_ON_COLLISION);
         continue;
       } 
 

@@ -23,7 +23,6 @@ void Switch::OnLoop() {
 }
 
 void Switch::OnCleanup() {
-  //CEntity::OnCleanup();
   CApp::SwitchPool.erase(e->_entityId); 
 }
 
@@ -99,7 +98,7 @@ void Switch::OnTriggeredAction(int id) {
   _isPushed = true;
   _startTime = SDL_GetTicks();   
 
-  if(_switchType != 2) {
+  if(_switchType != NEED_CONTINUAL_PRESSURE) {
     switch(_actionId) {
       case 0:
         spawnBombInRoom();
@@ -113,12 +112,12 @@ void Switch::OnTriggeredAction(int id) {
 }
 
 void Switch::triggerOnTouch(PointDouble& iMouse) { 
-  if(_triggerId != 0) { return; }
+  if(_triggerId != TRIGGER_ON_MOUSE) { return; }
   PointDouble distance;
   CEntity::dist(*e, iMouse, distance);
 
   if ( distance.getX() < 32 && distance.getY() < 32 ) {
-    OnTriggeredAction(2);
+    OnTriggeredAction(TRIGGER_ON_MOUSE);
   }
 
 }

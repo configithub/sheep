@@ -2,6 +2,7 @@
 #include <iostream>
 
 
+
 bool CApp::OnInit() {
 
   // initialize SDL
@@ -97,7 +98,7 @@ bool CApp::OnInit() {
   key = CEntity::CurrentEntityId;
   EntityPool[key].generateAtPos(switchPosition, SWITCH, this);
   EntityPool[key].b->addTarget(doorId);
-  EntityPool[key].b->setTriggerId(TRIGGER_ON_COLISION);
+  EntityPool[key].b->setTriggerId(TRIGGER_ON_COLLISION);
   EntityPool[key].b->setSwitchId(NEED_CONTINUAL_PRESSURE);
   EntityPool[key].b->setActionId(BROADCAST);
 
@@ -108,6 +109,24 @@ bool CApp::OnInit() {
   //Rectangle aScreenRect(33, 33, WWIDTH-33, WHEIGHT-33);
   //int keyB = CEntity::CurrentEntityId;
   //BombPool[keyB].generateRandom(aScreenRect);
+
+  // spawn entities from a lua script
+
+  // initialize Lua 
+  lua_State *L = lua_open();
+
+  // load Lua base libraries 
+  luaL_openlibs(L);
+
+  // register our c++ function inside lua, now we can call it from a lua script
+  lua_register(L, "spawn_entity", spawn_entity);
+
+  // run the script where we call our c++ function
+  luaL_dofile(L, "scripts/test.lua");
+
+  // cleanup Lua 
+  lua_close(L);
+
 
   SDL_EnableKeyRepeat(1, SDL_DEFAULT_REPEAT_INTERVAL / 3);
 

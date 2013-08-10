@@ -19,7 +19,7 @@ class Door : public Behavior {
 
     void OnRender();
     void OnCleanup();
-    void OnAnimate();
+    void OnAnimate(); // set the animation parameters : MinFrame, MaxFrame, and FrameCol
     void OnInit();
    
     void OnTriggeredAction(int id); 

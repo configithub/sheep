@@ -2,6 +2,12 @@
 #define _CAPP_H_
 
 #include <SDL.h>
+extern "C" {
+  #include <lua.hpp>
+  #include <lualib.h>
+  #include <lauxlib.h>
+}
+
 #include "CSurface.h"
 #include "CEvent.h"
 #include "CAnimation.h"
@@ -136,5 +142,8 @@ class CApp : public CEvent {
 
     static void clearScreen();
 };
+
+extern CApp theApp;
+int spawn_entity(lua_State *L);
 
 #endif
