@@ -3,7 +3,7 @@
 
 #include <SDL.h>
 extern "C" {
-  #include <lua.hpp>
+  #include <lua.h>
   #include <lualib.h>
   #include <lauxlib.h>
 }
