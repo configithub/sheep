@@ -53,16 +53,17 @@ clean :
 # Release_target
 
 Release_target.BIN = bin/Release/sheep.exe
-Release_target.OBJ = src/Switch.o src/Effect.o src/Bomb.o src/CAnimation.o src/CApp.o src/CApp_OnCleanup.o src/CApp_OnEvent.o src/CApp_OnInit.o src/CApp_OnLoop.o src/CApp_OnRender.o src/Area.o src/CCamera.o src/CEntity.o src/CEntityCol.o src/CEvent.o src/CFPS.o src/CFollower.o src/CMap.o src/CSurface.o src/CTile.o src/MultitouchEvent.o src/Behavior.o src/Saw.o src/Door.o
-DEP_FILES += src/Switch.d src/Effect.d src/Bomb.d src/CAnimation.d src/CApp.d src/CApp_OnCleanup.d src/CApp_OnEvent.d src/CApp_OnInit.d src/CApp_OnLoop.d src/CApp_OnRender.d src/Area.d src/CCamera.d src/CEntity.d src/CEntityCol.d src/CEvent.d src/CFPS.d src/CFollower.d src/CMap.d src/CSurface.d src/CTile.d src/MultitouchEvent.d src/Behavior.d src/Saw.d src/Door.d
+Release_target.OBJ = src/Switch.o src/Effect.o src/Bomb.o src/CAnimation.o src/CApp.o src/CApp_OnCleanup.o src/CApp_OnEvent.o src/CApp_OnInit.o src/CApp_OnLoop.o src/CApp_OnRender.o src/Area.o src/CCamera.o src/CEntity.o src/CEntityCol.o src/CEvent.o src/CFPS.o src/CFollower.o src/CMap.o src/CSurface.o src/CTile.o src/MultitouchEvent.o src/Behavior.o src/Saw.o src/Door.o src/LuaBinds.o
+DEP_FILES += src/Switch.d src/Effect.d src/Bomb.d src/CAnimation.d src/CApp.d src/CApp_OnCleanup.d src/CApp_OnEvent.d src/CApp_OnInit.d src/CApp_OnLoop.d src/CApp_OnRender.d src/Area.d src/CCamera.d src/CEntity.d src/CEntityCol.d src/CEvent.d src/CFPS.d src/CFollower.d src/CMap.d src/CSurface.d src/CTile.d src/MultitouchEvent.d src/Behavior.d src/Saw.d src/Door.d src/LuaBinds.d
 clean.OBJ += $(Release_target.BIN) $(Release_target.OBJ)
 
 Release_target : Release_target.before $(Release_target.BIN) Release_target.after_always
 Release_target : CFLAGS +=  
-Release_target : INCLUDES += -I/usr/lib -I/usr/include/SDL 
+Release_target : INCLUDES += -I/usr/lib -I/usr/include/SDL -I/usr/include/lua5.1
 Release_target : RCFLAGS += 
 Release_target : LDFLAGS +=  -lSDLmain -lSDL -lSDL_image -L/usr/lib/i386-linux-gnu   
-Release_target : LDFLAGS +=  -lGL -L/usr/lib/i386-linux-gnu
+Release_target : LDFLAGS +=  -lGL -L/usr/lib/i386-linux-gnu   
+Release_target : LDFLAGS +=  -llua5.1 -L/usr/lib/i386-linux-gnu
 
 Release_target.before :
 	
