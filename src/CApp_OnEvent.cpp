@@ -357,7 +357,7 @@ void CApp::OnKeyUp(SDLKey sym, SDLMod mod, Uint16 unicode)
         Rectangle aScreenRect(33, 33, WWIDTH-99, WHEIGHT-99);
         int key = CEntity::CurrentEntityId; 
         CApp::EntityPool[key].generateRandom(aScreenRect, _currentSpawningEntity, this);
-        CApp::EntityPool[key].b->setActionId(1);
+        CApp::EntityPool[key].b->setAttribute(PLAYER_CONTROLLED, 1);
         Sheeps.push_back(&CApp::EntityPool[key]);
         break;
       }

@@ -4,6 +4,9 @@
 #include <iostream>
 
 
+CFollower::CFollower() {
+  setAttribute(PLAYER_CONTROLLED, Value(0));
+}
 
 void CFollower::kill() {
   e->_removeAtNextLoop = true;

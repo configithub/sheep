@@ -8,7 +8,8 @@ void Switch::OnRender() {
     if(currentTime - _startTime < _delay) {
       // switch did not go back to unpushed state yet 
     }else{
-      if(_switchType == 1) {
+      // if(_switchType == 1) {
+      if(getAttribute(SWITCH_TYPE).get_int() == ONE_SHOT) {
         _isPushed = false;
       }
     }
@@ -16,8 +17,8 @@ void Switch::OnRender() {
 }
 
 void Switch::OnLoop() {
-  _isPushedBefore = _isPushed;
-  if(_switchType == 2) { // needs continual pressure
+  // if(_switchType == 2) { // needs continual pressure
+  if(getAttribute(SWITCH_TYPE).get_int() == NEED_CONTINUAL_PRESSURE) {
     _isPushed = false;
   }
 }
@@ -40,8 +41,9 @@ void Switch::OnAnimate() {
     e->_animControl.MaxFrames = 1;
   }
 
-  if(_switchType == 2 && (initialState == 1 && e->_animControl.MinFrames == 0) ) {
-    switch(_actionId) {
+  if(getAttribute(SWITCH_TYPE).get_int() == NEED_CONTINUAL_PRESSURE) {
+  if(initialState == 1 && e->_animControl.MinFrames == 0) {
+    switch(getAttribute(ACTION).get_int()) {
       case 0:
         spawnBombInRoom();
       break;
@@ -50,8 +52,8 @@ void Switch::OnAnimate() {
       break;
     }
   }
-  if(_switchType == 2 && (initialState == 0 && e->_animControl.MinFrames == 1) ) {
-    switch(_actionId) {
+  if(initialState == 0 && e->_animControl.MinFrames == 1) {
+    switch(getAttribute(ACTION).get_int()) {
       case 0:
         spawnBombInRoom();
       break;
@@ -59,6 +61,7 @@ void Switch::OnAnimate() {
         broadcastToTargets(OPEN_DOOR);
       break;
     }
+  }
   }
 
 }
@@ -84,22 +87,18 @@ void Switch::spawnBombInRoom() {
 
 // action 1
 void Switch::broadcastToTargets(int id) {
-  for(std::vector<int>::iterator itTarget = _targets.begin(); 
-    itTarget != _targets.end(); ++itTarget) { 
-    CApp::EntityPool[*itTarget].b->OnTriggeredAction(id);
-    
-  }  
+  CApp::EntityPool[getAttribute(TARGET).get_int()].b->OnTriggeredAction(id);
   
 }
 
 void Switch::OnTriggeredAction(int id) {
-  if(id != _triggerId) { return; }
+  if(id != getAttribute(TRIGGER_TYPE).get_int()) { return; }
   if(_isPushed) { return; }
   _isPushed = true;
   _startTime = SDL_GetTicks();   
 
-  if(_switchType != NEED_CONTINUAL_PRESSURE) {
-    switch(_actionId) {
+  if(getAttribute(SWITCH_TYPE).get_int() != NEED_CONTINUAL_PRESSURE) {
+    switch(getAttribute(ACTION).get_int()) {
       case 0:
         spawnBombInRoom();
       break;
@@ -112,7 +111,7 @@ void Switch::OnTriggeredAction(int id) {
 }
 
 void Switch::triggerOnTouch(PointDouble& iMouse) { 
-  if(_triggerId != TRIGGER_ON_MOUSE) { return; }
+  if(getAttribute(TRIGGER_TYPE).get_int() != TRIGGER_ON_MOUSE) { return; }
   PointDouble distance;
   CEntity::dist(*e, iMouse, distance);
 

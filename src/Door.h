@@ -11,6 +11,12 @@ typedef enum {
   OPENING
 } EN_DoorState;
 
+typedef enum {
+  OPEN_DOOR,
+  CLOSE_DOOR,
+  CHANGE_DOOR_STATE
+} EN_DoorAction;
+
 class Door : public Behavior {
 
   public:

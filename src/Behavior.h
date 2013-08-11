@@ -5,24 +5,79 @@
 #include <map>
 #include <set>
 #include <SDL.h>
+#include <string>
+#include <iostream>
+#include "Vectorial.h"
 
 class CEntity;
+
+class Value {
+  public:
+    enum Type { NIL, INT, DOUBLE, STRING };
+
+    Value() : type(NIL) {}
+    Value(int i) : type(INT) { val.ival = i; }
+    Value(double d) : type(DOUBLE) { val.dval = d; }
+    Value(const char* str);
+    Value(const std::string& str);
+    ~Value();
+
+    Value(const Value& v); 
+    Value& operator=(const Value& v); 
+
+    void assign(double d); 
+    void assign(int i); 
+    void assign(const char* s); 
+
+    Type    get_type() const { return type; }
+    double  get_double() const;
+    int get_int() const;
+    const char* get_string() const;
+  private:
+    void clear();
+
+    // Variables
+    Type type;
+    union {
+      double dval;
+      int ival;
+      char* str;
+    } val;
+};  
+
+std::ostream& operator<<(std::ostream& os, const Value& val);
+
+bool        to_bool(const Value &v);
+int         to_int(const Value &v);
+double      to_double(const Value &v);
+const char *to_string(const Value &v);
+// Direction   to_direction (const Value &v);
+
+typedef enum {
+  TRIGGER_ON_MOUSE,
+  TRIGGER_ON_COLLISION
+} EN_TriggerType;
+
+typedef enum {
+  SPAWN_BOMB,
+  BROADCAST,
+  CALLBACK
+} EN_Action;
+
+typedef enum {
+  TARGET,
+  ACTION, 
+  LOCK,
+  TRIGGER_TYPE,
+  SWITCH_TYPE,
+  PLAYER_CONTROLLED,
+  DEAD
+} EN_Attribute;
 
 class Behavior {
 
   // Enums used in this class
-  typedef enum {
-    ENTITY_TYPE_GENERIC = 0,
-    ENTITY_TYPE_PLAYER,
-    SWITCH
-  } EN_EntityType;
 
-  typedef enum {
-    ENTITY_FLAG_NONE     = 0,
-    ENTITY_FLAG_GRAVITY = 0x00000001,
-    ENTITY_FLAG_GHOST = 0x00000002,
-    ENTITY_FLAG_MAPONLY = 0x00000004
-  } EN_EntityBehavior;
 
   // Friend classes
   friend class CFollower;
@@ -33,7 +88,6 @@ class Behavior {
   // Public members
   public:
 
-  EN_EntityType getType() { return _type; }
 
   // constructor
   Behavior();
@@ -63,17 +117,15 @@ class Behavior {
   // when something dies
   virtual void kill();
 
-  virtual void setActionId(int id);
-  virtual void setTriggerId(int id);
-  virtual void setSwitchId(int id);
-  virtual void addTarget(int iTarget);
-  virtual int& getActionId(){ return _actionId; };
+  const Value& getAttribute(EN_Attribute key) { return _attributes[key]; } 
+  void setAttribute(EN_Attribute key, Value iValue) { _attributes[key] = iValue; }
 
-  int _actionId;
-  EN_EntityType _type;
   bool _dead;
-  EN_EntityBehavior _behavior; // ghost or dead ...
   CEntity* e;
+
+  private:
+
+  std::map<EN_Attribute, Value> _attributes;
 
 };
 

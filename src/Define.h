@@ -17,18 +17,5 @@
 
 #define DOOR_MOVE_DISTANCE 32
 
-#define TRIGGER_ON_MOUSE 0
-#define TRIGGER_ON_COLLISION 1 
-
-#define SPAWN_BOMB 0
-#define BROADCAST 1
-
-#define ONE_SHOT_STAY 0
-#define ONE_SHOT 1
-#define NEED_CONTINUAL_PRESSURE 2
-
-#define OPEN_DOOR 1
-#define CLOSE_DOOR 0
-#define CHANGE_DOOR_STATE 2
 
 #endif

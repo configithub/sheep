@@ -9,29 +9,6 @@ void Door::OnInit() {
     e->_animControl.SetFrameRate(10);
 }
 
-/*
-void Door::OnRender() {
-  if(_doorState == OPENING) {
-    if(e->_animControl.signal) {
-      ++_iterationNb;
-      e->_animControl.signal = false;
-    }
-    if(_iterationNb >= _maxIterationNb) { 
-      _doorState = OPEN;
-      _iterationNb = 0;
-    }
-  }
-  if(_doorState == CLOSING) {
-    if(e->_animControl.signal) {
-      ++_iterationNb;
-      e->_animControl.signal = false;
-    }
-    if(_iterationNb >= _maxIterationNb) { 
-      _doorState = CLOSED;
-      _iterationNb = 0;
-    }
-  }
-}*/
 
 void Door::OnRender() {
   if(_doorState == OPENING) { 

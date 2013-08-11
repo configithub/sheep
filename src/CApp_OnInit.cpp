@@ -73,9 +73,9 @@ bool CApp::OnInit() {
   PointDouble switchPosition(WWIDTH+190,WHEIGHT+ 160);
   int key = CEntity::CurrentEntityId;
   EntityPool[key].generateAtPos(switchPosition, SWITCH, this);
-  EntityPool[key].b->setTriggerId(TRIGGER_ON_MOUSE);
-  EntityPool[key].b->setActionId(SPAWN_BOMB);
-  EntityPool[key].b->setSwitchId(ONE_SHOT);
+  EntityPool[key].b->setAttribute(TRIGGER_TYPE, Value(TRIGGER_ON_MOUSE));
+  EntityPool[key].b->setAttribute(ACTION, Value(SPAWN_BOMB));
+  EntityPool[key].b->setAttribute(SWITCH_TYPE, Value(ONE_SHOT));
 
   PointDouble sawPosition(100,WHEIGHT+ 60);
   key = CEntity::CurrentEntityId;
@@ -97,10 +97,10 @@ bool CApp::OnInit() {
   switchPosition = PointDouble(60, 55);
   key = CEntity::CurrentEntityId;
   EntityPool[key].generateAtPos(switchPosition, SWITCH, this);
-  EntityPool[key].b->addTarget(doorId);
-  EntityPool[key].b->setTriggerId(TRIGGER_ON_COLLISION);
-  EntityPool[key].b->setSwitchId(NEED_CONTINUAL_PRESSURE);
-  EntityPool[key].b->setActionId(BROADCAST);
+  EntityPool[key].b->setAttribute(TARGET, Value(doorId));
+  EntityPool[key].b->setAttribute(TRIGGER_TYPE, Value(TRIGGER_ON_COLLISION));
+  EntityPool[key].b->setAttribute(SWITCH_TYPE, Value(NEED_CONTINUAL_PRESSURE));
+  EntityPool[key].b->setAttribute(ACTION, Value(BROADCAST));
 
   PointDouble sheepPosition(540, 80);
   key = CEntity::CurrentEntityId;

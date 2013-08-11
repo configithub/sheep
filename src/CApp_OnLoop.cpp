@@ -120,9 +120,9 @@ void CApp::SolveCollisions(int numIterations, double& dt) {
 
       // ACTIVE SHEEP TOUCHES INACTIVE SHEEP
       if(EntityB.getType() == SHEEP && EntityA.getType() == SHEEP) {
-        if(EntityA.b->getActionId() == 0) {
+        if(EntityA.b->getAttribute(PLAYER_CONTROLLED).get_int() == 0) {
           std::cout << "activating a sheep" << std::endl;
-          EntityA.b->setActionId(1);
+          EntityA.b->setAttribute(PLAYER_CONTROLLED, 1);
           Sheeps.push_back(&EntityA);
         }
       } 
