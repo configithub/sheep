@@ -8,7 +8,6 @@ void Switch::OnRender() {
     if(currentTime - _startTime < _delay) {
       // switch did not go back to unpushed state yet 
     }else{
-      // if(_switchType == 1) {
       if(getAttribute(SWITCH_TYPE).get_int() == ONE_SHOT) {
         _isPushed = false;
       }
@@ -17,7 +16,6 @@ void Switch::OnRender() {
 }
 
 void Switch::OnLoop() {
-  // if(_switchType == 2) { // needs continual pressure
   if(getAttribute(SWITCH_TYPE).get_int() == NEED_CONTINUAL_PRESSURE) {
     _isPushed = false;
   }
@@ -42,53 +40,62 @@ void Switch::OnAnimate() {
   }
 
   if(getAttribute(SWITCH_TYPE).get_int() == NEED_CONTINUAL_PRESSURE) {
-  if(initialState == 1 && e->_animControl.MinFrames == 0) {
-    switch(getAttribute(ACTION).get_int()) {
-      case 0:
-        spawnBombInRoom();
-      break;
-      case 1:
-        broadcastToTargets(CLOSE_DOOR);
-      break;
+    if(initialState == 1 && e->_animControl.MinFrames == 0) {
+      switch(getAttribute(ACTION).get_int()) {
+        case 0:
+          spawnBombInRoom();
+          break;
+        case 1:
+          broadcastToTargets(CHANGE_DOOR_STATE);
+          //broadcastToTargets(CLOSE_DOOR);
+          break;
+      }
     }
-  }
-  if(initialState == 0 && e->_animControl.MinFrames == 1) {
-    switch(getAttribute(ACTION).get_int()) {
-      case 0:
-        spawnBombInRoom();
-      break;
-      case 1:
-        broadcastToTargets(OPEN_DOOR);
-      break;
+    if(initialState == 0 && e->_animControl.MinFrames == 1) {
+      switch(getAttribute(ACTION).get_int()) {
+        case 0:
+          spawnBombInRoom();
+          break;
+        case 1:
+          broadcastToTargets(CHANGE_DOOR_STATE);
+          //broadcastToTargets(OPEN_DOOR);
+          break;
+      }
     }
-  }
   }
 
 }
 
 // action 0
-void Switch::spawnBombInRoom() {
+/*void Switch::spawnBombInRoom() {
   // get suitable rectangle for the current room
-  //Rectangle aScreenRect(e->_center.getX()+10,
-      //e->_center.getY(), e->_center.getX()+20, e->_center.getY()+10);
   Rectangle aScreenRect(e->getPosition().getX()+10,
       e->getPosition().getY(), 10, 10);
-
-  std::cout << "e->getAbsX(): " << e->getAbsX() << std::endl;
-  std::cout << "e->getPosition().getX(): " << e->getPosition().getX() << std::endl;
-  
-    
 
   // spawn a bomb randomly in this rectangle
   int key = CEntity::CurrentEntityId;
   CApp::EntityPool[key].generateRandom(aScreenRect, BOMB, e->_parent); 
+}*/
+
+void Switch::spawnBombInRoom() {
+  // initialize Lua 
+  lua_State *L = lua_open();
+
+  // load Lua base libraries 
+  luaL_openlibs(L);
+  Value nil;
+  // run the script where we call our c++ function
+  lua_register(L, "spawn_entity", spawn_entity);
+  luaL_dofile(L, "scripts/callbacks.lua");
+  CallFunc(L , "spawn_bombs", nil); 
+  lua_close(L);
 
 }
 
 // action 1
 void Switch::broadcastToTargets(int id) {
   CApp::EntityPool[getAttribute(TARGET).get_int()].b->OnTriggeredAction(id);
-  
+
 }
 
 void Switch::OnTriggeredAction(int id) {
@@ -101,10 +108,10 @@ void Switch::OnTriggeredAction(int id) {
     switch(getAttribute(ACTION).get_int()) {
       case 0:
         spawnBombInRoom();
-      break;
+        break;
       case 1:
         broadcastToTargets();
-      break;
+        break;
     }
   }
 

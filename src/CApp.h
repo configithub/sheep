@@ -26,6 +26,16 @@ extern "C" {
 #include "Door.h"
 
 
+
+    enum Error {
+        NO_LUAERROR = 0,
+        ERRRUN,
+	ERRFILE,
+	ERRSYNTAX,
+	ERRMEM,
+	ERRERR
+    };
+
 class CApp : public CEvent {
   private:
     bool            Running;
@@ -144,6 +154,11 @@ class CApp : public CEvent {
 };
 
 extern CApp theApp;
+// lua binding functions
+// C++ -> lua
+Error CallFunc(lua_State *L, const char *funcname, const Value& arg);
+
+// lua -> C++
 int spawn_entity(lua_State *L);
 
 #endif

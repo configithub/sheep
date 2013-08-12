@@ -1,5 +1,32 @@
 #include "CApp.h"
 
+// C++ -> Lua
+//
+static void
+push_value(lua_State *L, const Value &val)
+{
+    switch (val.get_type()) {
+    case Value::NIL: lua_pushnil(L); break;
+    case Value::DOUBLE: lua_pushnumber(L, to_double(val)); break;
+    case Value::INT: lua_pushinteger(L, to_int(val)); break;
+    case Value::STRING: lua_pushstring(L, to_string(val)); break;
+    }
+}
+
+Error CallFunc(lua_State *L, const char *funcname, const Value& arg) {
+    int retval;
+    lua_getglobal(L, funcname);
+    push_value(L, arg);
+    retval=lua_pcall(L,2,0,0);
+    if (retval!=0) // error
+      {
+	lua_setglobal (L, "_LASTERROR") ; //Set _LASTERROR to returned error message
+      }
+    return (Error)retval;
+}
+
+
+// Lua -> C++
 int spawn_entity(lua_State *L) {
   std::cout << "entering spawn entity" << std::endl;
   int nargs = lua_gettop(L);
@@ -27,3 +54,24 @@ int spawn_entity(lua_State *L) {
   }
   return 1;
 }
+
+
+
+
+
+
+
+
+
+
+//Error CallFunc(lua_State *L, const char *funcname, const ByteVec& arg) {
+  //int retval;
+    //lua_getglobal(L, funcname);
+    //lua_pushlstring (L, &arg[0], arg.size());
+    //retval=lua_pcall(L,1,0,0);
+    //if (retval!=0) // error
+      //{
+//	lua_setglobal (L, "_LASTERROR") ; //Set _LASTERROR to returned error message
+      //}
+    //return _lua_err_code(retval);
+//}
