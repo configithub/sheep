@@ -67,6 +67,9 @@ typedef enum {
 typedef enum {
   TARGET,
   ACTION, 
+  STOP_TARGET,
+  STOP_ACTION,
+  NEXT_POSITION_ID,
   LOCK,
   TRIGGER_TYPE,
   SWITCH_TYPE,
@@ -76,9 +79,6 @@ typedef enum {
 
 class Behavior {
 
-  // Enums used in this class
-
-
   // Friend classes
   friend class CFollower;
   friend class Effect;
@@ -87,7 +87,6 @@ class Behavior {
 
   // Public members
   public:
-
 
   // constructor
   Behavior();
@@ -114,6 +113,9 @@ class Behavior {
   // operations to be done at clean up time : free memory
   virtual void OnCleanup();
 
+  // operations to be done when the entity stops moving
+  virtual void OnStop();
+
   // when something dies
   virtual void kill();
 
@@ -123,9 +125,12 @@ class Behavior {
   bool _dead;
   CEntity* e;
 
+  std::vector<PointDouble>& getTargets() { return _targets; }
+
   private:
 
   std::map<EN_Attribute, Value> _attributes;
+  std::vector<PointDouble> _targets;
 
 };
 

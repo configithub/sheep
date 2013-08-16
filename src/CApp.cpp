@@ -1,6 +1,8 @@
 #include "CApp.h"
 
 CApp theApp;
+lua_State *luaState;
+
  std::map<int, CEntity> CApp::EntityPool;
  std::map<int, CFollower> CApp::SheepPool;
  std::map<int, Effect> CApp::EffectPool;

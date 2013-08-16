@@ -36,6 +36,7 @@ extern "C" {
 	ERRERR
     };
 
+extern lua_State *luaState;
 class CApp : public CEvent {
   private:
     bool            Running;
@@ -53,7 +54,10 @@ class CApp : public CEvent {
 
     PointDouble Mouse;
 
+
   public:
+
+    void initLuaState();
 
     int screenWidth;
     int screenHeight;
@@ -157,8 +161,12 @@ extern CApp theApp;
 // lua binding functions
 // C++ -> lua
 Error CallFunc(lua_State *L, const char *funcname, const Value& arg);
+Error CallFunc(lua_State *L, const char *funcname, std::vector<Value>& args);
 
 // lua -> C++
 int spawn_entity(lua_State *L);
+int entity_goto(lua_State *L);
+int entity_goto_next_position(lua_State *L);
+int entity_patrol(lua_State *L);
 
 #endif

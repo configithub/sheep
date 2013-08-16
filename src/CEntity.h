@@ -103,14 +103,10 @@ class CEntity {
   // operations to be done at clean up time : free memory
   virtual void OnCleanup();
 
-  // stop the motion
-  void StopMove();
-
   // check for a collision with input rectangle, create an collision object if it is the case
   bool Collides(Rectangle& iOtherRectangle, CEntityCol& ioEntityCol);
 
-  // stop the controls
-  bool Stop();
+  void StopMove();
 
   // check if the entity as a valid position regarding other entities
   bool PosValidOnEntities();
@@ -158,7 +154,7 @@ class CEntity {
   static int CurrentEntityId;
 
   void setEntityId(int iId) { _entityId = iId;}
-  int& getEntityId() { return _entityId; }
+  int getEntityId() { return _entityId; }
 
   bool& removeAtNextLoop() { return _removeAtNextLoop; }
 

@@ -112,21 +112,7 @@ bool CApp::OnInit() {
 
   // spawn entities from a lua script
 
-  // initialize Lua 
-  lua_State *L = lua_open();
-
-  // load Lua base libraries 
-  luaL_openlibs(L);
-
-  // register our c++ function inside lua, now we can call it from a lua script
-  lua_register(L, "spawn_entity", spawn_entity);
-
-  // run the script where we call our c++ function
-  luaL_dofile(L, "scripts/test.lua");
-
-  // cleanup Lua 
-  lua_close(L);
-
+  initLuaState();
 
   SDL_EnableKeyRepeat(1, SDL_DEFAULT_REPEAT_INTERVAL / 3);
 
@@ -140,3 +126,24 @@ bool CApp::OnInit() {
 
   return true;
 }
+
+void CApp::initLuaState() {
+
+  // initialize Lua 
+  luaState = lua_open();
+
+  // load Lua base libraries 
+  luaL_openlibs(luaState);
+
+  // register our c++ functions inside lua, now we can call it from a lua script
+  lua_register(luaState, "spawn_entity", spawn_entity);
+  lua_register(luaState, "entity_goto", entity_goto);
+  lua_register(luaState, "entity_goto_next_position", entity_goto_next_position);
+  lua_register(luaState, "entity_patrol", entity_patrol);
+
+  // run the script where we call our c++ function
+  luaL_dofile(luaState, "scripts/declare_callbacks.lua");
+  luaL_dofile(luaState, "scripts/build_level.lua");
+
+}
+

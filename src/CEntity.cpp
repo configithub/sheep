@@ -358,7 +358,9 @@ void CEntity::OnMove(Point<double>& vel, double& dt) {
 
 // deceleration
 void CEntity::StopMove() {
-  Stop();
+  _moveDown = false; _moveLeft = false;
+  _moveRight = false; _moveUp = false;
+  _isTargettingPosition = false;
   if(_speed.getX() > 0) { _accel.setX(-1.5); }
   if(_speed.getX() < 0) { _accel.setX(1.5); }
   if(_speed.getX() < 2.0f && _speed.getX() > -2.0f) {
@@ -372,13 +374,9 @@ void CEntity::StopMove() {
     _accel.setY(0);
     _speed.setY(0);
   }
+  b->OnStop();
 }
 
-bool CEntity::Stop() {
-  _moveDown = false; _moveLeft = false;
-  _moveRight = false; _moveUp = false;
-  _isTargettingPosition = false;
-}
 
 
 

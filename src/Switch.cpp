@@ -78,17 +78,9 @@ void Switch::OnAnimate() {
 }*/
 
 void Switch::spawnBombInRoom() {
-  // initialize Lua 
-  lua_State *L = lua_open();
-
-  // load Lua base libraries 
-  luaL_openlibs(L);
   Value nil;
   // run the script where we call our c++ function
-  lua_register(L, "spawn_entity", spawn_entity);
-  luaL_dofile(L, "scripts/callbacks.lua");
-  CallFunc(L , "spawn_bombs", nil); 
-  lua_close(L);
+  CallFunc(luaState, "spawn_bombs", nil); 
 
 }
 

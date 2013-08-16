@@ -1,4 +1,5 @@
 #include "Behavior.h"
+#include "CApp.h"
 
 Value::Value(const char* str) : type(STRING) {
     val.str = new char[strlen(str)+1];
@@ -140,4 +141,12 @@ void Behavior::OnTriggeredAction(int id){}
 void Behavior::kill(){}
 
 void Behavior::OnInit(){}
+
+void Behavior::OnStop(){
+  if(getAttribute(STOP_ACTION).get_int() == CALLBACK) { // a callback needs to be called when the entity stops moving
+    Value entityId(e->getEntityId());
+    CallFunc(luaState, getAttribute(STOP_TARGET).get_string(), entityId) ;
+  }
+}
+
 
