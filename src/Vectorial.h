@@ -17,6 +17,7 @@ template <class T, class V> inline T round_nearest (V v) {
     return static_cast<T>(ceil(v - 0.5));
 }
 
+
 template <class T> class Point {
 
   public:
@@ -37,7 +38,15 @@ template <class T> class Point {
     void setY(T iY) { _y = iY; }
     void set(T iX, T iY) { _x = iX; _y = iY; }
 
-
+    Point<double> normalize(double divider = 1) {
+      double norm;
+      norm = divider * sqrt( _x*_x + _y*_y );
+      if(norm != 0) {
+        return Point<double>( (double)_x/norm, (double)_y/norm);
+      }else{
+        return Point<double>(0, 0);
+      }
+    }
 
     Point<T> operator +(Point<T> b) {
       return Point<T>( _x+b.getX(), _y+b.getY() );
@@ -86,6 +95,14 @@ template <class T> class Point {
 
 };
 
+typedef Point<int> PointInt;
+typedef Point<double> PointDouble;
+
+template <class T> std::ostream& operator<<(std::ostream& os, Point<T>& b) {
+  os << "( " << b.getX() << ", " << b.getY() << " )";
+  return os;
+}
+
 template <class T, class V> void distance(Point<T>& a, Point<T>& b, Point<V>& oResult) {
   oResult.set( abs(a.getX()-b.getX()), abs(a.getY()-b.getY()) );
 }
@@ -98,8 +115,6 @@ template <class T> T scalarProduct(Point<T>& a, Point<T>& b) {
   return a.getX()*b.getX() + a.getY()*b.getY();
 }
 
-typedef Point<int> PointInt;
-typedef Point<double> PointDouble;
 
 class Rectangle {
   public:

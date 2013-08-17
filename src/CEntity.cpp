@@ -38,6 +38,7 @@ CEntity::CEntity()
   _moveRight = false;
   _moveUp  = false;
   _moveDown = false;
+  _moveDirection = PointDouble(0, 0);
 
   // entity type
   // _type = ENTITY_TYPE_GENERIC; // TODO: move this kind of stuff in behavior
@@ -211,9 +212,9 @@ bool CEntity::OnLoad(Rectangle& iMask, Rectangle& iDrawRectangle, int iMaxFrames
 
 // 1. factor in controls applied by the player
 void CEntity::OnLoopApplyControls(double& dt) {
+  PointDouble distanceToTarget(0, 0);
   if(_isTargettingPosition) {
 
-    PointDouble distanceToTarget;
     CEntity::signedDist(*this, _targetPosition, distanceToTarget);
 
 
@@ -222,6 +223,8 @@ void CEntity::OnLoopApplyControls(double& dt) {
     _moveRight = distanceToTarget.getX() > 5;
     _moveUp = distanceToTarget.getY() < -5;
     _moveDown = distanceToTarget.getY() > 5;
+    //std::cout << "distanceToTarget: " << distanceToTarget << std::endl;
+    
 
     if ( !_moveLeft && !_moveRight && !_moveUp && !_moveDown ) {
       //StopMove();
@@ -232,11 +235,17 @@ void CEntity::OnLoopApplyControls(double& dt) {
 
   //We're not Moving
   if ( !_moveLeft && !_moveRight && !_moveUp && !_moveDown ) { StopMove(); }
+  else { 
+    _moveDirection = distanceToTarget.normalize(1);
+    //std::cout << "_moveDirection: " << _moveDirection << std::endl;
+    _accel.setX( _moveDirection.getX() );
+    _accel.setY( _moveDirection.getY() );
+  }
 
-  if(_moveLeft ) { _accel.setX(-0.5); _lockRight=0; }
-  else if(_moveRight) { _accel.setX(0.5); _lockLeft=0; }
-  if(_moveUp ) { _accel.setY(-0.5); _lockDown=0; }
-  else if(_moveDown) { _accel.setY(0.5); _lockUp=0; }
+  //if(_moveLeft ) { _accel.setX(-0.5); _lockRight=0; }
+  //else if(_moveRight) { _accel.setX(0.5); _lockLeft=0; }
+  //if(_moveUp ) { _accel.setY(-0.5); _lockDown=0; }
+  //else if(_moveDown) { _accel.setY(0.5); _lockUp=0; }
 
   // set speed according to acceleration
   // FPS control is included to be consistent across various system perfs

@@ -102,7 +102,7 @@ int entity_goto(lua_State *L) {
 }
 
 int entity_goto_next_position(lua_State *L) {
-  //std::cout << "entering entity goto next position" << std::endl;
+  std::cout << "entering entity goto next position" << std::endl;
   int nargs = lua_gettop(L);
   //std::cout << "number of arguments: " << nargs << std::endl;
   int entityId = lua_tointeger(L, 1);
@@ -115,7 +115,7 @@ int entity_goto_next_position(lua_State *L) {
     //std::cout << "entity.b->getTargets().size(): " << entity.b->getTargets().size() << std::endl;
     entity.b->setAttribute(NEXT_POSITION_ID, Value((int) ( (entity.b->getAttribute(NEXT_POSITION_ID).get_int()+1) % entity.b->getTargets().size()) ) );
     entity.isTargettingPosition(true);
-    //std::cout << "next position " << position.getX() << " " << position.getY() << std::endl;
+    std::cout << "next position " << position.getX() << " " << position.getY() << std::endl;
     entity.getTargetPosition().set(position.getX(), position.getY());
   }
   // return code 0

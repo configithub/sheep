@@ -204,6 +204,7 @@ class CEntity {
   bool _moveRight;
   bool _moveUp;
   bool _moveDown;
+  PointDouble _moveDirection;
 
   // entity state
   int _entityId;
