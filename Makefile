@@ -53,8 +53,8 @@ clean :
 # Release_target
 
 Release_target.BIN = bin/Release/sheep.exe
-Release_target.OBJ = src/Switch.o src/Effect.o src/Bomb.o src/CAnimation.o src/CApp.o src/CApp_OnCleanup.o src/CApp_OnEvent.o src/CApp_OnInit.o src/CApp_OnLoop.o src/CApp_OnRender.o src/Area.o src/CCamera.o src/CEntity.o src/CEntityCol.o src/CEvent.o src/CFPS.o src/CFollower.o src/CMap.o src/CSurface.o src/CTile.o src/MultitouchEvent.o src/Behavior.o src/Saw.o src/Door.o src/LuaBinds.o
-DEP_FILES += src/Switch.d src/Effect.d src/Bomb.d src/CAnimation.d src/CApp.d src/CApp_OnCleanup.d src/CApp_OnEvent.d src/CApp_OnInit.d src/CApp_OnLoop.d src/CApp_OnRender.d src/Area.d src/CCamera.d src/CEntity.d src/CEntityCol.d src/CEvent.d src/CFPS.d src/CFollower.d src/CMap.d src/CSurface.d src/CTile.d src/MultitouchEvent.d src/Behavior.d src/Saw.d src/Door.d src/LuaBinds.d
+Release_target.OBJ = src/Switch.o src/Effect.o src/Bomb.o src/CAnimation.o src/CApp.o src/CApp_OnCleanup.o src/CApp_OnEvent.o src/CApp_OnInit.o src/CApp_OnLoop.o src/CApp_OnRender.o src/Area.o src/CCamera.o src/CEntity.o src/CEntityCol.o src/CEvent.o src/CFPS.o src/CFollower.o src/CMap.o src/CSurface.o src/CTile.o src/MultitouchEvent.o src/Behavior.o src/Saw.o src/Door.o src/LuaBinds.o src/Gesture.o src/CApp_OnGesture.o
+DEP_FILES += src/Switch.d src/Effect.d src/Bomb.d src/CAnimation.d src/CApp.d src/CApp_OnCleanup.d src/CApp_OnEvent.d src/CApp_OnInit.d src/CApp_OnLoop.d src/CApp_OnRender.d src/Area.d src/CCamera.d src/CEntity.d src/CEntityCol.d src/CEvent.d src/CFPS.d src/CFollower.d src/CMap.d src/CSurface.d src/CTile.d src/MultitouchEvent.d src/Behavior.d src/Saw.d src/Door.d src/LuaBinds.d src/Gesture.d src/CApp_OnGesture.d
 clean.OBJ += $(Release_target.BIN) $(Release_target.OBJ)
 
 Release_target : Release_target.before $(Release_target.BIN) Release_target.after_always
