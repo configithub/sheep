@@ -89,18 +89,18 @@ bool CApp::OnInit() {
   key = CEntity::CurrentEntityId;
   EntityPool[key].generateAtPos(sawPosition, SAW, this);
 
-  PointDouble doorPosition(304, 80);
-  key = CEntity::CurrentEntityId;
-  EntityPool[key].generateAtPos(doorPosition, DOOR, this);
-  int doorId = key;
+  //PointDouble doorPosition(304, 80);
+  //key = CEntity::CurrentEntityId;
+  //EntityPool[key].generateAtPos(doorPosition, DOOR, this);
+  //int doorId = key;
 
-  switchPosition = PointDouble(60, 55);
-  key = CEntity::CurrentEntityId;
-  EntityPool[key].generateAtPos(switchPosition, SWITCH, this);
-  EntityPool[key].b->setAttribute(TARGET, Value(doorId));
-  EntityPool[key].b->setAttribute(TRIGGER_TYPE, Value(TRIGGER_ON_COLLISION));
-  EntityPool[key].b->setAttribute(SWITCH_TYPE, Value(NEED_CONTINUAL_PRESSURE));
-  EntityPool[key].b->setAttribute(ACTION, Value(BROADCAST));
+  //switchPosition = PointDouble(60, 55);
+  //key = CEntity::CurrentEntityId;
+  //EntityPool[key].generateAtPos(switchPosition, SWITCH, this);
+  //EntityPool[key].b->setAttribute(TARGET, Value(doorId));
+  //EntityPool[key].b->setAttribute(TRIGGER_TYPE, Value(TRIGGER_ON_COLLISION));
+  //EntityPool[key].b->setAttribute(SWITCH_TYPE, Value(NEED_CONTINUAL_PRESSURE));
+  //EntityPool[key].b->setAttribute(ACTION, Value(BROADCAST));
 
   PointDouble sheepPosition(540, 80);
   key = CEntity::CurrentEntityId;

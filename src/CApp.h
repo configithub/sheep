@@ -53,6 +53,7 @@ class CApp : public CEvent {
     EN_EntityType _currentSpawningEntity;
 
     PointDouble Mouse;
+    bool _hasGotMouseEventThisLoop;
 
 
   public:
@@ -106,7 +107,11 @@ class CApp : public CEvent {
 
     void SelectAllSheepsInCurrentRoom();
 
+    void OnGesture();
+
     void OnLoop();
+
+    void OnInitLoop();
 
     void OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode);
 
@@ -130,6 +135,7 @@ class CApp : public CEvent {
 
     void GetNearestEntityFromMouse(PointDouble& point, CEntity*& NearestEntityFromMouse, int& delta);
 
+    void GoToGesture(std::vector<PointDouble>& gesturePositions);
     void GoTo(PointDouble& point);
 
     void GoTo(std::vector<PointDouble>& controls);

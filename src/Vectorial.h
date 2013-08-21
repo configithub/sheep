@@ -81,12 +81,16 @@ template <class T> class Point {
     }
 
     void cap(Point<T>& b) {
-      if(abs(_x) > abs(b.getX())) { _x = sgn<T>(_x)*b.getX(); }
-      if(abs(_y) > abs(b.getY())) { _y = sgn<T>(_y)*b.getY(); }
+      if(std::abs(_x) > std::abs(b.getX())) { _x = sgn<T>(_x)*b.getX(); }
+      if(std::abs(_y) > std::abs(b.getY())) { _y = sgn<T>(_y)*b.getY(); }
     }
 
     T modulus() {
-      return abs(_x) + abs(_y);
+      return std::abs(_x) + std::abs(_y);
+    }
+
+    T module() {
+      return sqrt( _x*_x + _y*_y);
     }
 
   private:
@@ -104,7 +108,7 @@ template <class T> std::ostream& operator<<(std::ostream& os, Point<T>& b) {
 }
 
 template <class T, class V> void distance(Point<T>& a, Point<T>& b, Point<V>& oResult) {
-  oResult.set( abs(a.getX()-b.getX()), abs(a.getY()-b.getY()) );
+  oResult.set( std::abs(a.getX()-b.getX()), std::abs(a.getY()-b.getY()) );
 }
 
 template <class T, class V> void signedDistance(Point<T>& a, Point<T>& b, Point<V>& oResult) {
@@ -182,8 +186,8 @@ class Rectangle {
       if (left1 > right2) return ;
 
 
-      result.setWidth( std::min( abs(right1 - left2), abs(right2 - left1)) );
-      result.setHeight( std::min( abs(bottom1 - top2), abs(bottom2 - top1)) );
+      result.setWidth( std::min( std::abs(right1 - left2), std::abs(right2 - left1)) );
+      result.setHeight( std::min( std::abs(bottom1 - top2), std::abs(bottom2 - top1)) );
 
 
       if(result.isVoid()) {

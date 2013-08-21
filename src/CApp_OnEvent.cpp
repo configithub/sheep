@@ -1,6 +1,7 @@
 #include "CApp.h"
 #include <iostream>
 #include <sstream>
+#include "Gesture.h"
 
 
 void CApp::OnEvent(SDL_Event* Event)
@@ -156,9 +157,12 @@ void CApp::OnResize(int w, int h) {
     return ;
   }
 }
-
+/*
 void CApp::OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,bool Middle)
 {
+#ifndef ANDROID
+  if(!Left) { return; }
+#endif
   Mouse.setX(mX+_center->getX());
   Mouse.setY(mY+_center->getY());
   int tileTypeOnMouse = Area::AreaControl.GetTile(Mouse.getX(), Mouse.getY())->TypeID;
@@ -200,6 +204,16 @@ void CApp::OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,
 
 
   }
+} */
+
+void CApp::OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,bool Middle) {
+#ifndef ANDROID
+  if(!Left) { return; }
+#endif
+  Mouse.setX(mX+_center->getX());
+  Mouse.setY(mY+_center->getY());
+  _hasGotMouseEventThisLoop = true;
+  triggerSwitchesOnTouch();
 }
 
 void CApp::OnMultitouchEvent() {

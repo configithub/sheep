@@ -25,31 +25,38 @@ void CApp::OnGameOver() {
   //std::cout << "CApp: OnGameOver" << std::endl;
 }
 
+
+void CApp::OnInitLoop() {
+  CFPS::FPSControl.OnLoop();
+  _hasGotMouseEventThisLoop = false;
+}
+
 int CApp::OnExecute() {
-    if(OnInit() == false) {
-        return -1;
+  if(OnInit() == false) {
+    return -1;
+  }
+
+  SDL_Event Event;
+
+  while(Running) {
+    OnInitLoop();
+    while(SDL_PollEvent(&Event)) {
+      OnEvent(&Event);
     }
+    OnGesture();
+    OnLoop();
+    OnRender();
+  }
 
-    SDL_Event Event;
+  OnCleanup();
 
-    while(Running) {
-        while(SDL_PollEvent(&Event)) {
-            OnEvent(&Event);
-        }
-
-        OnLoop();
-        OnRender();
-    }
-
-    OnCleanup();
-
-    return 0;
+  return 0;
 }
 
 int main(int argc, char* argv[]) {
-    // CApp theApp;
+  // CApp theApp;
 
-    return theApp.OnExecute();
+  return theApp.OnExecute();
 }
 
 

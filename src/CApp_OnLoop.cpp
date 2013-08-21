@@ -8,7 +8,6 @@
 void CApp::OnLoop() {
 
   // switch time on and monitor framerate
-  CFPS::FPSControl.OnLoop();
   MultitouchEvent::Controller.OnLoop(CFPS::FPSControl.getFrameDuration());
 
   // time between two loops
