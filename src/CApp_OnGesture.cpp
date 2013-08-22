@@ -8,6 +8,13 @@ void CApp::OnGesture() {
   //std::cout << "_hasGotMouseEventThisLoop: " << _hasGotMouseEventThisLoop << std::endl;
   GestureControllerInstance.OnLoop(_hasGotMouseEventThisLoop, Mouse, loopDuration);
 
+  if(MultitouchEvent::Controller.getNumberOfActivePoints() > 1) {
+    for(std::vector<PointDouble>::iterator itControl = controls.begin(); 
+      itControl != controls.end(); ++itControl) { 
+      GestureControllerInstance.OnLoop(_hasGotMouseEventThisLoop, *itControl, loopDuration);
+    }  
+  }
+
   std::vector<PointDouble> gesturePositions;
   GestureControllerInstance.harvest(gesturePositions);
   if(!gesturePositions.empty()) {

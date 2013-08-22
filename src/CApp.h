@@ -53,6 +53,7 @@ class CApp : public CEvent {
     EN_EntityType _currentSpawningEntity;
 
     PointDouble Mouse;
+    std::vector<PointDouble> controls; // from multitouch
     bool _hasGotMouseEventThisLoop;
 
 

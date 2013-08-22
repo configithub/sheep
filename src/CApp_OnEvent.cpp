@@ -218,7 +218,7 @@ void CApp::OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,
 
 void CApp::OnMultitouchEvent() {
 
-  std::vector<PointDouble> controls;
+  controls.clear();
   controls.reserve(5);
 
 
@@ -263,7 +263,7 @@ void CApp::OnMultitouchEvent() {
     controls.push_back(control4);
   }
   if(MultitouchEvent::Controller.getNumberOfActivePoints() > 1) {
-    GoTo(controls);
+    //GoTo(controls);
   }
 
 }
