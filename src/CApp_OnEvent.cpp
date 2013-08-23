@@ -88,11 +88,13 @@ void CApp::SelectAllSheepsInCurrentRoom() {
   // get tile at center (where the camera stands)
   
 
+  _nbSelectedEntity = 0;
   for(std::vector<CEntity*>::iterator itSheep = Sheeps.begin();
       itSheep != Sheeps.end(); ++itSheep) {
     CMap* currentSheepRoom = Area::AreaControl.GetMap( (*itSheep)->getPosition().getX(), (*itSheep)->getPosition().getY());
     if(currentRoom == currentSheepRoom) { // sheep is in currentRoom
       (*itSheep)->_selection = 1;
+      ++_nbSelectedEntity;
     }else{
       (*itSheep)->_selection = 0;
     }
@@ -201,8 +203,6 @@ void CApp::OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,
         }
         break;
     }
-
-
   }
 } */
 
@@ -212,9 +212,41 @@ void CApp::OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,
 #endif
   Mouse.setX(mX+_center->getX());
   Mouse.setY(mY+_center->getY());
+  //Mouse.setX(mX);
+  //Mouse.setY(mY);
   _hasGotMouseEventThisLoop = true;
   triggerSwitchesOnTouch();
+  checkTranslation();
 }
+
+void CApp::checkTranslation() {
+  int tileTypeOnMouse = Area::AreaControl.GetTile(Mouse.getX(), Mouse.getY())->TypeID;
+  if(tileTypeOnMouse != TILE_TYPE_NORMAL) {
+    switch(tileTypeOnMouse) {
+      case TRANSLATE_LEFT:
+        if(!CCamera::CameraControl.isTranslating()) {
+          _nextCenter->set(_center->getX()-WWIDTH, _center->getY());
+        }
+        break;
+      case TRANSLATE_RIGHT:
+        if(!CCamera::CameraControl.isTranslating()) {
+          _nextCenter->set(_center->getX()+WWIDTH, _center->getY());
+        }
+        break;
+      case TRANSLATE_UP:
+        if(!CCamera::CameraControl.isTranslating()) {
+          _nextCenter->set(_center->getX(), _center->getY()-WHEIGHT);
+        }
+        break;
+      case TRANSLATE_DOWN:
+        if(!CCamera::CameraControl.isTranslating()) {
+          _nextCenter->set(_center->getX(), _center->getY()+WHEIGHT);
+        }
+        break;
+    }
+  }
+}
+
 
 void CApp::OnMultitouchEvent() {
 
@@ -236,6 +268,7 @@ void CApp::OnMultitouchEvent() {
     control2 += *_center;
     controls.push_back(control1);
     controls.push_back(control2);
+  _hasGotMouseEventThisLoop = true;
   }
   if(MultitouchEvent::Controller.getNumberOfActivePoints() == 3) {
     PointDouble control1 = PointDouble(MultitouchEvent::Controller.getTouch(0).getX(), MultitouchEvent::Controller.getTouch(0).getY());
@@ -247,6 +280,7 @@ void CApp::OnMultitouchEvent() {
     controls.push_back(control1);
     controls.push_back(control2);
     controls.push_back(control3);
+  _hasGotMouseEventThisLoop = true;
   }
   if(MultitouchEvent::Controller.getNumberOfActivePoints() == 4) {
     PointDouble control1 = PointDouble(MultitouchEvent::Controller.getTouch(0).getX(), MultitouchEvent::Controller.getTouch(0).getY());
@@ -261,9 +295,11 @@ void CApp::OnMultitouchEvent() {
     controls.push_back(control2);
     controls.push_back(control3);
     controls.push_back(control4);
+  _hasGotMouseEventThisLoop = true;
   }
   if(MultitouchEvent::Controller.getNumberOfActivePoints() > 1) {
     //GoTo(controls);
+  _hasGotMouseEventThisLoop = true;
   }
 
 }
@@ -289,10 +325,8 @@ void CApp::OnJoyButtonDown(Uint8 which,Uint8 button) {
   MultitouchEvent::Controller.activePoint(button);
 }
 
-void CApp::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode)
-{
-  switch(sym)
-  {
+void CApp::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode) {
+  switch(sym) {
 
     case SDLK_SPACE:
       {

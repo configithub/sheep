@@ -7,7 +7,7 @@ GestureController::GestureController() {
   _offset = 16;
   _rawPositions.reserve(40);
   _state = VOID;
-  _survivalDelay = 20; // in ms
+  _survivalDelay = 100; // in ms
   _currentDelay = 0;
 }
 
@@ -52,6 +52,11 @@ void GestureController::OnLoop(bool hasGotMouseEvent, PointDouble& mouse, int& l
 void GestureController::harvest(std::vector<PointDouble>& ioPositions, int nbPoints) {
   if(_state == READY_FOR_HARVEST) {
     ioPositions.swap(_rawPositions);
+    /*
+    for(std::vector<PointDouble>::iterator itPos = _rawPositions.begin(); 
+      itPos != _rawPositions.end(); ++itPos) { 
+      ioPositions.push_back(*itPos);
+    } */ 
     reset();
   }
 }

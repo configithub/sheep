@@ -31,8 +31,9 @@ bool CApp::OnInit() {
   glLoadIdentity();
 
 
-  // glOrtho(0.0f, screenWidth, screenHeight, 0.0f, 1.0f, -1.0f);
   glOrtho(0.0f, WWIDTH, WHEIGHT, 0.0f, 1.0f, -1.0f);
+  //glOrtho(-WWIDTH/2, WWIDTH/2, WHEIGHT/2, -WHEIGHT/2, -1, 1);
+  //glScaled(1, 1, 1);
   glMatrixMode(GL_MODELVIEW);
 
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -62,6 +63,8 @@ bool CApp::OnInit() {
 
   _center = new PointDouble(0, 0);
   _nextCenter = new PointDouble(0, 0);
+  //_center = new PointDouble(400, 240);
+  //_nextCenter = new PointDouble(400, 240);
 
   CCamera::CameraControl.SetTarget(_center);
 

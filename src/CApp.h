@@ -77,6 +77,7 @@ class CApp : public CEvent {
     PointDouble* _nextCenter;
   
     static std::vector<CEntity*> Sheeps;
+    int _nbSelectedEntity;
     static void print_num(SDL_Surface *dst, SDL_Surface *font, int x, int y, float value);
 
     // all entities
@@ -107,6 +108,8 @@ class CApp : public CEvent {
     void SelectAllSheeps();
 
     void SelectAllSheepsInCurrentRoom();
+
+    void checkTranslation();
 
     void OnGesture();
 
