@@ -210,10 +210,10 @@ void CApp::OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,
 #ifndef ANDROID
   if(!Left) { return; }
 #endif
+  //Mouse.setX(mX+_center->getX()-400);
+  //Mouse.setY(mY+_center->getY()-240);
   Mouse.setX(mX+_center->getX());
   Mouse.setY(mY+_center->getY());
-  //Mouse.setX(mX);
-  //Mouse.setY(mY);
   _hasGotMouseEventThisLoop = true;
   triggerSwitchesOnTouch();
   checkTranslation();
@@ -222,6 +222,7 @@ void CApp::OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,
 void CApp::checkTranslation() {
   int tileTypeOnMouse = Area::AreaControl.GetTile(Mouse.getX(), Mouse.getY())->TypeID;
   if(tileTypeOnMouse != TILE_TYPE_NORMAL) {
+    _hasGotMouseEventThisLoop = false; // ugly
     switch(tileTypeOnMouse) {
       case TRANSLATE_LEFT:
         if(!CCamera::CameraControl.isTranslating()) {

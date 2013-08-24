@@ -33,7 +33,8 @@ bool CApp::OnInit() {
 
   glOrtho(0.0f, WWIDTH, WHEIGHT, 0.0f, 1.0f, -1.0f);
   //glOrtho(-WWIDTH/2, WWIDTH/2, WHEIGHT/2, -WHEIGHT/2, -1, 1);
-  //glScaled(1, 1, 1);
+  // glScaled(1, 1, 1);
+  // glScalef(1, 1, 1);
   glMatrixMode(GL_MODELVIEW);
 
   glClearColor(0.0f, 0.0f, 0.0f, 1.0f);

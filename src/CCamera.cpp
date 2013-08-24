@@ -54,6 +54,7 @@ void CCamera::translate(PointDouble& iPoint, double& dt) {
 
   }
 
+  // std::cout << "dist: " << dist << std::endl;
   double moveX = dist.getX() / _totalTranslationSteps;
   double moveY = dist.getY() / _totalTranslationSteps;
 

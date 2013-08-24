@@ -60,6 +60,8 @@ bool Area::OnLoad(char* File) {
 
 // renders the four maps visible on screen (overlapping with it)
 void Area::OnRender(int CameraX, int CameraY) {
+    //std::cout << "CameraX: " << CameraX << std::endl;
+    //std::cout << "CameraY: " << CameraY << std::endl;
     int MapWidth  = MAP_WIDTH * TILE_SIZE;
     int MapHeight = MAP_HEIGHT * TILE_SIZE;
 

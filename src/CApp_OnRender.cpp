@@ -6,14 +6,16 @@
 void CApp::OnRender() {
 
 
+  clearScreen();
   Area::AreaControl.OnRender(-CCamera::CameraControl.GetX(), -CCamera::CameraControl.GetY());
+
+  //std::cout << "CCamera::CameraControl.GetX(): " << CCamera::CameraControl.GetX() << std::endl;
 
   for(int i = 0;i < CEntity::EntityList.size();i++) {
     if(!CEntity::EntityList[i]) continue;
     CEntity::EntityList[i]->OnRender();
   }
 
-  //clearScreen();
   SDL_GL_SwapBuffers();
 
   // fix the framerate to avoid using 100% cpu
