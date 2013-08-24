@@ -47,7 +47,6 @@ void CMap::OnRender(int MapX, int MapY) {
   TilesetHeight = 7;
 
   int ID = 0;
-  int nbTileRendered = 0;
   for(int Y = 0;Y < MAP_HEIGHT;Y++) {
     for(int X = 0;X < MAP_WIDTH;X++) {
       if(TileList[ID].TypeID == TILE_TYPE_NONE) {
@@ -61,17 +60,15 @@ void CMap::OnRender(int MapX, int MapY) {
       int TilesetY = (TileList[ID].TileID / TilesetWidth) * TILE_SIZE;
 
       // dont draw tiles which are not currently visible
-      if( tX >= -TILE_SIZE && tX <= WWIDTH
-          && tY >= -TILE_SIZE && tY <= WHEIGHT ) {
+      //if( tX >= -TILE_SIZE && tX <= WWIDTH
+          //&& tY >= -TILE_SIZE && tY <= WHEIGHT ) {
+      if( tX >= -WWIDTH/2 - TILE_SIZE && tX <= WWIDTH/2 
+          && tY >= -WHEIGHT/2 - TILE_SIZE && tY <= WHEIGHT/2 ) {
         CSurface::draw(glTileset, tX, tY, TilesetX, TilesetY, TILE_SIZE, TILE_SIZE);
-        //std::cout << "tX: " << tX << std::endl;
-        //std::cout << "tY: " << tY << std::endl;
-        ++nbTileRendered;
       }
       ID++;
     }
   }
-  //std::cout << "nbTileRendered: " << nbTileRendered << std::endl;
 }
 
 

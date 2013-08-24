@@ -66,8 +66,8 @@ void Area::OnRender(int CameraX, int CameraY) {
     int MapHeight = MAP_HEIGHT * TILE_SIZE;
 
     // calculate the id of the map were the camera resides now
-    int FirstID = -CameraX / MapWidth;
-        FirstID = FirstID + ((-CameraY / MapHeight) * AreaSize);
+    int FirstID = -(CameraX+WWIDTH/2) / MapWidth;
+        FirstID = FirstID + ((-(CameraY+WHEIGHT/2) / MapHeight) * AreaSize);
 
     // calculate the 4 ids of the 4 maps overlaping with the screen view
     for(int i = 0;i < 4;i++) {

@@ -210,10 +210,10 @@ void CApp::OnMouseMove(int mX, int mY, int relX, int relY, bool Left,bool Right,
 #ifndef ANDROID
   if(!Left) { return; }
 #endif
-  //Mouse.setX(mX+_center->getX()-400);
-  //Mouse.setY(mY+_center->getY()-240);
-  Mouse.setX(mX+_center->getX());
-  Mouse.setY(mY+_center->getY());
+  Mouse.setX(mX+_center->getX()-WWIDTH/2);
+  Mouse.setY(mY+_center->getY()-WHEIGHT/2);
+  //Mouse.setX(mX+_center->getX());
+  //Mouse.setY(mY+_center->getY());
   _hasGotMouseEventThisLoop = true;
   triggerSwitchesOnTouch();
   checkTranslation();
@@ -254,6 +254,7 @@ void CApp::OnMultitouchEvent() {
   controls.clear();
   controls.reserve(5);
 
+    PointDouble absCenter = PointDouble(WWIDTH/2, WHEIGHT/2);
 
   /*if(MultitouchEvent::Controller.getNumberOfActivePoints() == 1) {
     PointDouble control1 = PointDouble(MultitouchEvent::Controller.getTouch(1).getX(), MultitouchEvent::Controller.getTouch(1).getY());
@@ -265,8 +266,8 @@ void CApp::OnMultitouchEvent() {
   if(MultitouchEvent::Controller.getNumberOfActivePoints() == 2) {
     PointDouble control1 = PointDouble(MultitouchEvent::Controller.getTouch(0).getX(), MultitouchEvent::Controller.getTouch(0).getY());
     PointDouble control2 = PointDouble(MultitouchEvent::Controller.getTouch(1).getX(), MultitouchEvent::Controller.getTouch(1).getY());
-    control1 += *_center;
-    control2 += *_center;
+    control1 += *_center - absCenter;
+    control2 += *_center - absCenter;
     controls.push_back(control1);
     controls.push_back(control2);
   _hasGotMouseEventThisLoop = true;
@@ -275,9 +276,9 @@ void CApp::OnMultitouchEvent() {
     PointDouble control1 = PointDouble(MultitouchEvent::Controller.getTouch(0).getX(), MultitouchEvent::Controller.getTouch(0).getY());
     PointDouble control2 = PointDouble(MultitouchEvent::Controller.getTouch(1).getX(), MultitouchEvent::Controller.getTouch(1).getY());
     PointDouble control3 = PointDouble(MultitouchEvent::Controller.getTouch(2).getX(), MultitouchEvent::Controller.getTouch(2).getY());
-    control1 += *_center;
-    control2 += *_center;
-    control3 += *_center;
+    control1 += *_center - absCenter;
+    control2 += *_center - absCenter;
+    control3 += *_center - absCenter;
     controls.push_back(control1);
     controls.push_back(control2);
     controls.push_back(control3);
@@ -288,10 +289,10 @@ void CApp::OnMultitouchEvent() {
     PointDouble control2 = PointDouble(MultitouchEvent::Controller.getTouch(1).getX(), MultitouchEvent::Controller.getTouch(1).getY());
     PointDouble control3 = PointDouble(MultitouchEvent::Controller.getTouch(2).getX(), MultitouchEvent::Controller.getTouch(2).getY());
     PointDouble control4 = PointDouble(MultitouchEvent::Controller.getTouch(3).getX(), MultitouchEvent::Controller.getTouch(3).getY());
-    control1 += *_center;
-    control2 += *_center;
-    control3 += *_center;
-    control4 += *_center;
+    control1 += *_center - absCenter;
+    control2 += *_center - absCenter;
+    control3 += *_center - absCenter;
+    control4 += *_center - absCenter;
     controls.push_back(control1);
     controls.push_back(control2);
     controls.push_back(control3);
