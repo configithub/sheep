@@ -22,7 +22,7 @@ void CApp::OnLoop() {
   }
 
   // handle translation between two rooms
-  CCamera::CameraControl.translate(*_nextCenter, dt, true); // true => continuous translation
+  CCamera::CameraControl.translate(*_nextCenter, _translationSpeed, dt, true); // true => continuous translation
 
   // handle entity disappearance and maintenance 
   std::vector<CEntity*> newVect;

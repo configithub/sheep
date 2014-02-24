@@ -65,6 +65,7 @@ class CApp : public CEvent {
     int screenHeight;
 
     //static PointDouble& getMouse() { return Mouse; }
+    double _translationSpeed;
 
     EN_EntityType& getCurrentSpawningEntity() { _currentSpawningEntity; }
     void setCurrentSpawningEntity(EN_EntityType& iType) { _currentSpawningEntity = iType; }

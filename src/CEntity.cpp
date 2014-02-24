@@ -262,12 +262,9 @@ void CEntity::OnAnimate() {
 
 
 void CEntity::OnMove(Point<double>& vel, double& dt) {
-  //if(vel.modulus() == 0) return;
+  if(vel.modulus() == 0) return;
 
   Point<double> dl = vel*dt;
-  double resting_speed = 5;
-  dl.setX( dl.getX()+ (resting_speed*dt));
-  //std::cout << "dl.getX(): " << dl.getX() << std::endl;
   Point<double> planck(sgn<double>(dl.getX())*dt, sgn<double>(dl.getY())*dt);
 
 
@@ -466,8 +463,8 @@ void CEntity::adjustForTranslation(double& moveX, double& moveY, double& dt) {
   //PointDouble adjustedPosition = PointDouble(getPosition().getX()+moveX, getPosition().getY()+moveY);
   //setPosition(adjustedPosition, true);
   //_speed.setX(_speed.getX() - moveX );
-  //PointDouble translateVect = PointDouble(moveX, 0);
-  //OnMove(translateVect, dt);
+  PointDouble translateVect = PointDouble(moveX, 0);
+  OnMove(translateVect, dt);
 }
 
 

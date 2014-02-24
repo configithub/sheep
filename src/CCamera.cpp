@@ -52,7 +52,7 @@ int CCamera::GetY() {
 }
 
 
-void CCamera::translate(PointDouble& iPoint, double& dt, bool cont) {
+void CCamera::translate(PointDouble& iPoint, double translationSpeed, double& dt, bool cont) {
   if(*_target == iPoint) { return; }
 
   //PointDouble dist;
@@ -61,8 +61,6 @@ void CCamera::translate(PointDouble& iPoint, double& dt, bool cont) {
     _isTranslating = true;
     // dt is the time between two frames
   }
-
-  double translationSpeed = 5;
 
   _moveX = translationSpeed * dt;
   _moveY = 0.0 ;
@@ -84,8 +82,8 @@ void CCamera::translate(PointDouble& iPoint, double& dt, bool cont) {
       _isTranslating = false;
     }else{
       _isTranslating = false;
-      _moveX = _origin.getX() - _target->getX();
-      _moveY = _origin.getY() - _target->getY();
+      //_moveX = _origin.getX() - _target->getX();
+      //_moveY = _origin.getY() - _target->getY();
       *_target = _origin;
       _parent->OnCameraContinuousTranslation();
     }

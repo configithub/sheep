@@ -34,7 +34,7 @@ class CCamera {
 
     void SetTarget(PointDouble* iPositionPtr) { _target = iPositionPtr; }
 
-    void translate(PointDouble& iPoint, double& dt, bool cont = false);
+    void translate(PointDouble& iPoint, double translationSpeed, double& dt, bool cont = false);
 
     bool& isTranslating() { return _isTranslating; }
 

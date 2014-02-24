@@ -30,6 +30,8 @@ bool CApp::OnInit() {
   glViewport(0, 0, WWIDTH, WHEIGHT);
 #endif
 
+  _translationSpeed = 5.;
+
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
 
