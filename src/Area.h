@@ -25,6 +25,7 @@ class Area {
         void    OnCleanup();
 
         CMap*    GetMap(int X, int Y);
+        void     SetMap(int X, int Y, CMap* imap);
 
         CTile*    GetTile(int X, int Y);
 };

@@ -106,7 +106,7 @@ class CEntity {
   // check for a collision with input rectangle, create an collision object if it is the case
   bool Collides(Rectangle& iOtherRectangle, CEntityCol& ioEntityCol);
 
-  void StopMove();
+  void StopMove(double dt = 1.);
 
   // check if the entity as a valid position regarding other entities
   bool PosValidOnEntities();
@@ -157,6 +157,8 @@ class CEntity {
   int getEntityId() { return _entityId; }
 
   bool& removeAtNextLoop() { return _removeAtNextLoop; }
+
+  void adjustForTranslation(double& moveX, double& moveY, double& dt);
 
   CApp* _parent;
 
@@ -225,6 +227,8 @@ class CEntity {
   int _currentFrameRow;
 public:
   Behavior* b;
+
+  bool _isTranslating;
 
 };
 

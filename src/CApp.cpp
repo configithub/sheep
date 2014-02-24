@@ -53,9 +53,29 @@ int CApp::OnExecute() {
   return 0;
 }
 
+void CApp::OnCameraContinuousTranslation() {
+  // remove all entities in map 1,1
+  for(std::vector<CEntity*>::iterator itEntity = CEntity::EntityList.begin(); 
+    itEntity != CEntity::EntityList.end(); ++itEntity) { 
+    if( (*itEntity) != NULL) {
+      if((*itEntity)->getPosition().getX() < WWIDTH) {
+        (*itEntity)->removeAtNextLoop() = true;
+      }else{
+        (*itEntity)->getNextPosition().setX((*itEntity)->getPosition().getX() - WWIDTH);
+        (*itEntity)->getPosition().setX((*itEntity)->getPosition().getX() - WWIDTH);
+      }
+    }
+  }
+
+  // switch map 1,1 with map 1,2
+  CMap map00 = *Area::AreaControl.GetMap(0,0);
+  Area::AreaControl.SetMap(0,0, Area::AreaControl.GetMap(801,0));
+  Area::AreaControl.SetMap(801,0, &map00); 
+}
+
+
 int main(int argc, char* argv[]) {
   // CApp theApp;
-
   return theApp.OnExecute();
 }
 

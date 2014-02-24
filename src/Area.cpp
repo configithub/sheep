@@ -98,6 +98,20 @@ CMap* Area::GetMap(int X, int Y) {
     return &MapList[ID];
 }
 
+void Area::SetMap(int X, int Y, CMap* imap) {
+    int MapWidth  = MAP_WIDTH * TILE_SIZE;
+    int MapHeight = MAP_HEIGHT * TILE_SIZE;
+
+    int ID = X / MapWidth;
+        ID = ID + ((Y / MapHeight) * AreaSize);
+
+    if(ID < 0 || ID >= MapList.size()) {
+        return ;
+    }
+
+    MapList[ID] = *imap;
+}
+
 // get tile at coordinate
 CTile* Area::GetTile(int X, int Y) {
     int MapWidth  = MAP_WIDTH * TILE_SIZE;

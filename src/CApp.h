@@ -131,6 +131,8 @@ class CApp : public CEvent {
 
     void OnMultitouchEvent();
 
+    void OnCameraContinuousTranslation();
+
     void OnJoyButtonDown(Uint8 which,Uint8 button);
 
     void getActiveGroup(std::vector<CEntity*>& ioGroup);
@@ -143,8 +145,6 @@ class CApp : public CEvent {
     void GoTo(PointDouble& point);
 
     void GoTo(std::vector<PointDouble>& controls);
-
-    void StopGoTo();
 
     void OnExit();
 

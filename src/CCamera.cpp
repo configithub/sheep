@@ -1,13 +1,25 @@
 #include "CCamera.h"
+#include "CApp.h"
+#include "CFPS.h"
 
 CCamera CCamera::CameraControl;
 
 CCamera::CCamera() {
+  _parent = NULL;
   _position.set(0,0);
+  // where we look at
   _target = NULL;
+  // to know if the camera is currently translating
   _isTranslating = false;
-
+  // the step at which we are during the translation
+  _translationStep = 0;
+  // camera mode
   TargetMode = TARGET_MODE_NORMAL;
+  // default position for a continuously translating screen (e.g. first screen)
+  _origin.set(WWIDTH/2, WHEIGHT/2); 
+  // distance to move at the next frame
+  _moveX = 0;
+  _moveY = 0;
 }
 
 void CCamera::OnMove(int MoveX, int MoveY) {
@@ -40,34 +52,43 @@ int CCamera::GetY() {
 }
 
 
-void CCamera::translate(PointDouble& iPoint, double& dt) {
-  if( *_target == iPoint) { return; }
+void CCamera::translate(PointDouble& iPoint, double& dt, bool cont) {
+  if(*_target == iPoint) { return; }
 
-  PointDouble dist;
-  signedDistance(iPoint, *_target, dist);
+  //PointDouble dist;
+  //signedDistance(iPoint, *_target, dist);
   if(!_isTranslating) {
     _isTranslating = true;
     // dt is the time between two frames
-    double entireTranslationTime = 5; // in ms
-    _totalTranslationSteps = (int) (entireTranslationTime / dt);
-    _translationStep = 1;
-
   }
 
-  // std::cout << "dist: " << dist << std::endl;
-  double moveX = dist.getX() / _totalTranslationSteps;
-  double moveY = dist.getY() / _totalTranslationSteps;
+  double translationSpeed = 5;
 
-  _target->getX() += moveX;
-  _target->getY() += moveY;
+  _moveX = translationSpeed * dt;
+  _moveY = 0.0 ;
 
-  ++_translationStep;
+  _target->getX() += _moveX;
+  _target->getY() += _moveY;
+
+  if(CFPS::FPSControl.one_second) {
+    std::cout << "_moveX: " << _moveX << std::endl;
+    std::cout << "dt: " << dt << std::endl;
+  }
+
   PointDouble newDist;
   distance(iPoint, *_target, newDist);
-  if(newDist.modulus() < 2){
-    _isTranslating = false;
-    *_target = iPoint;
+  // if(newDist.modulus() < 2){
+  if(iPoint.getX() <= _target->getX()){
+    if(!cont) {
+      *_target = iPoint;
+      _isTranslating = false;
+    }else{
+      _isTranslating = false;
+      _moveX = _origin.getX() - _target->getX();
+      _moveY = _origin.getY() - _target->getY();
+      *_target = _origin;
+      _parent->OnCameraContinuousTranslation();
+    }
   }
 
 }
-

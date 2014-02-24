@@ -14,6 +14,8 @@ CEntity::CEntity()
 {
   _glTexture = 0;
 
+  _isTranslating = false;
+
   // entity coordinates and size
   _position.set(100,100);
 
@@ -104,6 +106,7 @@ void CEntity::generateAtPos(PointDouble& iPosition, EN_EntityType iType, CApp* i
       mask = Rectangle(0,0,32,32);
       drawRectangle = Rectangle(0,0,32,32);
       OnLoad(mask, drawRectangle, 4);
+      _isTranslating = true;
       b = &_parent->SheepPool[_entityId];
     break;
     case(BOMB):
@@ -169,46 +172,6 @@ bool CEntity::OnLoad(Rectangle& iMask, Rectangle& iDrawRectangle, int iMaxFrames
   return true;
 }
 
-/*
-{
-  if(_isTargettingPosition) {
-
-    PointDouble distanceToTarget;
-    CEntity::signedDist(*this, _targetPosition, distanceToTarget);
-
-
-    _moveLeft = false; _moveRight = false; _moveUp = false; _moveDown = false;
-    _moveLeft = distanceToTarget.getX() < -5;
-    _moveRight = distanceToTarget.getX() > 5;
-    _moveUp = distanceToTarget.getY() < -5;
-    _moveDown = distanceToTarget.getY() > 5;
-
-    if ( !_moveLeft && !_moveRight && !_moveUp && !_moveDown ) {
-      //StopMove();
-      _isTargettingPosition = false;
-      _targetPosition = _position;
-    }
-  }
-
-  //We're not Moving
-  if ( !_moveLeft && !_moveRight && !_moveUp && !_moveDown ) { StopMove(); }
-
-  if(_moveLeft ) { _accel.setX(-0.5); _lockRight=0; }
-  else if(_moveRight) { _accel.setX(0.5); _lockLeft=0; }
-  if(_moveUp ) { _accel.setY(-0.5); _lockDown=0; }
-  else if(_moveDown) { _accel.setY(0.5); _lockUp=0; }
-
-  // set speed according to acceleration
-  // FPS control is included to be consistent across various system perfs
-  // => acceleration is constant in terms of pixel * second^-2 for diff. perfs
-
-  _speed += (_accel - _speed*(double)0.1) * dt;
-
-  // cap the speed
-  _speed.cap(_maxSpeed);
-
-  OnAnimate(); // update entity animation
-}*/
 
 // 1. factor in controls applied by the player
 void CEntity::OnLoopApplyControls(double& dt) {
@@ -217,46 +180,35 @@ void CEntity::OnLoopApplyControls(double& dt) {
 
     CEntity::signedDist(*this, _targetPosition, distanceToTarget);
 
-
     _moveLeft = false; _moveRight = false; _moveUp = false; _moveDown = false;
     _moveLeft = distanceToTarget.getX() < -5;
     _moveRight = distanceToTarget.getX() > 5;
     _moveUp = distanceToTarget.getY() < -5;
     _moveDown = distanceToTarget.getY() > 5;
-    //std::cout << "distanceToTarget: " << distanceToTarget << std::endl;
-    
 
     if ( !_moveLeft && !_moveRight && !_moveUp && !_moveDown ) {
-      //StopMove();
       _isTargettingPosition = false;
       _targetPosition = _position;
     }
   }
 
   //We're not Moving
-  if ( !_moveLeft && !_moveRight && !_moveUp && !_moveDown ) { StopMove(); }
+  if ( !_moveLeft && !_moveRight && !_moveUp && !_moveDown ) { StopMove(dt); }
   else { 
     _moveDirection = distanceToTarget.normalize(1);
-    //std::cout << "_moveDirection: " << _moveDirection << std::endl;
     _accel.setX( _moveDirection.getX() );
     _accel.setY( _moveDirection.getY() );
   }
 
-  //if(_moveLeft ) { _accel.setX(-0.5); _lockRight=0; }
-  //else if(_moveRight) { _accel.setX(0.5); _lockLeft=0; }
-  //if(_moveUp ) { _accel.setY(-0.5); _lockDown=0; }
-  //else if(_moveDown) { _accel.setY(0.5); _lockUp=0; }
-
   // set speed according to acceleration
   // FPS control is included to be consistent across various system perfs
   // => acceleration is constant in terms of pixel * second^-2 for diff. perfs
-
   _speed += (_accel - _speed*(double)0.1) * dt;
+  //_speed += _accel * dt;
 
   // cap the speed
   _speed.cap(_maxSpeed);
 
-  //OnAnimate(); // update entity animation
 }
 
 // 3. initiate nextX and nextY
@@ -310,9 +262,12 @@ void CEntity::OnAnimate() {
 
 
 void CEntity::OnMove(Point<double>& vel, double& dt) {
-  if(vel.modulus() == 0) return;
+  //if(vel.modulus() == 0) return;
 
   Point<double> dl = vel*dt;
+  double resting_speed = 5;
+  dl.setX( dl.getX()+ (resting_speed*dt));
+  //std::cout << "dl.getX(): " << dl.getX() << std::endl;
   Point<double> planck(sgn<double>(dl.getX())*dt, sgn<double>(dl.getY())*dt);
 
 
@@ -366,15 +321,17 @@ void CEntity::OnMove(Point<double>& vel, double& dt) {
 
 
 // deceleration
-void CEntity::StopMove() {
+// todo : replace 0 with resting momentum for speed
+void CEntity::StopMove(double dt) {
+  int resting_speed = 0;
   _moveDown = false; _moveLeft = false;
   _moveRight = false; _moveUp = false;
   _isTargettingPosition = false;
-  if(_speed.getX() > 0) { _accel.setX(-1.5); }
-  if(_speed.getX() < 0) { _accel.setX(1.5); }
-  if(_speed.getX() < 2.0f && _speed.getX() > -2.0f) {
+  if(_speed.getX() > resting_speed) { _accel.setX(-1.5); }
+  if(_speed.getX() < resting_speed) { _accel.setX(1.5); }
+  if(_speed.getX() - resting_speed < 2.0f && _speed.getX() - resting_speed > -2.0f) {
     _accel.setX(0);
-    _speed.setX(0);
+    _speed.setX(resting_speed);
   }
 
   if(_speed.getY() > 0) { _accel.setY(-1.5); }
@@ -504,6 +461,16 @@ bool CEntity::PosValidEntity(CEntity* iEntity) {
 
   return result;
 }
+
+void CEntity::adjustForTranslation(double& moveX, double& moveY, double& dt) {
+  //PointDouble adjustedPosition = PointDouble(getPosition().getX()+moveX, getPosition().getY()+moveY);
+  //setPosition(adjustedPosition, true);
+  //_speed.setX(_speed.getX() - moveX );
+  //PointDouble translateVect = PointDouble(moveX, 0);
+  //OnMove(translateVect, dt);
+}
+
+
 
 void CEntity::OnCleanup() {
   b->OnCleanup();

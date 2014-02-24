@@ -5,15 +5,12 @@
 
 // controles game speed for consistency across different system performances
 class CFPS {
-    public:
-        static CFPS FPSControl;
-
-        int    NumFrames;
 
     private:
         int     OldTime;
         int     LastTime;
         int     _frameDuration;
+        int     _calcDuration;
         double     SpeedFactor;
 
 
@@ -21,13 +18,19 @@ class CFPS {
 
     public:
         CFPS();
+        static CFPS FPSControl;
+
+        int    NumFrames;
 
         void    OnLoop();
+        void    recordCalcDuration();
 
-    public:
         int     GetFPS();
 
         int     getFrameDuration();
+        int     getCalcDuration();
+    
+        bool    one_second;
 
         double   GetSpeedFactor();
 };

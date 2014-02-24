@@ -12,10 +12,17 @@ void CApp::OnLoop() {
 
   // time between two loops
   double dt = CFPS::FPSControl.GetSpeedFactor();
+  //int frameDuration = CFPS::FPSControl.getFrameDuration();
+  //std::cout << "dt: " << dt << std::endl;
+  //std::cout << "frameDuration: " << frameDuration << std::endl;
+
+  // continuous translation : 
+  if(!CCamera::CameraControl.isTranslating()) {
+    _nextCenter->set(_center->getX()+WWIDTH, _center->getY());
+  }
 
   // handle translation between two rooms
-  CCamera::CameraControl.translate(*_nextCenter, dt);
-
+  CCamera::CameraControl.translate(*_nextCenter, dt, true); // true => continuous translation
 
   // handle entity disappearance and maintenance 
   std::vector<CEntity*> newVect;
@@ -27,9 +34,14 @@ void CApp::OnLoop() {
     }
   }  
 
-
   // next entities become current entities 
   CEntity::EntityList.swap(CEntity::NextEntityList);
+
+  // adjust position for entities that are translating along with the maps
+  for(std::vector<CEntity*>::iterator itEntity = CEntity::EntityList.begin(); itEntity != CEntity::EntityList.end(); ++itEntity) {
+    if((*itEntity) == NULL) continue;
+    (*itEntity)->adjustForTranslation(CCamera::CameraControl.getMoveX(), CCamera::CameraControl.getMoveY(), dt);
+  }
 
   // apply gravity and controls on all entities
   for(std::vector<CEntity*>::iterator itEntity = CEntity::EntityList.begin(); itEntity != CEntity::EntityList.end(); ++itEntity) {
@@ -82,9 +94,8 @@ void CApp::updateScore() {
   }
 }
 
+
 void CApp::SolveCollisions(int numIterations, double& dt) {
-
-
 
   for (int j=0; j<numIterations; j++) {
 

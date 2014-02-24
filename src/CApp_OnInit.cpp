@@ -16,6 +16,9 @@ bool CApp::OnInit() {
   screenWidth = WWIDTH;
   screenHeight = WHEIGHT;
 #endif
+  //if(! SDL_SetVideoMode(WWIDTH, WHEIGHT, BPP_DEPTH, SDL_OPENGL|SDL_DOUBLEBUF | SDL_FULLSCREEN)  ) {
+  SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
+  SDL_GL_SetAttribute( SDL_GL_DEPTH_SIZE, 16 );
   if(! SDL_SetVideoMode(WWIDTH, WHEIGHT, BPP_DEPTH, SDL_OPENGL|SDL_DOUBLEBUF)  ) {
     return false;
   }
@@ -65,8 +68,10 @@ bool CApp::OnInit() {
   //_nextCenter = new PointDouble(0, 0);
   _center = new PointDouble(WWIDTH/2, WHEIGHT/2);
   _nextCenter = new PointDouble(WWIDTH/2, WHEIGHT/2);
+  //_nextCenter->set(_center->getX()+WWIDTH, _center->getY());
 
   CCamera::CameraControl.SetTarget(_center);
+  CCamera::CameraControl.setParent(this);
 
   if(Area::AreaControl.OnLoad("./maps/1.area") == false) {
     return false;
@@ -75,22 +80,22 @@ bool CApp::OnInit() {
   //PointDouble switchPosition(WWIDTH+60, WHEIGHT+90);
   PointDouble switchPosition(WWIDTH+190,WHEIGHT+ 160);
   int key = CEntity::CurrentEntityId;
-  EntityPool[key].generateAtPos(switchPosition, SWITCH, this);
-  EntityPool[key].b->setAttribute(TRIGGER_TYPE, Value(TRIGGER_ON_MOUSE));
-  EntityPool[key].b->setAttribute(ACTION, Value(SPAWN_BOMB));
-  EntityPool[key].b->setAttribute(SWITCH_TYPE, Value(ONE_SHOT));
+  //EntityPool[key].generateAtPos(switchPosition, SWITCH, this);
+  //EntityPool[key].b->setAttribute(TRIGGER_TYPE, Value(TRIGGER_ON_MOUSE));
+  //EntityPool[key].b->setAttribute(ACTION, Value(SPAWN_BOMB));
+  //EntityPool[key].b->setAttribute(SWITCH_TYPE, Value(ONE_SHOT));
 
-  PointDouble sawPosition(100,WHEIGHT+ 60);
-  key = CEntity::CurrentEntityId;
-  EntityPool[key].generateAtPos(sawPosition, SAW, this);
+  //PointDouble sawPosition(100,WHEIGHT+ 60);
+  //key = CEntity::CurrentEntityId;
+  //EntityPool[key].generateAtPos(sawPosition, SAW, this);
 
-  sawPosition = PointDouble(100,WHEIGHT+ 100);
-  key = CEntity::CurrentEntityId;
-  EntityPool[key].generateAtPos(sawPosition, SAW, this);
+  //sawPosition = PointDouble(100,WHEIGHT+ 100);
+  //key = CEntity::CurrentEntityId;
+  //EntityPool[key].generateAtPos(sawPosition, SAW, this);
 
-  sawPosition = PointDouble(140,WHEIGHT+ 140);
-  key = CEntity::CurrentEntityId;
-  EntityPool[key].generateAtPos(sawPosition, SAW, this);
+  //sawPosition = PointDouble(140,WHEIGHT+ 140);
+  //key = CEntity::CurrentEntityId;
+  //EntityPool[key].generateAtPos(sawPosition, SAW, this);
 
   //PointDouble doorPosition(304, 80);
   //key = CEntity::CurrentEntityId;

@@ -18,10 +18,12 @@ void CApp::OnRender() {
 
   SDL_GL_SwapBuffers();
 
-  // fix the framerate to avoid using 100% cpu
-  if(CFPS::FPSControl.getFrameDuration() < 1000/FIXED_FPS) {
-    Uint32 delaytime = 1000/FIXED_FPS - CFPS::FPSControl.getFrameDuration();
+  CFPS::FPSControl.recordCalcDuration();
+  //  fix the framerate to avoid using 100% cpu
+  if(CFPS::FPSControl.getCalcDuration() < 1000/FIXED_FPS) {
+    Uint32 delaytime = 1000.0/FIXED_FPS - CFPS::FPSControl.getCalcDuration();
     SDL_Delay((Uint32)delaytime);
+    // std::cout << "real_delay: " << real_delay << std::endl;
   }
 
 }
