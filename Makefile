@@ -14,7 +14,7 @@ CFLAGS_C = $(filter-out -include "sdk.h",$(CFLAGS))
 
 # MAKE_DEP = -MMD -MT $@ -MF $(@:.o=.d)
 
-CFLAGS = -g
+CFLAGS = -g -O3 -ffast-math
 INCLUDES = 
 LDFLAGS = 
 RCFLAGS = 
@@ -53,8 +53,8 @@ clean :
 # Release_target
 
 Release_target.BIN = bin/Release/sheep.exe
-Release_target.OBJ = src/Switch.o src/Effect.o src/Bomb.o src/CAnimation.o src/CApp.o src/CApp_OnCleanup.o src/CApp_OnEvent.o src/CApp_OnInit.o src/CApp_OnLoop.o src/CApp_OnRender.o src/Area.o src/CCamera.o src/CEntity.o src/CEntityCol.o src/CEvent.o src/CFPS.o src/CFollower.o src/CMap.o src/CSurface.o src/CTile.o src/MultitouchEvent.o src/Behavior.o src/Saw.o src/Door.o src/LuaBinds.o src/Gesture.o src/CApp_OnGesture.o
-DEP_FILES += src/Switch.d src/Effect.d src/Bomb.d src/CAnimation.d src/CApp.d src/CApp_OnCleanup.d src/CApp_OnEvent.d src/CApp_OnInit.d src/CApp_OnLoop.d src/CApp_OnRender.d src/Area.d src/CCamera.d src/CEntity.d src/CEntityCol.d src/CEvent.d src/CFPS.d src/CFollower.d src/CMap.d src/CSurface.d src/CTile.d src/MultitouchEvent.d src/Behavior.d src/Saw.d src/Door.d src/LuaBinds.d src/Gesture.d src/CApp_OnGesture.d
+Release_target.OBJ = src/Switch.o src/Effect.o src/Bomb.o src/Animation.o src/CApp.o src/OnCleanup.o src/OnEvent.o src/OnInit.o src/OnLoop.o src/OnRender.o src/Area.o src/Camera.o src/Entity.o src/EntityCol.o src/Event.o src/FPS.o src/Follower.o src/Map.o src/Texture.o src/Tile.o src/MultitouchEvent.o src/Behavior.o src/Saw.o src/Door.o src/LuaBinds.o src/Gesture.o src/OnGesture.o
+DEP_FILES += src/Switch.d src/Effect.d src/Bomb.d src/Animation.d src/CApp.d src/OnCleanup.d src/OnEvent.d src/OnInit.d src/OnLoop.d src/OnRender.d src/Area.d src/Camera.d src/Entity.d src/EntityCol.d src/Event.d src/FPS.d src/Follower.d src/Map.d src/Texture.d src/Tile.d src/MultitouchEvent.d src/Behavior.d src/Saw.d src/Door.d src/LuaBinds.d src/Gesture.d src/OnGesture.d
 clean.OBJ += $(Release_target.BIN) $(Release_target.OBJ)
 
 Release_target : Release_target.before $(Release_target.BIN) Release_target.after_always
