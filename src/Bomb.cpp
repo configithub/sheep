@@ -31,7 +31,7 @@ void Bomb::OnCleanup() {
   CApp::BombPool.erase(e->_entityId); 
 }
 
-void Bomb::explode(std::vector<CEntity*>& iSheeps) {
+void Bomb::explode(std::vector<Entity*>& iSheeps) {
   int currentTime = SDL_GetTicks();
   if(currentTime - _startTime < _delay) {
     // bomb did not explode yet
@@ -40,10 +40,10 @@ void Bomb::explode(std::vector<CEntity*>& iSheeps) {
   std::cout << "bomb is exploding: " << e->_entityId << std::endl;
   // slightly dirty loop
   if(_hasExploded) { return; }
-  for(std::vector<CEntity*>::iterator itSheep = iSheeps.begin();
+  for(std::vector<Entity*>::iterator itSheep = iSheeps.begin();
       itSheep != iSheeps.end(); ++itSheep ) {
     PointDouble dist;
-    CEntity::dist( *e, **itSheep, dist);
+    Entity::dist( *e, **itSheep, dist);
     if(dist.modulus() < _radius ) {
       // sheep died in explosion
       (*itSheep)->b->kill();
@@ -54,7 +54,7 @@ void Bomb::explode(std::vector<CEntity*>& iSheeps) {
   // explosion effect
   int nbExplosionEffect = rand() % 5+3;
   for (int i = 0; i < nbExplosionEffect; i++) {
-    int key = CEntity::CurrentEntityId;
+    int key = Entity::CurrentEntityId;
     PointDouble position( abs( std::min( (int) (this->e->getPosition().getX() -10 + rand() % 20) ,(int) this->e->getPosition().getX() )) ,abs( std::min( (int) (this->e->getPosition().getY() -10 + rand() % 20), (int) this->e->getPosition().getY() )) );
     CApp::EntityPool[key].generateAtPos(position, EFFECT, e->_parent); // CORE
   }

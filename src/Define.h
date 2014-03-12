@@ -19,7 +19,7 @@
 
 #define BPP_DEPTH    16
 
-#define FIXED_FPS   40
+#define FIXED_FPS   70
 
 #define DOOR_MOVE_DISTANCE 32
 

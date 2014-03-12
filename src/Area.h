@@ -1,33 +1,35 @@
 #ifndef _CAREA_H_
-    #define _CAREA_H_
+#define _CAREA_H_
 
-#include "CMap.h"
+#include "Map.h"
 
 class Area {
-    public:
-        static Area            AreaControl;
+  public:
+    static Area            AreaControl;
+    static Area            Background1;
+    static Area            Background2;
 
-    public:
-        std::vector<CMap>       MapList;
+  public:
+    std::vector<Map>       MapList;
 
-    private:
-        int                     AreaSize;
+  private:
+    int                     AreaSize;
 
-        GLuint        glTileset;
+    GLuint        glTileset;
 
-    public:
-        Area();
+  public:
+    Area();
 
-        bool    OnLoad(char* File);
+    bool    OnLoad(char* File);
 
-        void    OnRender(int CameraX, int CameraY);
+    void    OnRender(int CameraX, int CameraY);
 
-        void    OnCleanup();
+    void    OnCleanup();
 
-        CMap*    GetMap(int X, int Y);
-        void     SetMap(int X, int Y, CMap* imap);
+    Map*    GetMap(int X, int Y);
+    void     SetMap(int X, int Y, Map* imap);
 
-        CTile*    GetTile(int X, int Y);
+    Tile*    GetTile(int X, int Y);
 };
 
 #endif

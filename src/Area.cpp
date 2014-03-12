@@ -2,6 +2,8 @@
 #include "Define.h"
 #include <iostream>
 Area Area::AreaControl;
+Area Area::Background1;
+Area Area::Background2;
 
 Area::Area() {
     AreaSize = 0;
@@ -22,12 +24,12 @@ bool Area::OnLoad(char* File) {
 
     fscanf(FileHandle, "%s\n", TilesetFile);
 
-    if(!CSurface::load(TilesetFile)) {
+    if(!Texture::load(TilesetFile)) {
         fclose(FileHandle);
         std::cout << "file handle false: " << TilesetFile;
         return false;
     }
-    glTileset = CSurface::Sprites.back();
+    glTileset = Texture::Sprites.back();
 
     fscanf(FileHandle, "%d\n", &AreaSize);
 
@@ -37,7 +39,7 @@ bool Area::OnLoad(char* File) {
 
             fscanf(FileHandle, "%s ", MapFile);
 
-            CMap tempMap;
+            Map tempMap;
             tempMap.Map_X = X * MAP_WIDTH * TILE_SIZE;
             tempMap.Map_Y = Y * MAP_HEIGHT * TILE_SIZE;
             if(tempMap.OnLoad(MapFile) == false) {
@@ -84,7 +86,7 @@ void Area::OnRender(int CameraX, int CameraY) {
 }
 
 // get map at coordinate
-CMap* Area::GetMap(int X, int Y) {
+Map* Area::GetMap(int X, int Y) {
     int MapWidth  = MAP_WIDTH * TILE_SIZE;
     int MapHeight = MAP_HEIGHT * TILE_SIZE;
 
@@ -98,7 +100,7 @@ CMap* Area::GetMap(int X, int Y) {
     return &MapList[ID];
 }
 
-void Area::SetMap(int X, int Y, CMap* imap) {
+void Area::SetMap(int X, int Y, Map* imap) {
     int MapWidth  = MAP_WIDTH * TILE_SIZE;
     int MapHeight = MAP_HEIGHT * TILE_SIZE;
 
@@ -113,11 +115,11 @@ void Area::SetMap(int X, int Y, CMap* imap) {
 }
 
 // get tile at coordinate
-CTile* Area::GetTile(int X, int Y) {
+Tile* Area::GetTile(int X, int Y) {
     int MapWidth  = MAP_WIDTH * TILE_SIZE;
     int MapHeight = MAP_HEIGHT * TILE_SIZE;
 
-    CMap* Map = GetMap(X, Y);
+    Map* Map = GetMap(X, Y);
 
     if(Map == NULL) return NULL;
 

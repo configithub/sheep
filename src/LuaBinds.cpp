@@ -56,10 +56,40 @@ int spawn_entity(lua_State *L) {
       int entityY = lua_tonumber(L, i+2);
       //std::cout << "entityY: " << entityY << std::endl;
       PointDouble position(entityX, entityY);
-      int key = CEntity::CurrentEntityId;
+      int key = Entity::CurrentEntityId;
       //std::cout << "key: " << key << std::endl;
       CApp::EntityPool[key].generateAtPos(position, entityType, &theApp);
       //std::cout << "after generateAtPos" << std::endl;
+    }
+
+    // return code 0
+    lua_pushnumber(L, 0);
+  }else{
+    // send error code as a result
+    lua_pushnumber(L, -1);
+  }
+  return 1;
+}
+
+
+int spawn_remove_entity(lua_State *L) {
+  //std::cout << "entering spawn entity" << std::endl;
+  int nargs = lua_gettop(L);
+  //std::cout << "number of arguments: " << nargs << std::endl;
+  if(nargs % 3 == 0) {
+    for (int i = 1; i <= nargs; i+=3) {
+      EN_EntityType entityType = (EN_EntityType)lua_tointeger(L, i);
+      int entityStartX = lua_tonumber(L, i+1);
+      int entityStartY = lua_tonumber(L, i+2);
+      int entityEndX = lua_tonumber(L, i+3);
+      int entityEndY = lua_tonumber(L, i+4);
+      PointDouble position(entityStartX, entityStartY);
+      int key = Entity::CurrentEntityId;
+      //std::cout << "key: " << key << std::endl;
+      CApp::EntityPool[key].generateAtPos(position, entityType, &theApp);
+      Entity& entity = CApp::EntityPool[key];
+      entity.isTargettingPosition(true);
+      entity.getTargetPosition().set(entityEndX, entityEndY);
     }
 
     // return code 0
@@ -85,9 +115,9 @@ int entity_goto(lua_State *L) {
       int targetY = lua_tonumber(L, i+2);
       //std::cout << "targetY: " << targetY << std::endl;
       PointDouble position(targetX, targetY);
-      std::map<int, CEntity>::iterator itFindEntity = CApp::EntityPool.find(entityId);
+      std::map<int, Entity>::iterator itFindEntity = CApp::EntityPool.find(entityId);
       if(itFindEntity != CApp::EntityPool.end()) {
-        CEntity& entity = itFindEntity->second;
+        Entity& entity = itFindEntity->second;
         entity.isTargettingPosition(true);
         entity.getTargetPosition().set(position.getX(), position.getY());
       }
@@ -107,9 +137,9 @@ int entity_goto_next_position(lua_State *L) {
   //std::cout << "number of arguments: " << nargs << std::endl;
   int entityId = lua_tointeger(L, 1);
   //std::cout << "entityId: " << entityId << std::endl;
-  std::map<int, CEntity>::iterator itFindEntity = CApp::EntityPool.find(entityId);
+  std::map<int, Entity>::iterator itFindEntity = CApp::EntityPool.find(entityId);
   if(itFindEntity != CApp::EntityPool.end()) {
-    CEntity& entity = itFindEntity->second;
+    Entity& entity = itFindEntity->second;
     PointDouble& position = entity.b->getTargets()[entity.b->getAttribute(NEXT_POSITION_ID).get_int()];
     //std::cout << "entity.b->getAttribute(NEXT_POSITION_ID): " << entity.b->getAttribute(NEXT_POSITION_ID) << std::endl;
     //std::cout << "entity.b->getTargets().size(): " << entity.b->getTargets().size() << std::endl;
@@ -131,9 +161,9 @@ int entity_patrol(lua_State *L) {
   if( (nargs-1) % 2 == 0) {
     //std::cout << "inside if " << std::endl;
     int entityId = lua_tointeger(L, 1);
-    std::map<int, CEntity>::iterator itFindEntity = CApp::EntityPool.find(entityId);
+    std::map<int, Entity>::iterator itFindEntity = CApp::EntityPool.find(entityId);
     if(itFindEntity != CApp::EntityPool.end()) {
-      CEntity& entity = itFindEntity->second;
+      Entity& entity = itFindEntity->second;
       for (int i = 2; i <= nargs; i+=2) {
         //std::cout << "entityId: " << entityId << std::endl;
         int targetX = lua_tonumber(L, i);

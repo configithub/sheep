@@ -9,7 +9,7 @@
 #include <iostream>
 #include "Vectorial.h"
 
-class CEntity;
+class Entity;
 
 class Value {
   public:
@@ -80,7 +80,7 @@ typedef enum {
 class Behavior {
 
   // Friend classes
-  friend class CFollower;
+  friend class Follower;
   friend class Effect;
   friend class Switch;
   friend class Bomb;
@@ -94,7 +94,7 @@ class Behavior {
   // destroy 
   virtual ~Behavior();
 
-  void setEntity(CEntity* aEntity) { e = aEntity; }
+  void setEntity(Entity* aEntity) { e = aEntity; }
 
   virtual void OnInit();
 
@@ -123,7 +123,7 @@ class Behavior {
   void setAttribute(EN_Attribute key, Value iValue) { _attributes[key] = iValue; }
 
   bool _dead;
-  CEntity* e;
+  Entity* e;
 
   std::vector<PointDouble>& getTargets() { return _targets; }
 

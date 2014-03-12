@@ -2,7 +2,7 @@
 #define SAW_H
 
 #include "Behavior.h"
-#include "CFollower.h"
+#include "Follower.h"
 
 class Saw : public Behavior {
 

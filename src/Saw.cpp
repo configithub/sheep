@@ -15,7 +15,7 @@ void Saw::OnRender() { }
 
 
 void Saw::OnCleanup() {
-  //CEntity::OnCleanup();
+  //Entity::OnCleanup();
   CApp::SawPool.erase(e->_entityId); 
 }
 

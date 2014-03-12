@@ -2,7 +2,7 @@
 #define DOOR_H
 
 #include "Behavior.h"
-#include "CFollower.h"
+#include "Follower.h"
 
 typedef enum {
   CLOSED = 0,

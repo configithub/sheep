@@ -1,7 +1,7 @@
 #ifndef _MULTITOUCH_EVENT_
 #define _MULTITOUCH_EVENT_
 
-#include "CFPS.h"
+#include "FPS.h"
 #include "Vectorial.h"
 #include <vector>
 

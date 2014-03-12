@@ -73,7 +73,7 @@ void Switch::OnAnimate() {
       e->getPosition().getY(), 10, 10);
 
   // spawn a bomb randomly in this rectangle
-  int key = CEntity::CurrentEntityId;
+  int key = Entity::CurrentEntityId;
   CApp::EntityPool[key].generateRandom(aScreenRect, BOMB, e->_parent); 
 }*/
 
@@ -112,7 +112,7 @@ void Switch::OnTriggeredAction(int id) {
 void Switch::triggerOnTouch(PointDouble& iMouse) { 
   if(getAttribute(TRIGGER_TYPE).get_int() != TRIGGER_ON_MOUSE) { return; }
   PointDouble distance;
-  CEntity::dist(*e, iMouse, distance);
+  Entity::dist(*e, iMouse, distance);
 
   if ( distance.getX() < 32 && distance.getY() < 32 ) {
     OnTriggeredAction(TRIGGER_ON_MOUSE);

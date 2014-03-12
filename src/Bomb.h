@@ -1,7 +1,7 @@
 #ifndef BOMB_H
 #define BOMB_H
 
-#include "CFollower.h"
+#include "Follower.h"
 
 class Bomb : public Behavior {
 
@@ -17,7 +17,7 @@ class Bomb : public Behavior {
 
     void OnLoop();
 
-    void explode(std::vector<CEntity*>& iSheeps);
+    void explode(std::vector<Entity*>& iSheeps);
 
     void OnRender(SDL_Surface* ioSdlDisplaySurface);
 

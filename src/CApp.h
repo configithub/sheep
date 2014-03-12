@@ -3,22 +3,22 @@
 
 #include <SDL.h>
 extern "C" {
-  #include <lua.h>
-  #include <lualib.h>
-  #include <lauxlib.h>
+#include <lua.h>
+#include <lualib.h>
+#include <lauxlib.h>
 }
 
-#include "CSurface.h"
-#include "CEvent.h"
-#include "CAnimation.h"
-#include "CEntity.h"
+#include "Texture.h"
+#include "Event.h"
+#include "Animation.h"
+#include "Entity.h"
 #include "Define.h"
 #include "Area.h"
-#include "CCamera.h"
-#include "CFollower.h"
+#include "Camera.h"
+#include "Follower.h"
 #include "Vectorial.h"
 #include "MultitouchEvent.h"
-#include "CFPS.h"
+#include "FPS.h"
 #include "Effect.h"
 #include "Bomb.h"
 #include "Switch.h"
@@ -27,17 +27,17 @@ extern "C" {
 
 
 
-    enum Error {
-        NO_LUAERROR = 0,
-        ERRRUN,
-	ERRFILE,
-	ERRSYNTAX,
-	ERRMEM,
-	ERRERR
-    };
+enum Error {
+  NO_LUAERROR = 0,
+  ERRRUN,
+  ERRFILE,
+  ERRSYNTAX,
+  ERRMEM,
+  ERRERR
+};
 
 extern lua_State *luaState;
-class CApp : public CEvent {
+class CApp : public Event {
   private:
     bool            Running;
 
@@ -48,7 +48,7 @@ class CApp : public CEvent {
 
     bool others_follow;
 
-    //CFollower Follower;
+    //Follower Follower;
 
     EN_EntityType _currentSpawningEntity;
 
@@ -66,6 +66,12 @@ class CApp : public CEvent {
 
     //static PointDouble& getMouse() { return Mouse; }
     double _translationSpeed;
+    double _background1_speed;
+    int _background1_x;
+    double _background2_speed;
+    int _background2_x;
+    double _background3_speed;
+    int _background3_x;
 
     EN_EntityType& getCurrentSpawningEntity() { _currentSpawningEntity; }
     void setCurrentSpawningEntity(EN_EntityType& iType) { _currentSpawningEntity = iType; }
@@ -76,16 +82,16 @@ class CApp : public CEvent {
 
     PointDouble* _center;
     PointDouble* _nextCenter;
-  
-    static std::vector<CEntity*> Sheeps;
+
+    static std::vector<Entity*> Sheeps;
     int _nbSelectedEntity;
     static void print_num(SDL_Surface *dst, SDL_Surface *font, int x, int y, float value);
 
     // all entities
-    static std::map<int, CEntity> EntityPool;
+    static std::map<int, Entity> EntityPool;
 
     // behavior by type
-    static std::map<int, CFollower> SheepPool;
+    static std::map<int, Follower> SheepPool;
     static std::map<int, Switch> SwitchPool;
     static std::map<int, Effect> EffectPool;
     static std::map<int, Bomb> BombPool;
@@ -103,10 +109,6 @@ class CApp : public CEvent {
     void OnEvent(SDL_Event* Event);
 
     void SwitchActiveSheep(int newActiveSheep);
-
-    void DeselectAllSheeps();
-
-    void SelectAllSheeps();
 
     void SelectAllSheepsInCurrentRoom();
 
@@ -135,12 +137,6 @@ class CApp : public CEvent {
     void OnCameraContinuousTranslation();
 
     void OnJoyButtonDown(Uint8 which,Uint8 button);
-
-    void getActiveGroup(std::vector<CEntity*>& ioGroup);
-
-    void SelectHerdAtCoord(PointDouble& point);
-
-    void GetNearestEntityFromMouse(PointDouble& point, CEntity*& NearestEntityFromMouse, int& delta);
 
     void GoToGesture(std::vector<PointDouble>& gesturePositions);
     void GoTo(PointDouble& point);

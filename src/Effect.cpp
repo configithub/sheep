@@ -1,5 +1,5 @@
 #include "Effect.h"
-#include "CFPS.h"
+#include "FPS.h"
 #include <iostream>
 #include "CApp.h"
 
