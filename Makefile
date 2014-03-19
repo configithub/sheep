@@ -52,9 +52,9 @@ clean :
 # -----------------------------------------
 # Release_target
 
-Release_target.BIN = bin/Release/sheep
-Release_target.OBJ = src/App.o src/Component.o src/Entity.o src/ComponentManager.o src/Positionable.o src/Kinematic.o src/Inertial.o src/System.o src/Engine.o
-DEP_FILES += src/App.d src/Component.d src/Entity.d src/ComponentManager.d src/Positionable.d src/Kinematic.d src/Inertial.d src/System.d src/Engine.d
+Release_target.BIN = bin/Release/sheep.exe
+Release_target.OBJ = src/Switch.o src/Effect.o src/Bomb.o src/Animation.o src/CApp.o src/OnCleanup.o src/OnEvent.o src/OnInit.o src/OnLoop.o src/OnRender.o src/Area.o src/Camera.o src/Entity.o src/EntityCol.o src/Event.o src/FPS.o src/Follower.o src/Map.o src/Texture.o src/Tile.o src/MultitouchEvent.o src/Behavior.o src/Saw.o src/Door.o src/LuaBinds.o src/Gesture.o src/OnGesture.o
+DEP_FILES += src/Switch.d src/Effect.d src/Bomb.d src/Animation.d src/CApp.d src/OnCleanup.d src/OnEvent.d src/OnInit.d src/OnLoop.d src/OnRender.d src/Area.d src/Camera.d src/Entity.d src/EntityCol.d src/Event.d src/FPS.d src/Follower.d src/Map.d src/Texture.d src/Tile.d src/MultitouchEvent.d src/Behavior.d src/Saw.d src/Door.d src/LuaBinds.d src/Gesture.d src/OnGesture.d
 clean.OBJ += $(Release_target.BIN) $(Release_target.OBJ)
 
 Release_target : Release_target.before $(Release_target.BIN) Release_target.after_always
